@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html> 
+<head> 
+  <style type="text/css"> 
+    body { background-color: #2C2C29; color: #2C2C29; font-family: Tahoma; font-size: 11px; margin: 0; padding: 0; }
+ 
+    #wrapper { width: 811px; margin: 0 auto; }
+    #top { background:url('http://www.heatsynclabs.org/wp-content/themes/lightword/images/header-image.png') no-repeat; height:116px; margin: 0 0 0 5px; }
+    #top span { display: none; }
+    #content { background-color: #fff; padding: 1em; font-size: 1.2em; }
+ 
+    .caption {
+      background-color: #F3F3F3;
+      border: 1px solid #DDD;
+      padding: 4px;
+      margin: 0 30px;
+      display: inline-block;
+    }
+    
+    .footer {
+      clear: both;
+    }
+
+    label { 
+      display: block; 
+      font-weight: bold; 
+    }
+ 
+    h2 {
+      font-family: Helvetica, Georgia;
+      font-size: 24px;
+      letter-spacing: -1px;
+      margin: 10px 0px 3px;
+      border-bottom: 1px solid #DCDCDB;
+    }
+  </style> 
+</head> 
+ 
+<body> 
+<div id="wrapper"> 
+  <a href="http://www.heatsynclabs.org"><h1 id="top"><span>HeatSync Labs</span></h1></a> 
+ 
+  <div id="content"> 
+    <h2>HeatSync Labs Access Control</h2> 
+    <p>Beware all ye who enter here! Only authorized users are allowed to open and close the lab. If you don't have a username/password to this system, don't be a naughty user.</p>
+    <div class="caption"> 
+      <form method="post" action="cgi-bin/access.rb">
+        <label for="user">Username <input type="text" id="user" name="user" /></label>
+        <label for="pass">Password <input type="password" id="pass" name="pass" /></label>
+        <label for="cmd">Command
+          <select id="cmd" name="cmd">
+            <option value="open-rear">Open Rear Door</option>
+            <option value="open-front">Open Front Door</option>
+            <option value="lock">Lock all doors</option>
+            <option value="unlock">Unlock all doors</option>
+            <option value="arm">Arm alarm</option>
+            <option value="disarm">Disarm alarm</option>
+          </select>
+        </label>
+        <input type="submit" id="submit" name="submit" value="Go!" />
+      </form>
+    </div> 
+    <p class="footer">To report problems or ask for help/access, contact <a href="http://twitter.com/willbradley">@willbradley</a></p> 
+  </div> 
+ 
+</div> 
+</body> 
+</html> 
