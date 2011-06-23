@@ -15,6 +15,7 @@ require 'rubygems'
 require 'cgi'
 require 'serialport'
 require 'json'
+require 'digest/sha2'
 
 cgi = CGI.new
 userfile = File.read('../../users.json')
@@ -22,7 +23,7 @@ users = JSON.parse(userfile)
 
 puts "Content-type: text/html \r\n\r\n"
 
-if(users[cgi['user']]['pass'] == cgi['pass']) then
+if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass']).to_s then
   
   serial = SerialPort.new("/dev/ttyUSB0", 57600, 8, 1, SerialPort::NONE)
   serial.print "e 1234\r"
