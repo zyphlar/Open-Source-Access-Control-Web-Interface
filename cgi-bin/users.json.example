@@ -1,0 +1,8 @@
+{
+ "_comment" : "REMEMBER: have commas ending each line except the last!",
+ "_format" : "Format is 'user':{'pass':'passwordhash'[,'admin':true]}",
+
+ "foo":{"pass":"YOURSHA256HASHHERE"},
+ "bar":{"pass":"YOURSHA256HASHHERE","admin":true},
+ "baz":{"pass":"YOURSHA256HASHHERE","admin":true}
+}
