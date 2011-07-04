@@ -1,8 +1,12 @@
 #!/usr/bin/env ruby
 
+# Copyright 2011 Ryan Rix <ry@n.rix.si>
+#
+# Released under the Chicken Dance License, as detailed
+# http://supertunaman.com/cdl/cdl_v0-1.txt
 #
 # Ruby interface to 23b's Open Access Control system
-# By Will Bradley, twitter.com/willbradley of HeatSync Labs
+# By Ryan Rix, twitter.com/rrrrrrrix of HeatSync Labs
 #
 # Valid access control commands:
 #(d)ate, (s)show user, (m)odify user <num>  <usermask> <tagnumber>
@@ -36,19 +40,11 @@ if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass
     puts "Rear door opened."
     serial.print "o 2\r"
   when "unlock"  
-    if(users[cgi['user']]['admin'] == true) then
-      puts "Doors unlocked, remember to re-lock them."
-      serial.print "u\r"
-    else
-      puts "Fail. Don't be a naughty user!"
-    end
+    puts "Doors unlocked, remember to re-lock them."
+    serial.print "u\r"
   when "lock"  
-    if(users[cgi['user']]['admin'] == true) then
-      puts "Doors locked."
-      serial.print "l\r"
-    else
-      puts "Fail. Don't be a naughty user!"
-    end
+    puts "Doors locked."
+    serial.print "l\r"
   when "arm"  
     if(users[cgi['user']]['admin'] == true) then
       puts "Armed."
@@ -73,4 +69,3 @@ if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass
 else
   puts "Invalid username or password."
 end
-
