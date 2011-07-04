@@ -28,43 +28,47 @@ users = JSON.parse(userfile)
 puts "Content-type: text/html \r\n\r\n"
 
 if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass']).to_s then
-  
-  serial = SerialPort.new("/dev/ttyUSB0", 57600, 8, 1, SerialPort::NONE)
-  serial.print "e 1234\r"
 
-  case cgi['cmd']
-  when "open-front"  
-    puts "Front door opened."
-    serial.print "o 1\r"
-  when "open-rear"
-    puts "Rear door opened."
-    serial.print "o 2\r"
-  when "unlock"  
-    puts "Doors unlocked, remember to re-lock them."
-    serial.print "u\r"
-  when "lock"  
-    puts "Doors locked."
-    serial.print "l\r"
-  when "arm"  
-    if(users[cgi['user']]['admin'] == true) then
-      puts "Armed."
-      serial.print "2\r"
-    else
+  2.times do #do the serial stuff twice as sometimes the serial port is occupied
+    
+    serial = SerialPort.new("/dev/ttyUSB0", 57600, 8, 1, SerialPort::NONE)
+    serial.print "e 1234\r"
+
+    case cgi['cmd']
+    when "open-front"  
+      puts "Front door opened."
+      serial.print "o 1\r"
+    when "open-rear"
+      puts "Rear door opened."
+      serial.print "o 2\r"
+    when "unlock"  
+      puts "Doors unlocked, remember to re-lock them."
+      serial.print "u\r"
+    when "lock"  
+      puts "Doors locked."
+      serial.print "l\r"
+    when "arm"  
+      if(users[cgi['user']]['admin'] == true) then
+        puts "Armed."
+        serial.print "2\r"
+      else
+        puts "Fail. Don't be a naughty user!"
+      end
+    when "disarm"  
+      if(users[cgi['user']]['admin'] == true) then
+        puts "Disarmed."
+        serial.print "1\r"
+      else
+        puts "Fail. Don't be a naughty user!"
+      end
+    else 
       puts "Fail. Don't be a naughty user!"
     end
-  when "disarm"  
-    if(users[cgi['user']]['admin'] == true) then
-      puts "Disarmed."
-      serial.print "1\r"
-    else
-      puts "Fail. Don't be a naughty user!"
-    end
-  else 
-    puts "Fail. Don't be a naughty user!"
+
+    serial.close
+    puts ' <a href="/~access">Return.</a>'
+
   end
-
-  serial.close
-  puts ' <a href="/~access">Return.</a>'
 
 else
   puts "Invalid username or password."
