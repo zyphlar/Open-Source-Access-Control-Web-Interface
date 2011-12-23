@@ -29,7 +29,6 @@ puts "Content-type: text/html \r\n\r\n"
 
 if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass']).to_s then
 
-  2.times do #do the serial stuff twice as sometimes the serial port is occupied
     
     serial = SerialPort.new("/dev/ttyUSB0", 57600, 8, 1, SerialPort::NONE)
     serial.print "e 1234\r"
@@ -47,6 +46,22 @@ if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass
     when "lock"  
       puts "Doors locked."
       serial.print "l\r"
+    when "status"
+      serial.print "9\r"
+      sleep 1
+      continue = 1
+      while continue == 1 do
+          serial.read_timeout = -1
+          lines = serial.readlines 
+          if lines.length > 0 
+              for l in lines
+                  puts l
+                  puts "\n"
+              end
+          else 
+              continue = 0
+          end
+      end
     when "arm"  
       if(users[cgi['user']]['admin'] == true) then
         puts "Armed."
@@ -68,7 +83,6 @@ if users[cgi['user']]['pass'].to_s == (Digest::SHA2.new(bitlen=512) << cgi['pass
     serial.close
     puts ' <a href="/~access">Return.</a>'
 
-  end
 
 else
   puts "Invalid username or password."

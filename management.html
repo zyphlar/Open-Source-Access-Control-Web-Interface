@@ -45,21 +45,18 @@
     <h2>HeatSync Labs Access Control</h2> 
     <p>Beware all ye who enter here! Only authorized users are allowed to open and close the lab. If you don't have a username/password to this system, don't be a naughty user.</p>
     <div class="caption"> 
-      <form method="post" action="cgi-bin/access.rb">
-        <label for="user">Username <input type="text" id="user" name="user" /></label>
-        <label for="pass">Password <input type="password" id="pass" name="pass" /></label>
-        <label for="cmd">Command
-          <select id="cmd" name="cmd">
-            <option value="open-rear">Open Rear Door</option>
-            <option value="open-front">Open Front Door</option>
-            <option value="lock">Lock all doors</option>
-            <option value="unlock">Unlock all doors</option>
-            <option value="arm">Arm alarm</option>
-            <option value="disarm">Disarm alarm</option>
-            <option value="status">System Status</option>
-          </select>
-        </label>
-        <input type="submit" id="submit" name="submit" value="Go!" />
+      <form method="post" action="cgi-bin/usermanage.rb">
+	<h3>Administration Details</h3>
+        <label for="adminuser">Admin Username <input type="text" id="adminuser" name="adminuser" /></label>
+        <label for="adminpass">Admin Password <input type="password" id="adminpass" name="adminpass" /></label>
+	<h3>Add a User</h3>
+        <label for="newuser">New Username <input type="text" id="newuser" name="newuser" /></label>
+        <label for="newpass">Password <input type="password" id="adminpass" name="adminpass" /></label>
+		<label for="isuseradmin">Grant Admin <input type="checkbox" id="isusradmin" name="isuseradmin" /></label>
+        <input type="submit" id="submit" name="submit" value="Add User" />
+	<h3>Delete User</h3>
+	<label for="deletename">Username <input type="text" id="deletename" name="deletename" /></label>
+	<input type="submit" id="submit" name="submit" value="Delete User" />
       </form>
     </div> 
     <p class="footer">To report problems or ask for help/access, contact <a href="http://twitter.com/willbradley">@willbradley</a></p> 
