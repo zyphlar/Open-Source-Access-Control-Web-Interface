@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  card_id: 1
+  card_number: MyString
+  card_permissions: 1
+
+two:
+  name: MyString
+  card_id: 1
+  card_number: MyString
+  card_permissions: 1

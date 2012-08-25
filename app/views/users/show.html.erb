@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @user.name %>
+</p>
+
+<p>
+  <b>Card DB ID:</b>
+  <%= @user.card_id %>
+</p>
+
+<p>
+  <b>Card Number:</b>
+  <%= @user.card_number %>
+</p>
+
+<p>
+  <b>Card Permissions:</b>
+  <%= @user.card_permissions %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

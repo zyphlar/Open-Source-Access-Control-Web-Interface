@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+<b>Upload results:</b>
+<ul>
+  <% @upload_result.each do |r| %>
+    <li><%= r[0] %> <%= r[1] %></li>
+  <% end %>
+</ul>
+</p>
+
+
+<%= link_to 'Back', users_path %>
