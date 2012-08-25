@@ -1,7 +1,11 @@
 Dooraccess::Application.routes.draw do
+
   match 'users/upload_all' => 'users#upload_all', :as => :upload_all
   resources :users
   match 'users/:id/upload' => 'users#upload', :as => :upload
+
+  match 'door_logs/download' => 'door_logs#download', :as => :download
+  resources :door_logs
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
