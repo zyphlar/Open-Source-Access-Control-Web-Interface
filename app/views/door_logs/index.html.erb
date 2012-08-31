@@ -1,0 +1,22 @@
+<h1>Listing door_logs</h1>
+
+<%= link_to 'Download Door Logs', download_path %>
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Data</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @door_logs.each do |door_log| %>
+  <tr>
+    <td><%= door_log.key %></td>
+    <td><%= door_log.data %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

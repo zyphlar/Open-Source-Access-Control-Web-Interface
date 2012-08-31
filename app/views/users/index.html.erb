@@ -1,0 +1,30 @@
+<h1>Listing users</h1>
+
+<%= link_to 'New User', new_user_path %>
+<%= link_to 'Upload all users', upload_all_path %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Card DB ID</th>
+    <th>Card Number</th>
+    <th>Permissions</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= user.card_id %></td>
+    <td><%= user.card_number %></td>
+    <td><%= user.card_permissions %></td>
+    <td><%= link_to 'Upload', upload_path(user) %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

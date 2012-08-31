@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Key:</b>
+  <%= @door_log.key %>
+</p>
+
+<p>
+  <b>Data:</b>
+  <%= @door_log.data %>
+</p>
+
+
+<%= link_to 'Edit', edit_door_log_path(@door_log) %> |
+<%= link_to 'Back', door_logs_path %>
