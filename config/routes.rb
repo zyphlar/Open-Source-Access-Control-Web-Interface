@@ -7,6 +7,8 @@ Dooraccess::Application.routes.draw do
   match 'door_logs/download' => 'door_logs#download', :as => :download
   resources :door_logs
 
+  root :to => "home#index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
