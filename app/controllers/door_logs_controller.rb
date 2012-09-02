@@ -1,4 +1,6 @@
 class DoorLogsController < ApplicationController
+  before_filter :authenticate_user!
+
   # GET /door_logs
   # GET /door_logs.json
   def index
