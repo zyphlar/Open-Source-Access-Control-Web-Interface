@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  authorize_resource
   before_filter :authenticate_user!
   
   # GET /users

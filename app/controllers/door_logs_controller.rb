@@ -1,4 +1,5 @@
 class DoorLogsController < ApplicationController
+  authorize_resource
   before_filter :authenticate_user!
 
   # GET /door_logs
