@@ -1,5 +1,7 @@
 Dooraccess::Application.routes.draw do
 
+  devise_for :users
+
   match 'users/upload_all' => 'users#upload_all', :as => :upload_all
   resources :users
   match 'users/:id/upload' => 'users#upload', :as => :upload
