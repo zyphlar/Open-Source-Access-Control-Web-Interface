@@ -1,11 +1,32 @@
 development:
   door_access_url: "http://192.168.1.177"
   door_access_password: "1234"
+  smtp_tls: true
+  smtp_address: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_domain: "gmail.com"
+  smtp_authentication: "login"
+  smtp_user: ""
+  smtp_password: ""
 
 test:
   door_access_url: "http://192.168.1.177"
   door_access_password: "1234"
+  smtp_tls: true
+  smtp_address: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_domain: "gmail.com"
+  smtp_authentication: "login"
+  smtp_user: ""
+  smtp_password: ""
 
 production:
   door_access_url: "http://192.168.1.177"
   door_access_password: "1234"
+  smtp_tls: true
+  smtp_address: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_domain: "gmail.com"
+  smtp_authentication: "login"
+  smtp_user: ""
+  smtp_password: ""

@@ -39,7 +39,11 @@
   </div>
   <div class="field">
     <%= f.label :card_permissions %><br />
-    <%= f.select :card_permissions, [["Enabled",1],["Disabled",255]] %>
+    <%= f.select :card_permissions, [["Enabled",1],["Disabled",255]]  %>
+  </div>
+  <div class="field">
+    <%= f.label :admin, "Admin?" %><br />
+    <%= f.check_box :admin %>
   </div>
   <div class="actions">
     <%= f.submit %>

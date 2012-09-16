@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   require 'open-uri'
 
-  attr_accessible :card_id, :card_number, :card_permissions, :name
+  attr_accessible :card_id, :card_number, :card_permissions, :name, :admin
   validates_uniqueness_of :card_id, :card_number 
 
 
