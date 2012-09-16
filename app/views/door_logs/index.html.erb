@@ -3,6 +3,7 @@
 <%= link_to 'Download Door Logs', download_path %>
 <table>
   <tr>
+    <th>Date</th>
     <th>Key</th>
     <th>Data</th>
     <th></th>
@@ -10,28 +11,29 @@
     <th></th>
   </tr>
 
-<% @modulo_tmp = nil %>
+<% @divided_tmp = nil %>
 <% @door_logs.each do |door_log| %>
   <tr>
+    <td><%= door_log.created_at %></td>
     <td><%= door_log.key %></td>
     <td><%= door_log.data %></td>
     <% 
-      if door_log.key == 'R' || door_log.key == 'D' ||door_log.key == 'G'
-        @modulo_tmp = door_log.data.to_i
-      elsif (door_log.key == 'r' || door_log.key == 'd' || door_log.key == 'g') && !@modulo_tmp.nil? %>
+      if door_log.key == 'r' || door_log.key == 'd' ||door_log.key == 'g'
+        @divided_tmp = door_log.data.to_i
+      elsif (door_log.key == 'R' || door_log.key == 'D' || door_log.key == 'G') && !@divided_tmp.nil? %>
       <td>
         <%= case door_log.key
-              when 'r'
+              when 'R'
                 "Read"
-              when 'd'
+              when 'D'
                 "Denied"
-              when 'g'
+              when 'G'
                 "Granted"
               end %>
-        <%= "Card: "+(@modulo_tmp+(door_log.data.to_i*32767)).to_s(16) %>
+        <%= "Card: "+(door_log.data.to_i+(@divided_tmp*32767)).to_s(16) %>
       </td>
    <% else 
-        @modulo_tmp = nil
+        @divided_tmp = nil
       end %>
   </tr>
 <% end %>

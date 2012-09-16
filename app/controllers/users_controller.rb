@@ -7,7 +7,8 @@ class UsersController < ApplicationController
   def index
     #@users = User.all
     #authorize! :read, @users
-    
+    @users = @users.sort_by{|e| e[:card_id]}
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @users }
