@@ -10,10 +10,29 @@
     <th></th>
   </tr>
 
+<% @modulo_tmp = nil %>
 <% @door_logs.each do |door_log| %>
   <tr>
     <td><%= door_log.key %></td>
     <td><%= door_log.data %></td>
+    <% 
+      if door_log.key == 'R' || door_log.key == 'D' ||door_log.key == 'G'
+        @modulo_tmp = door_log.data.to_i
+      elsif (door_log.key == 'r' || door_log.key == 'd' || door_log.key == 'g') && !@modulo_tmp.nil? %>
+      <td>
+        <%= case door_log.key
+              when 'r'
+                "Read"
+              when 'd'
+                "Denied"
+              when 'g'
+                "Granted"
+              end %>
+        <%= "Card: "+(@modulo_tmp+(door_log.data.to_i*32767)).to_s(16) %>
+      </td>
+   <% else 
+        @modulo_tmp = nil
+      end %>
   </tr>
 <% end %>
 </table>
