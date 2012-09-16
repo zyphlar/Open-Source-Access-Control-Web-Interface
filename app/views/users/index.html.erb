@@ -12,8 +12,9 @@
     <th></th>
     <th></th>
   </tr>
-
-<% @users.each do |user| %>
+  
+<% if !@users.blank? %>
+  <% @users.each do |user| %>
   <tr>
     <td><%= user.name %></td>
     <td><%= user.card_id %></td>
@@ -23,6 +24,7 @@
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
+  <% end %>
 <% end %>
 </table>
 

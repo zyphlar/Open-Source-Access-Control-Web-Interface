@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def index
     #@users = User.all
     #authorize! :read, @users
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @users }
