@@ -6,8 +6,9 @@ Dooraccess::Application.routes.draw do
   resources :users
   match 'users/:id/upload' => 'users#upload', :as => :upload
 
+  match 'door_logs' => 'door_logs#index', :as => :door_logs
   match 'door_logs/download' => 'door_logs#download', :as => :download
-  resources :door_logs
+  match 'door_logs/auto_download' => 'door_logs#auto_download', :as => :auto_download
 
   root :to => "home#index"
 

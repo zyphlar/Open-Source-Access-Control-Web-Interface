@@ -1,6 +1,6 @@
 class DoorLogsController < ApplicationController
-  authorize_resource
-  before_filter :authenticate_user!
+  authorize_resource :except => :auto_download
+  before_filter :authenticate_user!, :except => :auto_download
 
   # GET /door_logs
   # GET /door_logs.json
@@ -13,8 +13,7 @@ class DoorLogsController < ApplicationController
     end
   end
 
-  # GET /door_logs/1
-  # GET /door_logs/1.json
+  # GET /door_logs/download
   def download
     @results = DoorLog.download_from_door
 
@@ -23,5 +22,16 @@ class DoorLogsController < ApplicationController
       format.json { render :json => @results }
     end
   end
+
+  # GET /door_logs/auto_download
+  def auto_download
+    @results = DoorLog.download_from_door
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render :json => @results }
+    end
+  end
+
 
 end
