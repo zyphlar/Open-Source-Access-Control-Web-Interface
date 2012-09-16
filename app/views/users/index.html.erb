@@ -6,8 +6,8 @@
   <tr>
     <th>Name</th>
     <th>Card DB ID</th>
-    <th>Card Number</th>
-    <th>Card Access</th>
+    <th>Card #</th>
+    <th>Access?</th>
     <th>Admin?</th>
     <th></th>
     <th></th>
@@ -20,7 +20,7 @@
     <td><%= user.name %></td>
     <td><%= user.card_id %></td>
     <td><%= user.card_number %></td>
-    <td><%= if user.card_permissions == 1 then "Enabled" else "Disabled" end %></td>
+    <td><%= if user.card_permissions == 1 then "Access" end %></td>
     <td><%= if user.admin? then "Admin" end %></td>
     <td><%= link_to 'Upload', upload_path(user) %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>

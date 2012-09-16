@@ -30,7 +30,10 @@
               when 'G'
                 "Granted"
               end %>
-        <%= "Card: "+(door_log.data.to_i+(@divided_tmp*32767)).to_s(16) %>
+        <% @cardnum = (door_log.data.to_i+(@divided_tmp*32767)).to_s(16) %>
+        <%= "Card: "+@cardnum %>
+	<% @card_user = User.find(:first,:conditions=>['card_number LIKE ?', @cardnum]) %>
+	<%= "("+@card_user.name+")" unless @card_user.nil? %>
       </td>
    <% else 
         @divided_tmp = nil
