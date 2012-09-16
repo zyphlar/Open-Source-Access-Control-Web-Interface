@@ -19,14 +19,18 @@
     <%= f.label :email %><br />
     <%= f.email_field :email %>
   </div>
-  <% if @user.id.blank? %>
+  <% if @user.id.blank? || !params[:password].nil? %>
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :password %><br />
     <%= f.password_field :password, :autocomplete => "off" %>
   </div>
   <div class="field">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
+  </div>
+<% else %>
+  <div class="field">
+    <a href="?password=edit">Change Password</a>
   </div>
 <% end %>
   <div class="field">
