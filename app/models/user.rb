@@ -12,9 +12,14 @@ class User < ActiveRecord::Base
   attr_accessible :card_id, :card_number, :card_permissions, :name
   validates_uniqueness_of :card_id, :card_number 
 
+
   def upload_to_door
-    # do shit here
-    source = open("http://192.168.1.177?e=1234").read
+    # load config values
+    door_access_url = APP_CONFIG['door_access_url']
+    door_access_password = APP_CONFIG['door_access_password']
+
+    # connect to door access system
+    source = open("#{door_access_url}?e=#{door_access_password}").read
     results = source.scan(/authok/)
     if(results.size > 0) then
       #only continue if we've got an OK login
@@ -22,11 +27,11 @@ class User < ActiveRecord::Base
       userperm = self.card_permissions.to_s.rjust(3, '0')
       cardnum = self.card_number.rjust(8, '0')
 
-      source = open("http://192.168.1.177?m#{usernum}&p#{userperm}&t#{cardnum}").read
+      source = open("#{door_access_url}?m#{usernum}&p#{userperm}&t#{cardnum}").read
       results = source.scan(/cur/)
 
       #logout
-      open("http://192.168.1.177?e=0000")
+      open("#{door_access_url}?e=0000")
 
       if(results.size > 0) then
         #only return true if we got some kind of decent response
@@ -45,7 +50,11 @@ class User < ActiveRecord::Base
     @users = User.all
     @end_results = Array.new
 
-    source = open("http://192.168.1.177?e=1234").read
+    # load config values
+    door_access_url = APP_CONFIG['door_access_url']
+    door_access_password = APP_CONFIG['door_access_password']
+
+    source = open("#{door_access_url}?e=#{door_access_password}").read
     results = source.scan(/authok/)
     if(results.size > 0) then
       @users.each do |u|
@@ -54,7 +63,7 @@ class User < ActiveRecord::Base
         userperm = u.card_permissions.to_s.rjust(3, '0')
         cardnum = u.card_number.rjust(8, '0')
 
-        source = open("http://192.168.1.177?m#{usernum}&p#{userperm}&t#{cardnum}").read
+        source = open("#{door_access_url}?m#{usernum}&p#{userperm}&t#{cardnum}").read
         results = source.scan(/cur/)
 
         if(results.size > 0) then
@@ -66,7 +75,7 @@ class User < ActiveRecord::Base
       end
 
       #logout
-      open("http://192.168.1.177?e=0000")
+      open("#{door_access_url}?e=0000")
     else
       @end_results.push([usernum,"FAIL"])
     end
