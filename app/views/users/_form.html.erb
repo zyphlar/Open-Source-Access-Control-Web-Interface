@@ -16,6 +16,20 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email %>
+  </div>
+  <% if @user.id.blank? %>
+  <div class="field">
+    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.password_field :password, :autocomplete => "off" %>
+  </div>
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
+<% end %>
+  <div class="field">
     <%= f.label :card_id, "Card DB ID" %><br />
     <%= f.number_field :card_id, :in => 10...201 %>
   </div>

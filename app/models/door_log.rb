@@ -3,14 +3,18 @@ class DoorLog < ActiveRecord::Base
   require 'open-uri'
 
   def self.download_from_door
-    # do shit here
-    source = open("http://192.168.1.177?e=1234").read
+    # load config values
+    door_access_url = APP_CONFIG['door_access_url']
+    door_access_password = APP_CONFIG['door_access_password']
+
+    # connect to door access system
+    source = open("#{door_access_url}?e=#{door_access_password}").read
     results = source.scan(/authok/)
     if(results.size > 0) then
       @end_results = Array.new
 
       #only continue if we've got an OK login
-      source = open("http://192.168.1.177?z").read
+      source = open("#{door_access_url}?z").read
       results = source.scan(/(.*): (.*)\r\n/)
 
       results.each do |r|
@@ -20,9 +24,9 @@ class DoorLog < ActiveRecord::Base
       end
 
       #clear log
-      open("http://192.168.1.177?y")
+      open("#{door_access_url}?y")
       #logout
-      open("http://192.168.1.177?e=0000")
+      open("#{door_access_url}?e=0000")
 
       if(results.size > 0) then
         #only return true if we got some kind of decent response

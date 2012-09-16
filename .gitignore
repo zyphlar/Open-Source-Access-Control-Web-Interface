@@ -16,3 +16,6 @@
 
 # Ignore compiled assets
 /public/assets
+
+# Ignore config file
+/config/config.yml

@@ -1,0 +1,11 @@
+development:
+  door_access_url: "http://192.168.1.100"
+  door_access_password: "1234"
+
+test:
+  door_access_url: "http://192.168.1.100"
+  door_access_password: "1234"
+
+production:
+  door_access_url: "http://192.168.1.100"
+  door_access_password: "1234"

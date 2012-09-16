@@ -22,7 +22,7 @@
     <td><%= user.card_permissions %></td>
     <td><%= link_to 'Upload', upload_path(user) %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete %></td>
   </tr>
   <% end %>
 <% end %>
