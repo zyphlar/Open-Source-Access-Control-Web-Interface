@@ -1,4 +1,15 @@
 class User < ActiveRecord::Base
+<<<<<<< HEAD
+=======
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+>>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
   require 'open-uri'
 
   attr_accessible :card_id, :card_number, :card_permissions, :name

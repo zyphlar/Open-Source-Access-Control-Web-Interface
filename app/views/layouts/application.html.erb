@@ -10,7 +10,15 @@
   <div id="header">
     <a href="/users">Users</a>
     <a href="/door_logs">Logs</a>
+<<<<<<< HEAD
   </div>
+=======
+    <%= link_to 'Profile', edit_user_registration_path if user_signed_in? %>
+    <%= link_to 'Sign out', destroy_user_session_path, :method => :delete if user_signed_in? %>
+  </div>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+>>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
 <%= yield %>
 
 </body>

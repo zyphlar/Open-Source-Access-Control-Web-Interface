@@ -15,7 +15,11 @@ Dooraccess::Application.configure do
   config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
+<<<<<<< HEAD
   config.assets.compile = false
+=======
+  config.assets.compile = true
+>>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
 
   # Generate digests for assets URLs
   config.assets.digest = true
@@ -64,4 +68,9 @@ Dooraccess::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+<<<<<<< HEAD
+=======
+  
+  config.action_mailer.default_url_options = { :host => 'members.heatsynclabs.org' }
+>>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
 end

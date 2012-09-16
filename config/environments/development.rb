@@ -34,4 +34,9 @@ Dooraccess::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+<<<<<<< HEAD
+=======
+
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+>>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
 end
