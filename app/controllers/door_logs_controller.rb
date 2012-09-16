@@ -1,10 +1,7 @@
 class DoorLogsController < ApplicationController
-<<<<<<< HEAD
-=======
   authorize_resource
   before_filter :authenticate_user!
 
->>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
   # GET /door_logs
   # GET /door_logs.json
   def index

@@ -14,12 +14,8 @@ Dooraccess::Application.configure do
   # Compress JavaScripts and CSS
   config.assets.compress = true
 
-  # Don't fallback to assets pipeline if a precompiled asset is missed
-<<<<<<< HEAD
-  config.assets.compile = false
-=======
+  # Fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
->>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
 
   # Generate digests for assets URLs
   config.assets.digest = true

@@ -1,10 +1,7 @@
 Dooraccess::Application.routes.draw do
 
-<<<<<<< HEAD
-=======
   devise_for :users
 
->>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
   match 'users/upload_all' => 'users#upload_all', :as => :upload_all
   resources :users
   match 'users/:id/upload' => 'users#upload', :as => :upload
@@ -12,11 +9,8 @@ Dooraccess::Application.routes.draw do
   match 'door_logs/download' => 'door_logs#download', :as => :download
   resources :door_logs
 
-<<<<<<< HEAD
-=======
   root :to => "home#index"
 
->>>>>>> 03d99741e5b661e63f6281115d2db333082a09b1
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
