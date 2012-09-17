@@ -1,6 +1,46 @@
 <h1>Listing door_logs</h1>
 
 <%= link_to 'Download Door Logs', download_path %>
+<a href="#" onclick="$('#log-guide').toggle();">Show Log Guide</a>
+<div id="log-guide" style="display: none;">
+<pre>
+Guide to Card Number storage:
+cardnum = (R+(r*32767)), convert to hex
+
+Guide to log keys and data:
+ * A=alarm armed (# level)
+ * a=added user (# usernum)
+ * C=keypad command (# command)
+ * c=second half
+ * c=checked user (0=failed, #=found usernum)
+ * D=denied access (# card num)
+ * d=second half
+ * d=deleted user (# usernum)
+ * E=second (#=second)
+ * F=priv fail (0=wrong pw, 1=too many attempts, 2=not logged in)
+ * f=second half
+ * f=card fail (#=usermask)
+ * G=granted access (# card num)
+ * g=second half of card
+ * H=hour (#=hour)
+ * i=attempt to write to invalid eeprom address (# usernum)
+ * I=attempt to delete from invalid eeprom address (# usernum)
+ * L=locked (1=door1, 2=door2, 3=bedtime)
+ * M=minute (#=minute)
+ * m=alarm state (# level)
+ * R=read tag (# card num)
+ * r=second half of tag
+ * Q=superuser authed (#=superuser)
+ * S=auth (0=privileged mode enabled)
+ * s=alarm sensor (# zone)
+ * t=alarm trained (#=sensor value)
+ * T=alarm triggered (0)
+ * U=unlocked door (1=door1, 2=door2, # card num)
+ * u=second half of card
+ * Z=user db cleared (0)
+ * z=log cleared (0)
+</pre>
+</div>
 <table>
   <tr>
     <th>Date</th>
