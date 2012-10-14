@@ -1,0 +1,34 @@
+<h1>Listing users</h1>
+
+<% if can? :create, User %>
+  <%= link_to 'New User', new_user_path %>
+<% end %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Cards</th>
+    <th>Admin?</th>
+    <th></th>
+    <th></th>
+  </tr>
+  
+<% if !@users.blank? %>
+  <% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= user.email %></td>
+    <td>
+      <% user.cards.each do |c| %>
+        <%= link_to c.card_number, card_url(c) %><%= "," unless c == user.cards.last %>
+      <% end %>
+    </td>
+    <td><%= if user.admin? then "Admin" end %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
+    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<br />

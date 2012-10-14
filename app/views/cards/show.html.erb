@@ -1,6 +1,6 @@
 
 <p>
-  <b>Name:</b>
+  <b>Card Note:</b>
   <%= @card.name %>
 </p>
 
@@ -19,6 +19,6 @@
   <%= @card.card_permissions %>
 </p>
 
-<%= link_to 'Upload to Door', upload_path(@card) %>
+<%= link_to 'Upload to Door', upload_path(@card) if can? :upload, @card %>
 <%= link_to 'Edit', edit_card_path(@card) %> |
 <%= link_to 'Back', cards_path %>

@@ -1,7 +1,7 @@
 <h1>Listing cards</h1>
 
-<%= link_to 'New Card', new_card_path %>
-<%= link_to 'Upload all cards', upload_all_path %>
+<%= link_to 'New Card', new_card_path if can? :create, Card %>
+<%= link_to 'Upload all cards', upload_all_path if can? :upload_all, Card %>
 <table>
   <tr>
     <th>User</th>
@@ -22,9 +22,9 @@
     <td><%= card.id %></td>
     <td><%= card.card_number %></td>
     <td><%= if card.card_permissions == 1 then "Access" end %></td>
-    <td><%= link_to 'Upload', upload_path(card) %></td>
-    <td><%= link_to 'Edit', edit_card_path(card) %></td>
-    <td><%= link_to 'Destroy', card, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE CARD FROM THE DOOR SYSTEM! DISABLE AND UPLOAD IT FIRST.', :method => :delete %></td>
+    <td><%= link_to 'Upload', upload_path(card) if can? :upload, card %></td>
+    <td><%= link_to 'Edit', edit_card_path(card) if can? :update, card %></td>
+    <td><%= link_to 'Destroy', card, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE CARD FROM THE DOOR SYSTEM! DISABLE AND UPLOAD IT FIRST.', :method => :delete if can? :destroy, card %></td>
   </tr>
   <% end %>
 <% end %>

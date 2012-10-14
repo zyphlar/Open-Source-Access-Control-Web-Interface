@@ -8,8 +8,9 @@
 </head>
 <body>
   <div id="header">
-    <%= link_to 'Cards', cards_path if user_signed_in? %>
-    <%= link_to 'Logs', door_logs_path if user_signed_in? %>
+    <%= link_to 'Users', users_path if can? :read, User %>
+    <%= link_to 'Cards', cards_path if can? :read, Card %>
+    <%= link_to 'Logs', door_logs_path if can? :read, DoorLog %>
     <%= link_to 'Sign out', destroy_user_session_path, :method => :delete if user_signed_in? %>
     <%= link_to 'Sign in', new_user_session_path unless user_signed_in? %>
   </div>

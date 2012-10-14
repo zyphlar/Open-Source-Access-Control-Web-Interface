@@ -1,6 +1,7 @@
 Dooraccess::Application.routes.draw do
 
   devise_for :users
+  resources :users
 
   match 'cards/upload_all' => 'cards#upload_all', :as => :upload_all
   resources :cards
