@@ -1,0 +1,24 @@
+
+<p>
+  <b>Name:</b>
+  <%= @card.name %>
+</p>
+
+<p>
+  <b>Card DB ID:</b>
+  <%= @card.id %>
+</p>
+
+<p>
+  <b>Card Number:</b>
+  <%= @card.card_number %>
+</p>
+
+<p>
+  <b>Card Permissions:</b>
+  <%= @card.card_permissions %>
+</p>
+
+<%= link_to 'Upload to Door', upload_path(@card) %>
+<%= link_to 'Edit', edit_card_path(@card) %> |
+<%= link_to 'Back', cards_path %>

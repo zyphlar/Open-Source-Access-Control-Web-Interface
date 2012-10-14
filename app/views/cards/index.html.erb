@@ -1,0 +1,34 @@
+<h1>Listing cards</h1>
+
+<%= link_to 'New Card', new_card_path %>
+<%= link_to 'Upload all cards', upload_all_path %>
+<table>
+  <tr>
+    <th>User</th>
+    <th>Note</th>
+    <th>DB ID</th>
+    <th>Card #</th>
+    <th>Access?</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  
+<% if !@cards.blank? %>
+  <% @cards.each do |card| %>
+  <tr>
+    <td><%= card.user.name %></td>
+    <td><%= card.name %></td>
+    <td><%= card.id %></td>
+    <td><%= card.card_number %></td>
+    <td><%= if card.card_permissions == 1 then "Access" end %></td>
+    <td><%= link_to 'Upload', upload_path(card) %></td>
+    <td><%= link_to 'Edit', edit_card_path(card) %></td>
+    <td><%= link_to 'Destroy', card, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE CARD FROM THE DOOR SYSTEM! DISABLE AND UPLOAD IT FIRST.', :method => :delete %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<br />
+

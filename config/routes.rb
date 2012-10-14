@@ -2,9 +2,9 @@ Dooraccess::Application.routes.draw do
 
   devise_for :users
 
-  match 'users/upload_all' => 'users#upload_all', :as => :upload_all
-  resources :users
-  match 'users/:id/upload' => 'users#upload', :as => :upload
+  match 'cards/upload_all' => 'cards#upload_all', :as => :upload_all
+  resources :cards
+  match 'cards/:id/upload' => 'cards#upload', :as => :upload
 
   match 'door_logs' => 'door_logs#index', :as => :door_logs
   match 'door_logs/download' => 'door_logs#download', :as => :download
