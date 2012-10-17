@@ -8,6 +8,8 @@
     <th>Name</th>
     <th>Email</th>
     <th>Cards</th>
+    <th>Active?</th>
+    <th>Waiver?</th>
     <th>Admin?</th>
     <th></th>
     <th></th>
@@ -23,6 +25,8 @@
         <%= link_to c.card_number, card_url(c) %><%= "," unless c == user.cards.last %>
       <% end %>
     </td>
+    <td><%= if user.active? then "Active" end %></td>
+    <td><%= if user.waiver.blank? then "Not Signed" else "Signed" end %></td>
     <td><%= if user.admin? then "Admin" end %></td>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
