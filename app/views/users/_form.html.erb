@@ -19,6 +19,46 @@
     <%= f.label :email %><br />
     <%= f.email_field :email %>
   </div>
+  <div class="field">
+    <%= f.label :waiver %><br />
+    <%= f.date_select :waiver %>
+  </div>
+  <div class="field">
+    <%= f.label :orientation %><br />
+    <%= f.date_select :orientation %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_name %><br />
+    <%= f.text_field :emergency_name %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_phone %><br />
+    <%= f.text_field :emergency_phone %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_email %><br />
+    <%= f.text_field :emergency_email %>
+  </div>
+  <div class="field">
+    <%= f.label :member_level %><br />
+    <%= f.text_field :member_level %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_method %><br />
+    <%= f.text_field :payment_method %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :current_skills %><br />
+    <%= f.text_area :current_skills %>
+  </div>
+  <div class="field">
+    <%= f.label :desired_skills %><br />
+    <%= f.text_area :desired_skills %>
+  </div>
   <% if @user.id.blank? || !params[:password].nil? %>
   <div class="field">
     <%= f.label :password %><br />
