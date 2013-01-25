@@ -45,12 +45,12 @@
     <%= f.text_field :emergency_email %>
   </div>
   <div class="field">
-    <%= f.label :member_level %><br />
-    <%= f.text_field :member_level %>
+    <%= f.label :member_level, "Desired Member Level" %><br />
+    <%= f.select :member_level, [["None",0],["Unable",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
   </div>
   <div class="field">
     <%= f.label :payment_method %><br />
-    <%= f.text_field :payment_method %>
+    <%= f.select :payment_method, [["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]  %>
   </div>
   <div class="field">
     <%= f.label :phone %><br />

@@ -21,8 +21,41 @@
 </p>
 <% end %>
 
+  <p>
+    <b>Emergency Name:</b>
+    <%= @user.emergency_name %>
+  </p>
+  <p>
+    <b>Emergency Phone:</b>
+    <%= @user.emergency_phone %>
+  </p>
+  <p>
+    <b>Emergency Email:</b>
+    <%= @user.emergency_email %>
+  </p>
+  <p>
+    <b>Desired Member Level:</b>
+    <%= @user.member_level %>
+  </p>
+  <p>
+    <b>Payment Method:</b>
+    <%= @user.payment_method %>
+  </p>
+  <p>
+    <b>Phone:</b>
+    <%= @user.phone %>
+  </p>
+  <p>
+    <b>Current Skills:</b>
+    <%= simple_format @user.current_skills %>
+  </p>
+  <p>
+    <b>Desired Skills:</b>
+    <%= simple_format @user.desired_skills %>
+  </p>
+
 <p>
-  <b>Member?</b>
+  <b>Current Member?</b>
   <%= raw(@user.member_status) %>
 </p>
 
