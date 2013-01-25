@@ -7,15 +7,14 @@
   <tr>
     <th>Name</th>
     <th>Email</th>
-    <% if current_user.admin? then %>
-      <th>Cards</th>
-    <% end %>
     <th>Certifications</th>
-    <th>Active?</th>
-    <th>Waiver?</th>
     <% if current_user.admin? then %>
     <th>Orientation?</th>
     <% end %>
+    <th>Waiver?</th>
+    <th>Member?</th>
+    <th>Card?</th>
+    <th>Instructor?</th>
     <th>Admin?</th>
     <th></th>
     <th></th>
@@ -26,19 +25,16 @@
   <tr>
     <td><%= link_to user.name, user %></td>
     <td><%= user.email %></td>
-    <% if current_user.admin? then %><td>
-      <% user.cards.each do |c| %>
-        <%= link_to c.card_number, card_url(c) %><%= "," unless c == user.cards.last %>
-      <% end %>
-    </td><% end %>
     <td><% user.certifications.each do |c| %>
-      <%= link_to c.name, c %><%= "," unless c == user.certifications.last %>
+      <%= link_to c.name, c %><%= "," unless c.id == user.certifications.last.id %>
     <% end %></td>
-    <td><%= if user.active? then raw("&#x2713;") end %></td>
-    <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
     <% if current_user.admin? then %><td>
       <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
     </td><% end %>
+    <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
+    <td><%= raw(user.member_status) %></td>
+    <td><%= unless user.cards.blank? then raw("&#x2713;") end %></td>
+    <td><%= if user.instructor? then raw("&#x2713;") end %></td>
     <td><%= if user.admin? then raw("&#x2713;") end %></td>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>

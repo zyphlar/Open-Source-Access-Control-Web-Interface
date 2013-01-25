@@ -10,14 +10,40 @@
 </p>
 
 <p>
-  <b>Active?</b>
-  <%= @user.active %>
+  <b>Waiver?</b>
+  <%= @user.waiver %>
+</p>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Orientation?</b>
+  <%= @user.orientation %>
+</p>
+<% end %>
+
+<p>
+  <b>Member?</b>
+  <%= @user.member %>
+</p>
+
+<p>
+  <b>Instructor?</b>
+  <%= @user.instructor %>
 </p>
 
 <p>
   <b>Admin?</b>
   <%= @user.admin %>
 </p>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Cards:</b>
+  <% @user.cards.each do |c| %>
+    <%= link_to c.card_number, c %><%= "," unless c == @user.cards.last %>
+  <% end %>
+</p>
+<% end %>
 
 <b>Certifications:</b>
 <ul>
@@ -26,7 +52,6 @@
   <% end %>
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
-
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

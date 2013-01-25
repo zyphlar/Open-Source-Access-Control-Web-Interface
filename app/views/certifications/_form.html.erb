@@ -19,10 +19,6 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
-  <% f.fields_for :users do |u| %>
-    <%= u.label :user %><br />
-    <%= collection_select(:certifications_users, :user_id, User.all.sort_by(&:name), :id, :name) %>
-  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>

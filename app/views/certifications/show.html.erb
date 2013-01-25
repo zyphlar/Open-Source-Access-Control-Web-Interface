@@ -10,10 +10,10 @@
 
 <b>Certified Users:</b>
 <ul>
-  <% @certification.users.each do |user| %>
-    <li><%= link_to user.name, user %></li>
+  <% @certification_users.each do |user| %>
+      <li><%= link_to user.name, user %></li>
   <% end %>
-  <% if @certification.users.blank? then %><li>n/a</li><% end %>
+  <% if @certification_users.blank? then %><li>n/a</li><% end %>
 </ul>
 
 <% if can? :update, @certification %><%= link_to 'Edit', edit_certification_path(@certification) %> |<% end %>

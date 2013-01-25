@@ -1,25 +1,18 @@
-<h1>Listing user_certifications</h1>
+<h1>Listing User Certifications</h1>
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Certification</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @user_certifications.each do |user_certification| %>
-  <tr>
-    <td><%= user_certification.user_id %></td>
-    <td><%= user_certification.certification_id %></td>
-    <td><%= link_to 'Show', user_certification %></td>
-    <td><%= link_to 'Edit', edit_user_certification_path(user_certification) %></td>
-    <td><%= link_to 'Destroy', user_certification, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<dl>
+  <% @grouped_user_certs.sort.each do |user, user_certifications| %>
+    <dt><%= user %></dt>
+    <% user_certifications.each do |user_certification| %>
+      <dd>
+        <%= link_to user_certification.certification.name, user_certification %> | 
+        <%= link_to 'Edit', edit_user_certification_path(user_certification) %> |
+        <%= link_to 'Destroy', user_certification, :confirm => 'Are you sure?', :method => :delete %>
+      </dd>
+    <% end %>
 <% end %>
-</table>
+</dl>
 
 <br />
 
-<%= link_to 'New User certification', new_user_certification_path %>
+<%= link_to 'New User Certification', new_user_certification_path %>

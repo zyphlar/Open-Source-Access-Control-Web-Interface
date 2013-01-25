@@ -3,16 +3,27 @@ class Ability
 
   def initialize(user)
     if !user.nil?
+      # By default, users can only see their own stuff
+      can :read, Card, :user_id => user.id
+      can :read, Certification
+      can :read, User, :id => user.id
+      can :read, UserCertification, :user_id => user.id
+
+      # Admins can manage all
       if user.admin?
         can :manage, :all
       end
+      # Instructors can manage certs and see users
       if user.instructor? 
         can :manage, Certification
+        can :read, User
+        can :manage, UserCertification
       end
-
-      can :read, User
-      can :read, Certification
-      can :read, Card, :user_id => user.id
+      # Users can see others' stuff if they've been oriented
+      unless user.orientation.blank?
+        can :read, User
+        can :read, UserCertification
+      end 
     end 
     # Define abilities for the passed in user here. For example:
     #

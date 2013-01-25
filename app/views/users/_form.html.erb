@@ -74,8 +74,12 @@
   </div>
 <% end %>
   <div class="field">
-    <%= f.label :active, "Active?" %><br />
-    <%= f.check_box :active %>
+    <%= f.label :member, "Member?" %><br />
+    <%= f.select :member, [["No",0],["Inactive",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
+  </div>
+  <div class="field">
+    <%= f.label :instructor, "Instructor?" %><br />
+    <%= f.check_box :instructor %>
   </div>
   <div class="field">
     <%= f.label :admin, "Admin?" %><br />

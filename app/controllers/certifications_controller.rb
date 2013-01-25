@@ -17,6 +17,13 @@ class CertificationsController < ApplicationController
   # GET /certifications/1
   # GET /certifications/1.json
   def show
+    @certification_users = []
+
+    #TODO: make a better SQL query for this
+    @certification.users.each do |user|
+      @certification_users.push user if can? :read, user
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @certification }

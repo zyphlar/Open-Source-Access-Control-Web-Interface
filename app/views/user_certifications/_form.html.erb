@@ -1,7 +1,7 @@
 <%= form_for(@user_certification) do |f| %>
   <% if @user_certification.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user_certification.errors.count, "error") %> prohibited this user_certification from being saved:</h2>
+      <h2><%= pluralize(@user_certification.errors.count, "error") %> prohibited this User Certification from being saved:</h2>
 
       <ul>
       <% @user_certification.errors.full_messages.each do |msg| %>
@@ -12,12 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.number_field :user_id %>
+    <%= f.label :user_id, "User" %><br />
+    <%= collection_select(:user_certification, :user_id, @users, :id, :name) %>
   </div>
   <div class="field">
-    <%= f.label :certification_id %><br />
-    <%= f.number_field :certification_id %>
+    <%= f.label :certification_id, "Certification" %><br />
+    <%= collection_select(:user_certification, :certification_id, @certifications, :id, :name) %>
   </div>
   <div class="actions">
     <%= f.submit %>

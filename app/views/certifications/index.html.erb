@@ -1,6 +1,6 @@
 <h1>Listing certifications</h1>
 
-<%= link_to 'New Certification', new_certification_path if can? :create, Certification %>
+<%= link_to 'Create Certification', new_certification_path if can? :create, Certification %> 
 
 <ul>
 <% @certifications.each do |certification| %>
