@@ -3,13 +3,11 @@
 <%= link_to 'New User Certification', new_user_certification_path %>
 
 <dl>
-  <% @grouped_user_certs.sort.each do |user, user_certifications| %>
-    <dt><%= user %></dt>
-    <% user_certifications.each do |user_certification| %>
+  <% @grouped_user_certs.sort.each do |cert, user_certifications| %>
+    <dt><%= cert.name %></dt>
+    <% user_certifications.sort{|a,b| a.user.name <=> b.user.name}.each do |user_certification| %>
       <dd>
-        <%= link_to user_certification.certification.name, user_certification %> | 
-        <%= link_to 'Edit', edit_user_certification_path(user_certification) %> |
-        <%= link_to 'Destroy', user_certification, :confirm => 'Are you sure?', :method => :delete %>
+        <%= link_to user_certification.user.name, user_certification %>
       </dd>
     <% end %>
 <% end %>

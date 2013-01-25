@@ -5,22 +5,36 @@
 </p>
 
 <p>
+  <b>Waiver?</b>
+  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
+</p>
+
+<p>
+  <b>Current Member?</b>
+  <%= raw(@user.member_status) %>
+</p>
+
+<p>
+  <b>Instructor?</b>
+  <%= @user.instructor? %>
+</p>
+
+<p>
+  <b>Admin?</b>
+  <%= @user.admin? %>
+</p>
+
+
+<% if current_user.admin? then %>
+<p>
   <b>Email:</b>
   <%= @user.email %>
 </p>
 
 <p>
-  <b>Waiver?</b>
-  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
-</p>
-
-<% if current_user.admin? then %>
-<p>
   <b>Orientation?</b>
   <%= @user.orientation.strftime("%B %d %Y") unless @user.orientation.blank? %>
 </p>
-<% end %>
-
   <p>
     <b>Emergency Name:</b>
     <%= @user.emergency_name %>
@@ -45,6 +59,7 @@
     <b>Phone:</b>
     <%= @user.phone %>
   </p>
+<% end %>
   <p>
     <b>Current Skills:</b>
     <%= simple_format @user.current_skills %>
@@ -53,30 +68,16 @@
     <b>Desired Skills:</b>
     <%= simple_format @user.desired_skills %>
   </p>
-
 <p>
-  <b>Current Member?</b>
-  <%= raw(@user.member_status) %>
-</p>
-
-<p>
-  <b>Instructor?</b>
-  <%= @user.instructor? %>
-</p>
-
-<p>
-  <b>Admin?</b>
-  <%= @user.admin? %>
-</p>
-
-<% if current_user.admin? then %>
-<p>
-  <b>Cards:</b>
-  <% @user.cards.each do |c| %>
-    <%= link_to c.card_number, c %><%= "," unless c == @user.cards.last %>
+  <b>Card:</b>
+  <% if current_user.admin? then %>
+    <% @user.cards.each do |c| %>
+      <%= link_to c.card_number, c %><%= "," unless c == @user.cards.last %>
+    <% end %>
+  <% else %>
+    <%= unless @user.cards.blank? then raw("&#x2713;") end %>
   <% end %>
 </p>
-<% end %>
 
 <b>Certifications:</b>
 <ul>

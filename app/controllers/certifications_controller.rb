@@ -20,7 +20,7 @@ class CertificationsController < ApplicationController
     @certification_users = []
 
     #TODO: make a better SQL query for this
-    @certification.users.each do |user|
+    @certification.users.sort_by(&:name).each do |user|
       @certification_users.push user if can? :read, user
     end
 

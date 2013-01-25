@@ -13,7 +13,7 @@ class UserCertificationsController < ApplicationController
   # GET /user_certifications
   # GET /user_certifications.json
   def index
-    @grouped_user_certs = @user_certifications.group_by { |u| u.user.name }
+    @grouped_user_certs = @user_certifications.group_by { |uc| uc.certification }
 
     respond_to do |format|
       format.html # index.html.erb

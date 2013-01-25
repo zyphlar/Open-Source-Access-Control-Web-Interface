@@ -5,7 +5,27 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = @users.sort_by(&:name)
+    case params[:sort]
+    when "name"
+      @users = @users.sort_by(&:name)
+    when "certifications"
+      @users = @users.sort_by{ |u| [-u.certifications.count,u.name] }
+    when "orientation"
+      @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
+    when "waiver"
+      @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
+    when "member"
+      @users = @users.sort_by{ |u| [-u.member.to_i,u.name] }
+    when "card"
+      @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
+    when "instructor"
+      @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
+    when "admin"
+      @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
+    else
+      @users = @users.sort_by(&:name)
+    end
+
 
     respond_to do |format|
       format.html # index.html.erb

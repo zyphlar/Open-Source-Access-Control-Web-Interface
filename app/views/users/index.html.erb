@@ -5,7 +5,7 @@
 <% end %>
 <table>
   <col />
-  <col />
+  <% if current_user.admin? then %><col /><% end %>
   <col />
   <% if current_user.admin? %><col /><% end %>
   <col class="col_highlight" />
@@ -14,17 +14,17 @@
   <col />
   <col class="col_highlight" />
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Certifications</th>
+    <th><a href="?sort=name">Name</a></th>
+    <% if current_user.admin? then %><th><a href="?sort=email">Email</a></th><% end %>
+    <th><a href="?sort=certifications">Certifications</a></th>
     <% if current_user.admin? then %>
-    <th>Orientation?</th>
+    <th><a href="?sort=orientation">Orientation?</a></th>
     <% end %>
-    <th>Waiver?</th>
-    <th>Member?</th>
-    <th>Card?</th>
-    <th>Instructor?</th>
-    <th>Admin?</th>
+    <th><a href="?sort=waiver">Waiver?</a></th>
+    <th><a href="?sort=member">Member?</a></th>
+    <th><a href="?sort=card">Card?</a></th>
+    <th><a href="?sort=instructor">Instructor?</a></th>
+    <th><a href="?sort=admin">Admin?</a></th>
     <th></th>
     <th></th>
   </tr>
@@ -33,7 +33,7 @@
   <% @users.each do |user| %>
   <tr>
     <td><%= link_to user.name, user %></td>
-    <td><%= user.email %></td>
+    <% if current_user.admin? then %><td><%= user.email %></td><% end %>
     <td><% user.certifications.each do |c| %>
       <%= link_to c.name, c %><%= "," unless c.id == user.certifications.last.id %>
     <% end %></td>
