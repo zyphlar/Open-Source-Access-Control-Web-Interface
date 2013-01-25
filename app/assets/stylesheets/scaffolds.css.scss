@@ -67,3 +67,11 @@ div {
     list-style: square;
   }
 }
+
+table { border-spacing: 0; }
+td, th { padding: 0.5em; }
+.col_highlight { background-color: #ccc; }
+dt { font-weight: bold; }
+.notice { color: green; }
+.alert { color: red; }
+

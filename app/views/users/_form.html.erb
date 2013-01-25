@@ -46,11 +46,11 @@
   </div>
   <div class="field">
     <%= f.label :member_level, "Desired Member Level" %><br />
-    <%= f.select :member_level, [["None",0],["Unable",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
+    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
   </div>
   <div class="field">
     <%= f.label :payment_method %><br />
-    <%= f.select :payment_method, [["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]  %>
+    <%= f.select :payment_method, [[nil],["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]  %>
   </div>
   <div class="field">
     <%= f.label :phone %><br />
@@ -80,7 +80,7 @@
 <% end %>
   <div class="field">
     <%= f.label :member, "Member?" %><br />
-    <%= f.select :member, [["No",0],["Inactive",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
+    <%= f.select :member, [[nil],["No",0],["Inactive",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
   </div>
   <div class="field">
     <%= f.label :instructor, "Instructor?" %><br />
