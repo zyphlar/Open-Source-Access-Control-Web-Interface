@@ -3,6 +3,11 @@
 <%= link_to 'New Card', new_card_path if can? :create, Card %>
 <%= link_to 'Upload all cards', upload_all_path if can? :upload_all, Card %>
 <table>
+  <col />
+  <col />
+  <col class="col_highlight" />
+  <col />
+  <col class="col_highlight" />
   <tr>
     <th>User</th>
     <th>Note</th>

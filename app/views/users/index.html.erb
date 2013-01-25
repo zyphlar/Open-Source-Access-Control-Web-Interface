@@ -4,6 +4,15 @@
   <%= link_to 'New User', new_user_path %>
 <% end %>
 <table>
+  <col />
+  <col />
+  <col />
+  <% if current_user.admin? %><col /><% end %>
+  <col class="col_highlight" />
+  <col />
+  <col class="col_highlight" />
+  <col />
+  <col class="col_highlight" />
   <tr>
     <th>Name</th>
     <th>Email</th>

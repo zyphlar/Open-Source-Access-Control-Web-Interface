@@ -8,6 +8,15 @@
   <%= @user_certification.certification.name %>
 </p>
 
+<p>
+  <b>Created:</b> by <%= link_to @created_by.name, @created_by unless @created_by.blank? %>
+  at <%= @user_certification.created_at %> 
+</p>
+
+<p>
+  <b>Updated:</b> by <%= link_to @updated_by.name, @updated_by unless @updated_by.blank? %>
+  at <%= @user_certification.updated_at %> 
+</p>
 
 <%= link_to 'Edit', edit_user_certification_path(@user_certification) %> |
 <%= link_to 'Back', user_certifications_path %>

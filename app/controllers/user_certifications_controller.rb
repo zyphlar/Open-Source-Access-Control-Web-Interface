@@ -4,6 +4,11 @@ class UserCertificationsController < ApplicationController
   load_and_authorize_resource :certification, :through => :user_certification
   before_filter :authenticate_user!
 
+  # Load users and certs based on current ability
+  before_filter :only => [:new, :edit, :create, :update] do
+    @users = User.accessible_by(current_ability).sort_by(&:name)
+    @certifications = Certification.accessible_by(current_ability).sort_by(&:name)
+  end
   
   # GET /user_certifications
   # GET /user_certifications.json
@@ -19,6 +24,9 @@ class UserCertificationsController < ApplicationController
   # GET /user_certifications/1
   # GET /user_certifications/1.json
   def show
+    @created_by = User.find(@user_certification.created_by) unless @user_certification.created_by.blank?
+    @updated_by = User.find(@user_certification.updated_by) unless @user_certification.updated_by.blank?
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @user_certification }
@@ -28,8 +36,6 @@ class UserCertificationsController < ApplicationController
   # GET /user_certifications/new
   # GET /user_certifications/new.json
   def new
-    @users = User.accessible_by(current_ability).sort_by(&:name)
-    @certifications = Certification.accessible_by(current_ability).sort_by(&:name)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,6 +50,9 @@ class UserCertificationsController < ApplicationController
   # POST /user_certifications
   # POST /user_certifications.json
   def create
+    #Log who created this
+    @user_certification.created_by = current_user.id
+
     respond_to do |format|
       if @user_certification.save
         format.html { redirect_to UserCertification, :notice => 'User certification was successfully created.' }
@@ -58,6 +67,9 @@ class UserCertificationsController < ApplicationController
   # PUT /user_certifications/1
   # PUT /user_certifications/1.json
   def update
+    #Log who updated this
+    @user_certification.updated_by = current_user.id
+
     respond_to do |format|
       if @user_certification.update_attributes(params[:user_certification])
         format.html { redirect_to UserCertification, :notice => 'User certification was successfully updated.' }
