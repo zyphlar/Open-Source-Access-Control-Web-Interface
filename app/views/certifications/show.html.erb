@@ -11,7 +11,7 @@
 <b>Certified Users:</b>
 <ul>
   <% @certification.users.each do |user| %>
-    <% unless user.name.blank? %><li><%= user.name %></li><% end %>
+    <li><%= link_to user.name, user %></li>
   <% end %>
   <% if @certification.users.blank? then %><li>n/a</li><% end %>
 </ul>

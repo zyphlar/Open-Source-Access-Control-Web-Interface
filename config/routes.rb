@@ -1,5 +1,7 @@
 Dooraccess::Application.routes.draw do
 
+  resources :user_certifications
+
   resources :certifications
 
   devise_for :users

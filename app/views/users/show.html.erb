@@ -22,7 +22,7 @@
 <b>Certifications:</b>
 <ul>
   <% @user.certifications.each do |certification| %>
-    <li>certification.name</li>
+    <li><%= link_to certification.name, certification %></li>
   <% end %>
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
