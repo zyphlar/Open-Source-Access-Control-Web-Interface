@@ -4,7 +4,18 @@ Dooraccess::Application.routes.draw do
 
   resources :certifications
 
-  devise_for :users
+  devise_for :users, :skip => :registrations
+  devise_scope :user do
+    resource :registration,
+      :only => [:new, :create, :edit, :update],
+      :path => 'users',
+      :path_names => { :new => 'sign_up' },
+      :controller => 'devise/registrations',
+      :as => :user_registration do
+        get :cancel
+      end
+  end
+
   resources :users
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 

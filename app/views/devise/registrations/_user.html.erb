@@ -1,0 +1,58 @@
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => html) do |f| %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_name, "Emergency contact" %><br />
+    <%= f.text_field :emergency_name %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_phone %><br />
+    <%= f.text_field :emergency_phone %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_email %><br />
+    <%= f.text_field :emergency_email %>
+  </div>
+  <div class="field">
+    <%= f.label :member_level, "Membership Level" %><br />
+    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate ($25)",25],["Basic ($50)",50],["Plus ($100)",100]]  %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_method %> <i>(after changing this, please update your payment method to match.)</i><br />
+    <%= f.select :payment_method, [[nil],["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]  %>
+  </div>
+  <div class="field">
+    <%= f.label :current_skills %><br />
+    <%= f.text_area :current_skills %>
+  </div>
+  <div class="field">
+    <%= f.label :desired_skills %><br />
+    <%= f.text_area :desired_skills %>
+  </div>
+
+  <div><%= f.label :password %><br />
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <% if params[:action]!='new' %>
+  <div><%= f.label :current_password %><br />
+  <%= f.password_field :current_password %></div>
+  <% end %>
+
+  <div><%= f.submit button_label %></div>
+
+<% end %>

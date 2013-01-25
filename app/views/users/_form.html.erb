@@ -91,6 +91,10 @@
     <%= f.check_box :admin %>
   </div>
   <div class="field">
+    <%= f.label :hidden, "Hidden?" %><br />
+    <%= f.check_box :hidden %>
+  </div>
+  <div class="field">
     <h3>Cards</h3>
     <ul>
     <% @user.cards.each do |c| %>
