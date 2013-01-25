@@ -7,7 +7,9 @@
   <tr>
     <th>Name</th>
     <th>Email</th>
-    <th>Cards</th>
+    <% if current_user.admin? then %>
+      <th>Cards</th>
+    <% end %>
     <th>Active?</th>
     <th>Waiver?</th>
     <th>Admin?</th>
@@ -20,11 +22,11 @@
   <tr>
     <td><%= user.name %></td>
     <td><%= user.email %></td>
-    <td>
+    <% if current_user.admin? then %><td>
       <% user.cards.each do |c| %>
         <%= link_to c.card_number, card_url(c) %><%= "," unless c == user.cards.last %>
       <% end %>
-    </td>
+    </td><% end %>
     <td><%= if user.active? then "Active" end %></td>
     <td><%= if user.waiver.blank? then "Not Signed" else "Signed" end %></td>
     <td><%= if user.admin? then "Admin" end %></td>

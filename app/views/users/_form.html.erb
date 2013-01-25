@@ -21,11 +21,11 @@
   </div>
   <div class="field">
     <%= f.label :waiver %><br />
-    <%= f.date_select :waiver %>
+    <%= f.date_select :waiver, :include_blank => 'true', :default => 'nil' %>
   </div>
   <div class="field">
     <%= f.label :orientation %><br />
-    <%= f.date_select :orientation %>
+    <%= f.date_select :orientation, :include_blank => 'true', :default => 'nil' %>
   </div>
   <div class="field">
     <%= f.label :emergency_name %><br />

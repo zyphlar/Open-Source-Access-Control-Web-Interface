@@ -6,7 +6,7 @@ class Ability
       if user.admin?
         can :manage, :all
       else
-        can :read, User, :id => user.id
+        can :read, User
         can :read, Card, :user_id => user.id
       end
     end 
