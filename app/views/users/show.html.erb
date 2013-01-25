@@ -19,5 +19,14 @@
   <%= @user.admin %>
 </p>
 
+<b>Certifications:</b>
+<ul>
+  <% @user.certifications.each do |certification| %>
+    <li>certification.name</li>
+  <% end %>
+  <% if @user.certifications.blank? %><li>n/a</li><% end %>
+</ul>
+
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

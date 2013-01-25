@@ -1,0 +1,20 @@
+<p>
+  <b>Name:</b>
+  <%= @certification.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= simple_format @certification.description %>
+</p>
+
+<b>Certified Users:</b>
+<ul>
+  <% @certification.users.each do |user| %>
+    <% unless user.name.blank? %><li><%= user.name %></li><% end %>
+  <% end %>
+  <% if @certification.users.blank? then %><li>n/a</li><% end %>
+</ul>
+
+<% if can? :update, @certification %><%= link_to 'Edit', edit_certification_path(@certification) %> |<% end %>
+<%= link_to 'Back', certifications_path %>

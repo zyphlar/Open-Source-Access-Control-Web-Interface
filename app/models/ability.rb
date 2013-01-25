@@ -5,10 +5,14 @@ class Ability
     if !user.nil?
       if user.admin?
         can :manage, :all
-      else
-        can :read, User
-        can :read, Card, :user_id => user.id
       end
+      if user.instructor? 
+        can :manage, Certification
+      end
+
+      can :read, User
+      can :read, Certification
+      can :read, Card, :user_id => user.id
     end 
     # Define abilities for the passed in user here. For example:
     #
