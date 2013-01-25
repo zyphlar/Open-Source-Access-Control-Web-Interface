@@ -1,5 +1,7 @@
 <h1>Listing User Certifications</h1>
 
+<%= link_to 'New User Certification', new_user_certification_path %>
+
 <dl>
   <% @grouped_user_certs.sort.each do |user, user_certifications| %>
     <dt><%= user %></dt>
@@ -13,6 +15,3 @@
 <% end %>
 </dl>
 
-<br />
-
-<%= link_to 'New User Certification', new_user_certification_path %>

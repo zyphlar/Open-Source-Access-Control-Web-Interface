@@ -1,3 +1,7 @@
+<p>
+  <b>User:</b>
+  <%= @card.user.name unless @card.user.blank? %>
+</p>
 
 <p>
   <b>Card Note:</b>
@@ -20,5 +24,5 @@
 </p>
 
 <%= link_to 'Upload to Door', upload_path(@card) if can? :upload, @card %>
-<%= link_to 'Edit', edit_card_path(@card) %> |
+<% if can? :update, @card then %><%= link_to 'Edit', edit_card_path(@card) %> |<% end %>
 <%= link_to 'Back', cards_path %>
