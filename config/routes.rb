@@ -6,6 +6,7 @@ Dooraccess::Application.routes.draw do
 
   devise_for :users
   resources :users
+  match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 
   match 'cards/upload_all' => 'cards#upload_all', :as => :upload_all
   resources :cards

@@ -1,4 +1,9 @@
-<%= form_for(@user) do |f| %>
+<% if @user.id.blank? then
+  this_url = users_create_path
+  else
+  this_url = user_path(@user)
+  end %>
+<%= form_for @user, :url => this_url  do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
