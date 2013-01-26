@@ -2,14 +2,14 @@
 
 <%= link_to 'New User Certification', new_user_certification_path %>
 
-<dl>
   <% @grouped_user_certs.sort.each do |cert, user_certifications| %>
+  <dl class="collapsible">
     <dt><%= cert.name %></dt>
     <% user_certifications.sort{|a,b| a.user.name <=> b.user.name}.each do |user_certification| %>
       <dd>
         <%= link_to user_certification.user.name, user_certification %>
       </dd>
     <% end %>
+  </dl>
 <% end %>
-</dl>
 

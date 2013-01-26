@@ -1,3 +1,10 @@
 // Place all the styles related to the UserCertifications controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.collapsible dt { cursor: pointer; }
+.collapsible dt:before { content: '\229e'; }
+.collapsible dd { display: none; }
+
+.expanded dt:before { content: '\229f'; }
+.expanded dd { display: block; }
