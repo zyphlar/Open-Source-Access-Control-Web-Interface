@@ -31,7 +31,7 @@
   
 <% if !@users.blank? %>
   <% @users.each do |user| %>
-  <tr>
+  <tr<%= " class='hidden'" if user.hidden? %>>
     <td><%= link_to user.name, user %></td>
     <% if current_user.admin? then %><td><%= user.email %></td><% end %>
     <td><% user.certifications.each do |c| %>

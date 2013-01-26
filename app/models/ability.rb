@@ -3,10 +3,11 @@ class Ability
 
   def initialize(user)
     if !user.nil?
+
       # By default, users can only see their own stuff
       can :read, Card, :user_id => user.id
       can :read, Certification
-      can :read, User, :id => user.id
+      can :read, User, :id => user.id #TODO: why can users update themselves?
       can :read, UserCertification, :user_id => user.id
 
       # Admins can manage all
@@ -24,6 +25,13 @@ class Ability
         can :read, User, :hidden => [nil,false]
         can :read, UserCertification
       end 
+
+      # Prevent all destruction for now
+      cannot :destroy, User
+      cannot :destroy, Card
+      cannot :destroy, Certification
+      cannot :destroy, UserCertification
+      cannot :destroy, DoorLog
     end 
     # Define abilities for the passed in user here. For example:
     #
