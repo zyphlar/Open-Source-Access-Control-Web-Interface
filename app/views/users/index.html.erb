@@ -42,9 +42,9 @@
     </td><% end %>
     <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
     <td><%= raw(user.member_status) %></td>
-    <td><%= unless user.cards.blank? then raw("&#x2713;") end %></td>
-    <td><%= if user.instructor? then raw("&#x2713;") end %></td>
-    <td><%= if user.admin? then raw("&#x2713;") end %></td>
+    <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
+    <td><%= if user.instructor? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
+    <td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
   </tr>
