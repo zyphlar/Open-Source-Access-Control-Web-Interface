@@ -1,9 +1,11 @@
 == Open Access Control Web Interface
-Web software for Arclight of 23b Hackerspace's Arduino access control system
-http://wiki.heatsynclabs.org/wiki/Intranet
+Web software for managing a database of members in a collaborative grassroots workshop, 
+and also controlling Arclight of 23b Hackerspace's Arduino access control system 
+via Ethernet ( see: https://github.com/zyphlar/Open_Access_Control_Ethernet )
+
 https://github.com/zyphlar/Open-Source-Access-Control-Web-Interface
 
-Copyright Will Bradley, 2012
+Copyright Will Bradley, 2012-2013
 Distributed under a Creative Commons Attribution 3.0 license http://creativecommons.org/licenses/by/3.0/
 
 To use:
