@@ -63,8 +63,7 @@
     <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
   </div>
   <div class="field">
-    <%= f.label :payment_method %><br />
-    <%= f.select :payment_method, [[nil],["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]  %>
+    <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
   </div>
   <div class="field">
     <%= f.label :phone %><br />
