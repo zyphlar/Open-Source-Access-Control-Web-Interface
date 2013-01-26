@@ -5,4 +5,9 @@
 .iconinfo, .hoverinfo { font-size: 1.5em; }
 .hoverinfo { cursor: progress; }
 
+.payment_links { background-color: #ddd; padding: 1em; border-radius: 1em;
+  display: inline-block; float: right; }
+
+.avatar { height: 2em; width: 2em; }
+
 textarea { height: 10em; }

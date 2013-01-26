@@ -3,4 +3,5 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 jQuery ->
   $('#user_payment_method').change ->
-      $('#pmt_'+$(this).value).css('display: inline')
+    $('.payment_instructions').hide()
+    $('#pmt_'+$(this).val()).show()

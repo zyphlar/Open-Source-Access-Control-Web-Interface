@@ -1,9 +1,10 @@
-<h1>Listing users</h1>
+<h1>HeatSync People</h1>
 
 <% if can? :create, User %>
   <%= link_to 'New User', new_user_path %>
 <% end %>
 <table>
+  <col />
   <col />
   <% if current_user.admin? then %><col /><% end %>
   <col />
@@ -14,6 +15,7 @@
   <col />
   <col class="col_highlight" />
   <tr>
+    <th></th>
     <th><a href="?sort=name">Name</a></th>
     <% if current_user.admin? then %><th><a href="?sort=email">Email</a></th><% end %>
     <th><a href="?sort=certifications">Certifications</a></th>
@@ -32,6 +34,7 @@
 <% if !@users.blank? %>
   <% @users.each do |user| %>
   <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png"), :class => :avatar %></td>
     <td><%= link_to user.name, user %></td>
     <% if current_user.admin? then %><td><%= user.email %></td><% end %>
     <td><% user.certifications.each do |c| %>
@@ -51,5 +54,9 @@
   <% end %>
 <% end %>
 </table>
+
+<% if current_user.orientation.blank? then %>
+<p class="alert">There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer.</p>
+<% end %>
 
 <br />

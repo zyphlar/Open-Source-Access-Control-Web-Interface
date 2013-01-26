@@ -1,3 +1,11 @@
+<% if params[:flash] == "welcome_msg" then %>
+<p class="notice"><strong>Thank for you choosing to become a HeatSync Labs member!</strong> As we foster this community of learning, science, and the arts every member is important. <br/><br/>
+You can get your payments started by following the instructions on this page. <strong>Please note electronic recurring payments are -highly- encouraged</strong>-- we do not have staff. If you must pay via cash/check, please consider prepaying for 3, 6 or 12 months up front.<br/>
+<strong>To claim member benefits</strong> such as storage, grab a volunteer during your next stop into HeatSync or schedule a time to meet up in advance. Someone should also be contacting you shortly via the email address you provided.<br/>
+Please also note that certain privileges like 24/7 card access require community approval.<br/>
+Thanks again, and happy hacking!</p>
+<% end %>
+
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => html) do |f| %>
   <div class="field">
     <%= f.label :name %><br />

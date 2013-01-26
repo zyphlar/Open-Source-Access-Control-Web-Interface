@@ -17,7 +17,7 @@ class Ability
       # Instructors can manage certs and see users
       if user.instructor? 
         can :manage, Certification
-        can [:create,:read], User
+        can [:create,:read], User, :hidden => [nil,false]
         can :manage, UserCertification
       end
       # Users can see others' stuff if they've been oriented

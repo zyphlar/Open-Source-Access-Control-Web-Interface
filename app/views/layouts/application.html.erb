@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dooraccess</title>
+  <title>hsl_members(<%= controller.controller_name %>.<%= controller.action_name %><%=  "["+params[:id]+"]" unless params[:id].blank? %>)</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
   <div id="header">
-    <%= link_to 'Users', users_path if can? :read, User %>
-    <%= link_to 'Cards', cards_path if can? :manage, Card %>
+    <%= link_to 'People', users_path if can? :read, User %>
+    <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
     <% if can? :manage, UserCertification %>
       <%= link_to 'Cert Classes', certifications_path if can? :read, Certification %>
       <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
     <% else %>
       <%= link_to 'Certifications', certifications_path if can? :read, Certification %>
     <% end %>
-    <%= link_to 'Logs', door_logs_path if can? :read, DoorLog %>
+    <%= link_to 'Door Logs', door_logs_path if can? :read, DoorLog %>
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
-    <%= link_to 'Sign out', destroy_user_session_path, :method => :delete if user_signed_in? %>
-    <%= link_to 'Sign in', new_user_session_path unless user_signed_in? %>
+    <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
+    <%= link_to 'Login', new_user_session_path unless user_signed_in? %>
+    <%= link_to 'Become a Member', new_user_registration_path unless user_signed_in? %>
   </div>
   <p class="notice"><%= raw(notice) %></p>
   <p class="alert"><%= raw(alert) %></p>
+  <div id="content">
 <%= yield %>
-
+  </div>
 </body>
 </html>

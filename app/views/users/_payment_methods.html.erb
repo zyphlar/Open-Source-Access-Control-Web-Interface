@@ -1,7 +1,13 @@
-<%   @payment_methods = [[nil],["PayPal"],["Dwolla"],["Bill Pay"],["Check"],["Cash"],["Other"]]
-  @payment_instructions = {nil => nil, :PayPal => "Set up a monthly recurring payment to hslfinances@gmail.com", :Dwolla => "Set up a monthly recurring payment to hslfinances@gmail.com", "Bill Pay" =>  "Have your bank send a monthly check to HeatSync Labs Treasurer, 140 W Main St, Mesa AZ 85201", :Check => "Mail to HeatSync Labs Treasurer, 140 W Main St, Mesa AZ 85201 OR put in the drop safe at the Lab with a deposit slip firmly attached each month.", :Cash => "Put in the drop safe at the Lab with a deposit slip firmly attached each month.", :Other => "Hmm... talk to a Treasurer!"} %>
+<%   @payment_methods = [[nil],["PayPal"],["Dwolla"],["Bill Pay","BillPay"],["Check"],["Cash"],["Other"]]
+  @payment_instructions = {nil => nil, 
+:PayPal => "Set up a monthly recurring payment to hslfinances@gmail.com", 
+:Dwolla => "Set up a monthly recurring payment to hslfinances@gmail.com", 
+:BillPay =>  "Have your bank send a monthly check to HeatSync Labs Treasurer, 140 W Main St, Mesa AZ 85201", 
+:Check => "Mail to HeatSync Labs Treasurer, 140 W Main St, Mesa AZ 85201 OR put in the drop safe at the Lab with a deposit slip firmly attached each month.", 
+:Cash => "Put in the drop safe at the Lab with a deposit slip firmly attached each month.", 
+:Other => "Hmm... talk to a Treasurer!"} %>
 
-<%= g.label :payment_method %> <i>(after changing this, please update your payment method to match.)</i><br />
+<%= g.label :payment_method %> <i>(after changing this, please make sure you update your payment service, it's not automatic.)</i><br />
 <%= g.select :payment_method, @payment_methods  %>
 <% @payment_instructions.each_pair do |key, value| %>
   <span class="payment_instructions" id="pmt_<%= key %>"><%= value %></span>

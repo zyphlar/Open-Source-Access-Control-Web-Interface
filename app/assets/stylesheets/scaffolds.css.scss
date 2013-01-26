@@ -4,6 +4,7 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
+  margin: 0;
 }
 
 p, ol, ul, td {
@@ -35,9 +36,22 @@ div {
   }
 }
 
+#header {
+  background-color: #eee; border: 1px solid #ddd;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  padding: 0.5em;
+}
+
+#header a {
+  margin-right: 1em;
+}
+
 #notice {
   color: green;
 }
+
+#content { margin: 1em; }
 
 .field_with_errors {
   padding: 2px;
