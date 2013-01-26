@@ -8,6 +8,7 @@
 </head>
 <body>
   <div id="header">
+    <a href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
     <% if can? :manage, UserCertification %>
@@ -22,9 +23,9 @@
     <%= link_to 'Login', new_user_session_path unless user_signed_in? %>
     <%= link_to 'Become a Member', new_user_registration_path unless user_signed_in? %>
   </div>
-  <p class="notice"><%= raw(notice) %></p>
-  <p class="alert"><%= raw(alert) %></p>
   <div id="content">
+    <p class="notice"><%= raw(notice) %></p>
+    <p class="alert"><%= raw(alert) %></p>
 <%= yield %>
   </div>
 </body>

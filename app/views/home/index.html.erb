@@ -1,7 +1,7 @@
 <h1>Welcome to the HeatSync Labs Members App.</h1>
 
 <% if !user_signed_in? then %>
-<p>You can sign up to become a member here, but you'll need to visit the lab to get full access.</p>
+<p>You can sign up to become a member here!</p>
 <% end %>
 
 <% if user_signed_in? && current_user.member.to_i < current_user.member_level.to_i then %>
@@ -15,6 +15,8 @@
   <dd><%= @num_certs %> (<%= @recent_certs %> in the last 7 days)</dd>
   <dt># of Accesses Granted:</dt>
   <dd><%= @num_door_opens %> (<%= @recent_door_opens %> in the last 7 days)</dd>
+  <dt># of Accesses Denied:</dt>
+  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last 7 days)</dd>
   <dt># of Accesses Denied:</dt>
   <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last 7 days)</dd>
 </dl>
