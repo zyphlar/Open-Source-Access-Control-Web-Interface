@@ -27,6 +27,15 @@ Dooraccess::Application.routes.draw do
   match 'door_logs/download' => 'door_logs#download', :as => :download
   match 'door_logs/auto_download' => 'door_logs#auto_download', :as => :auto_download
 
+  match 'pamela/scan' => 'pamela#scan'
+  match 'pamela' => 'pamela#index', :as => :macs
+  match 'pamela/:id' => 'pamela#show', :as => :mac
+  match 'pamela/:id/edit' => 'pamela#edit', :as => :edit_mac
+  put 'pamela/:id' => 'pamela#update' #PUT
+  match 'pamela/new' => 'pamela#new', :as => :new_mac
+  post 'pamela' => 'pamela#create' #POST
+
+
   root :to => "home#index"
 
   # The priority is based upon order of creation:

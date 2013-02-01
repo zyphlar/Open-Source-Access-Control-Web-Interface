@@ -1,0 +1,9 @@
+<h2>What machines are on our network?</h2>
+<% @macs.each do |mac| %>
+  <%= mac.user.name unless mac.user.blank? %>  
+  <%= mac.mac %> <!-- 
+  <%= mac.since %>, 
+  <%= mac.refreshed %>,
+  <%= mac.active %>--> |
+  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125185724) do
+ActiveRecord::Schema.define(:version => 20130201022153) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -34,6 +34,27 @@ ActiveRecord::Schema.define(:version => 20130125185724) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "mac_logs", :force => true do |t|
+    t.string   "mac"
+    t.string   "ip"
+    t.string   "action"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "macs", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "mac"
+    t.string   "ip"
+    t.datetime "since"
+    t.datetime "refreshed"
+    t.boolean  "active"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "macs", ["user_id"], :name => "index_macs_on_user_id"
 
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"

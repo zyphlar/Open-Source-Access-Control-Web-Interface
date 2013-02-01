@@ -1,0 +1,25 @@
+<%= form_for(@mac) do |f| %>
+  <% if @mac.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mac.errors.count, "error") %> prohibited this Mac from being saved:</h2>
+
+      <ul>
+      <% @mac.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id, "User" %><br />
+    <%= collection_select(:mac, :user_id, @users, :id, :name) %>
+  </div>
+  <div class="field">
+    <%= f.label :mac, "Mac" %><br />
+    <%= f.text_field :mac %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
