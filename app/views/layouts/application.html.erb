@@ -18,6 +18,7 @@
       <%= link_to 'Certifications', certifications_path if can? :read, Certification %>
     <% end %>
     <%= link_to 'Door Logs', door_logs_path if can? :read, DoorLog %>
+    <%= link_to 'Computers', macs_path if user_signed_in? && (can? :read, Mac) %>
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
     <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
     <%= link_to 'Login', new_user_session_path unless user_signed_in? %>

@@ -1,42 +1,46 @@
 <h2>What machines are on our network?</h2>
-<%= link_to "New Mac", new_mac_path %>
+<%= link_to "New MAC registration", new_mac_path if can? :create, Mac %>
 
-<ul>
-<% @active_macs.each do |mac| %>
+<ul class="mac_list">
+<%
+ @active_macs.each do |mac| 
+Rails.logger.info mac.inspect %>
 <li>
-  <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac if mac.user.blank? && mac.note.blank? %> 
-  <%= mac.note if mac.user.blank? %> - 
-  <%= ((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" %> |
-  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+    <span title="<%= mac.mac if user_signed_in? %><%= "  -  "+mac.ip.to_s if can? :read_details, mac %><%= "  -  "+((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" if can? :manage, mac %>">
+      <%= mac.user.name unless mac.user.blank? %>
+    <%= "("+mac.note+")" unless mac.note.blank? %></span>
+  <%= link_to ' Edit', edit_mac_path(mac) if can? :update, mac %> <br/>
 </li>
 <% end %>
 </ul>
 
-<ul style="display: none;">
+<% if can? :read_details, Mac %>
+<ul class="mac_list hidden">
 <% @hidden_macs.each do |mac| %>
 <li>
-  <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac if mac.user.blank? && mac.note.blank? %>
-  <%= mac.note if mac.user.blank? %> - 
-  <%= ((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" %> |
-  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+    <span title="<%= mac.mac %><%= "  -  "+mac.ip.to_s if can? :read_details, mac %><%= "  -  "+((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" if can? :manage, mac %>">
+      <%= mac.user.name unless mac.user.blank? %>
+    <%= "("+mac.note+")" unless mac.note.blank? %></span>
+  <%= link_to ' Edit', edit_mac_path(mac) if can? :update, mac %> <br/>
 </li>
 <% end %>
 </ul>
-
-<!--
-<% @all_macs.each do |mac| %>
-  <%= '<span class="hidden">' if mac.hidden? %>
-  <%= mac.mac.downcase %> 
-  (<%= mac.note %>) 
-  <%= mac.user.name unless mac.user.blank? %>
-  <%= mac.since %>, 
-  <%= mac.refreshed %>,
-  <%= mac.active %> |
-  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
-  <%= '</span>' if mac.hidden? %>
 <% end %>
--->
+
+<% if can? :manage, Mac %>
+<h3>All Macs</h3>
+<table>
+<% @all_macs.each do |mac| %>
+<tr <%= raw('class="hidden"') if mac.hidden? %>>
+  <td><%= mac.mac.downcase %> </td>
+  <td><%= mac.user.name unless mac.user.blank? %></td>
+  <td><%= "("+mac.note+")" unless mac.note.blank? %></td>
+  <td><%= if mac.active? then raw("<strong>Here</strong>") else "Gone" end %></td>
+  <td><%= ((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" unless mac.since.blank? %></td>
+  <td><%= link_to 'Edit', edit_mac_path(mac) %></td>
+</tr>
+<% end %>
+</table>
+<% end %>
 
 

@@ -2,11 +2,17 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    # Anonymous can read mac
+    can :read, Mac
+
     if !user.nil?
 
       # By default, users can only see their own stuff
       can :read, Card, :user_id => user.id
       can :read, Certification
+      can :read_details, Mac
+      can [:update], Mac, :user_id => nil
+      can [:create,:update], Mac, :user_id => user.id
       can :read, User, :id => user.id #TODO: why can users update themselves?
       can :read, UserCertification, :user_id => user.id
 
@@ -30,6 +36,8 @@ class Ability
       cannot :destroy, User
       cannot :destroy, Card
       cannot :destroy, Certification
+      cannot :destroy, Mac
+      cannot :destroy, MacLog
       cannot :destroy, UserCertification
       cannot :destroy, DoorLog
     end 

@@ -1,13 +1,23 @@
 class MacsController < ApplicationController
+load_and_authorize_resource :mac, :except => [:index, :scan, :import]
+load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
 #require "active_record"
 require "optparse"
 #require "rubygems"
 
 def index
-  @active_macs = Mac.where(:active => true, :hidden => false)
-  @active_macs += Mac.where(:active => true, :hidden => nil)
-  @hidden_macs = Mac.where(:active => true, :hidden => true)
+  #@active_macs = Mac.where(:active => true, :hidden => false)
+  #@active_macs += Mac.where(:active => true, :hidden => nil)
+  
+  # De-dupe users for the public
+  if can? :update, Mac then
+    @active_macs = Mac.where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).includes(:user).order("users.name ASC")
+  else
+    @active_macs = Mac.where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).includes(:user).order("users.name ASC").group("users.name")
+  end
+
+  @hidden_macs = Mac.where("macs.active = ? AND macs.hidden = ?", true, true).order("note ASC")
 
   @all_macs = Mac.find(:all, :order => "LOWER(mac)")
 end
@@ -27,7 +37,11 @@ end
   # GET /macs/new.json
   def new
     @mac = Mac.new
-    @users = User.all.sort_by(&:name)
+    if can? :manage, Mac then
+      @users = User.accessible_by(current_ability).sort_by(&:name)
+    else 
+      @users = [current_user]
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,15 +52,24 @@ end
   # GET /macs/1/edit
   def edit
     @mac = Mac.find(params[:id])
-    @users = User.all.sort_by(&:name)
+    if can? :manage, Mac then
+      @users = User.accessible_by(current_ability).sort_by(&:name)
+    else 
+      @users = [current_user]
+    end
   end
 
   # POST /macs
   # POST /user
   def create
     @mac = Mac.new(params[:mac])
-    @mac.user_id = params[:user_id]
-    @users = User.all.sort_by(&:name)
+    authorize! :update, @mac
+
+    if can? :manage, Mac then
+      @users = User.accessible_by(current_ability).sort_by(&:name)
+    else 
+      @users = [current_user]
+    end
 
     respond_to do |format|
       if @mac.save
@@ -64,10 +87,17 @@ end
   def update
     #Log who updated this
     @mac = Mac.find(params[:id])
-    @users = User.all.sort_by(&:name)
+    @mac.user_id = params[:mac][:user_id]
+    authorize! :update, @mac
+
+    if can? :manage, Mac then
+      @users = User.accessible_by(current_ability).sort_by(&:name)
+    else 
+      @users = [current_user]
+    end
 
     respond_to do |format|
-      if @mac.update_attributes(params[:mac])
+      if @mac.save
         format.html { redirect_to macs_path, :notice => 'Mac was successfully updated.' }
         format.json { head :no_content }
       else
