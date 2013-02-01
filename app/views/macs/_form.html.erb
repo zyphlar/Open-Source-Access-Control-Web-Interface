@@ -13,11 +13,19 @@
 
   <div class="field">
     <%= f.label :user_id, "User" %><br />
-    <%= collection_select(:mac, :user_id, @users, :id, :name) %>
+    <%= collection_select(:mac, :user_id, @users, :id, :name, :include_blank => true) %>
   </div>
   <div class="field">
-    <%= f.label :mac, "Mac" %><br />
+    <%= f.label :mac %><br />
     <%= f.text_field :mac %>
+  </div>
+  <div class="field">
+    <%= f.label :note %><br />
+    <%= f.text_field :note %>
+  </div>
+  <div class="field">
+    <%= f.label :hidden %><br />
+    <%= f.check_box :hidden %>
   </div>
   <div class="actions">
     <%= f.submit %>

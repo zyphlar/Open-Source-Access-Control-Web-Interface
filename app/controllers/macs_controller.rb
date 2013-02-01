@@ -5,7 +5,10 @@ require "optparse"
 #require "rubygems"
 
 def index
-  @macs = Mac.all
+  @active_macs = Mac.where(:active => true, :hidden => false)
+  @active_macs += Mac.where(:active => true, :hidden => nil)
+  @hidden_macs = Mac.where(:active => true, :hidden => true)
+  @inactive_macs = Mac.where(:active => false)
 end
 
   # GET /macs/1

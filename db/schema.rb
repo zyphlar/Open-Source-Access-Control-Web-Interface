@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130201022153) do
+ActiveRecord::Schema.define(:version => 20130201042646) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(:version => 20130201022153) do
     t.boolean  "active"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "hidden"
+    t.string   "note"
   end
 
   add_index "macs", ["user_id"], :name => "index_macs_on_user_id"

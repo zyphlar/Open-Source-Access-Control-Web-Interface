@@ -8,5 +8,20 @@
   <%= @mac.mac %>
 </p>
 
+<p>
+  <b>Note:</b>
+  <%= @mac.note %>
+</p>
+
+<p>
+  <b>Hidden:</b>
+  <%= @mac.hidden %>
+</p>
+
+<p>
+  <b>IP:</b>
+  <%= @mac.ip %>
+</p>
+
 <%= link_to 'Edit', edit_mac_path(@mac) %> |
 <%= link_to 'Back', macs_path %>
