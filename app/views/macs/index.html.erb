@@ -1,7 +1,7 @@
 <h2>What machines are on our network?</h2>
 <% @macs.each do |mac| %>
   <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac %> <!-- 
+  <%= mac.mac if mac.user.blank? %> <!-- 
   <%= mac.since %>, 
   <%= mac.refreshed %>,
   <%= mac.active %>--> |
