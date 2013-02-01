@@ -1,0 +1,10 @@
+<table>
+<% @mac_logs.each do |mac_log| %>
+  <tr>
+  <td><%= mac_log.mac %></td>
+  <td><%= mac_log.ip %></td>
+  <td><%= mac_log.action %></td>
+  <td><%= mac_log.created_at %></td>
+  </tr>
+<% end %>
+</table>

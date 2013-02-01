@@ -1,29 +1,42 @@
 <h2>What machines are on our network?</h2>
+<%= link_to "New Mac", new_mac_path %>
+
+<ul>
 <% @active_macs.each do |mac| %>
+<li>
   <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac if mac.user.blank? %> <!-- 
-  <%= mac.since %>, 
-  <%= mac.refreshed %>,
-  <%= mac.active %>--> |
+  <%= mac.mac if mac.user.blank? && mac.note.blank? %> 
+  <%= mac.note if mac.user.blank? %> - 
+  <%= ((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" %> |
   <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+</li>
 <% end %>
-<hr>
+</ul>
+
+<ul style="display: none;">
 <% @hidden_macs.each do |mac| %>
+<li>
   <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac if mac.user.blank? %> 
-  (<%= mac.note %>) <!--
+  <%= mac.mac if mac.user.blank? && mac.note.blank? %>
+  <%= mac.note if mac.user.blank? %> - 
+  <%= ((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" %> |
+  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+</li>
+<% end %>
+</ul>
+
+<!--
+<% @all_macs.each do |mac| %>
+  <%= '<span class="hidden">' if mac.hidden? %>
+  <%= mac.mac.downcase %> 
+  (<%= mac.note %>) 
+  <%= mac.user.name unless mac.user.blank? %>
   <%= mac.since %>, 
   <%= mac.refreshed %>,
-  <%= mac.active %>--> |
+  <%= mac.active %> |
   <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
+  <%= '</span>' if mac.hidden? %>
 <% end %>
-<hr>
-<% @inactive_macs.each do |mac| %>
-  <%= mac.user.name unless mac.user.blank? %>  
-  <%= mac.mac if mac.user.blank? %> 
-  (<%= mac.note %>) <!--
-  <%= mac.since %>, 
-  <%= mac.refreshed %>,
-  <%= mac.active %>--> |
-  <%= link_to 'Edit', edit_mac_path(mac) %> <br/>
-<% end %>
+-->
+
+

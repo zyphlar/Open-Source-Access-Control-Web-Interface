@@ -8,7 +8,8 @@ def index
   @active_macs = Mac.where(:active => true, :hidden => false)
   @active_macs += Mac.where(:active => true, :hidden => nil)
   @hidden_macs = Mac.where(:active => true, :hidden => true)
-  @inactive_macs = Mac.where(:active => false)
+
+  @all_macs = Mac.find(:all, :order => "LOWER(mac)")
 end
 
   # GET /macs/1
@@ -45,8 +46,7 @@ end
   def create
     @mac = Mac.new(params[:mac])
     @mac.user_id = params[:user_id]
-
-    Rails.logger.info @macs.inspect
+    @users = User.all.sort_by(&:name)
 
     respond_to do |format|
       if @mac.save
@@ -64,11 +64,11 @@ end
   def update
     #Log who updated this
     @mac = Mac.find(params[:id])
+    @users = User.all.sort_by(&:name)
 
     respond_to do |format|
       if @mac.update_attributes(params[:mac])
-        Rails.logger.info @mac.inspect
-        format.html { redirect_to macs_path, :notice => 'User certification was successfully updated.' }
+        format.html { redirect_to macs_path, :notice => 'Mac was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
@@ -153,8 +153,7 @@ Rails.logger.info "starting scan..."
 
 	# Scan the existing macs and update each record as necessary
 	Mac.find(:all).each { |entry|
-		Rails.logger.info "Existing MAC: "+entry.inspect
-		mac = entry.mac
+		mac = entry.mac.downcase
 		ip = entry.ip
 		if macs.has_key?(mac)
 			if ! entry.active || ! entry.since
@@ -185,12 +184,27 @@ Rails.logger.info "starting scan..."
 	macs.each { |mac, ip|
 		Rails.logger.info "Activating new entry #{mac} at #{ip}" if options[:verbose]
 		Mac.new(:mac => mac, :ip => ip, :active => 1, :since => Time.now, :refreshed => Time.now).save
-		MacLog.new(:mac => mac, :ip => ip, :action => "activate").save
+		Rails.logger.info MacLog.new(:mac => mac, :ip => ip, :action => "activate").save
 	}
 
 @log = MacLog.all
 
 end #def scan
 
+
+def import
+
+require 'csv'    
+
+csv_text = File.read('mac_log.csv')
+csv = CSV.parse(csv_text)
+
+@output = []
+
+csv.each do |row|
+  @output += [row[1], Mac.create({:mac => row[0], :note => row[1], :hidden => row[2]}) ]
+end
+
+end
 
 end

@@ -28,7 +28,10 @@ Dooraccess::Application.routes.draw do
   match 'door_logs/auto_download' => 'door_logs#auto_download', :as => :auto_download
 
   match 'macs/scan' => 'macs#scan'
+  match 'macs/import' => 'macs#import'
   resources :macs
+
+  resources :mac_logs
 
   root :to => "home#index"
 
