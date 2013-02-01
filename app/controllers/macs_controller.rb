@@ -1,4 +1,4 @@
-class PamelaController < ApplicationController
+class MacsController < ApplicationController
 
 #require "active_record"
 require "optparse"
@@ -41,10 +41,13 @@ end
   # POST /user
   def create
     @mac = Mac.new(params[:mac])
+    @mac.user_id = params[:user_id]
+
+    Rails.logger.info @macs.inspect
 
     respond_to do |format|
       if @mac.save
-        format.html { redirect_to "/pamela", :notice => 'Mac was successfully created.' }
+        format.html { redirect_to macs_path, :notice => 'Mac was successfully created.' }
         format.json { render :json => @mac, :status => :created, :location => @mac }
       else
         format.html { render :action => "new" }
@@ -61,7 +64,8 @@ end
 
     respond_to do |format|
       if @mac.update_attributes(params[:mac])
-        format.html { redirect_to "/pamela", :notice => 'User certification was successfully updated.' }
+        Rails.logger.info @mac.inspect
+        format.html { redirect_to macs_path, :notice => 'User certification was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

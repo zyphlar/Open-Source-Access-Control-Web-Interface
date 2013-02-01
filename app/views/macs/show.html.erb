@@ -1,0 +1,12 @@
+<p>
+  <b>User:</b>
+  <%= @mac.user.name unless @mac.user.blank? %>
+</p>
+
+<p>
+  <b>Mac:</b>
+  <%= @mac.mac %>
+</p>
+
+<%= link_to 'Edit', edit_mac_path(@mac) %> |
+<%= link_to 'Back', macs_path %>
