@@ -17,7 +17,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name, "Full Name" %><br />
     <%= f.text_field :name %>
   </div>
   <div class="field">
@@ -60,7 +60,7 @@
   </div>
   <div class="field">
     <%= f.label :member_level, "Desired Member Level" %><br />
-    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
+    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate ($25)",25],["Basic ($50)",50],["Plus ($100)",100]] %>
   </div>
   <div class="field">
     <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
@@ -70,11 +70,11 @@
     <%= f.text_field :phone %>
   </div>
   <div class="field">
-    <%= f.label :current_skills %><br />
+    <%= f.label :current_skills, "What skills, knowledge and experience do you bring to the community?" %><br />
     <%= f.text_area :current_skills %>
   </div>
   <div class="field">
-    <%= f.label :desired_skills %><br />
+    <%= f.label :desired_skills, "What skills, knowledge and experiences are you looking for in HeatSync?" %><br />
     <%= f.text_area :desired_skills %>
   </div>
   <div class="field">

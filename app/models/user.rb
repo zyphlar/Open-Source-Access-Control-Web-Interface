@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
   has_many :user_certifications
   has_many :certifications, :through => :user_certifications
 
+  after_create :send_new_user_email
+
+
   def member_status
     output = ""
 
@@ -45,4 +48,12 @@ class User < ActiveRecord::Base
     
     return output
   end
+
+
+  private
+
+  def send_new_user_email
+    Rails.logger.info UserMailer.new_user_email(self).deliver
+  end
+
 end

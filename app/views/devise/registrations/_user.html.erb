@@ -8,7 +8,7 @@ Thanks again, and happy hacking!</p>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => html) do |f| %>
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name, "Full Name" %><br />
     <%= f.text_field :name %>
   </div>
 
@@ -22,7 +22,7 @@ Thanks again, and happy hacking!</p>
     <%= f.text_field :phone %>
   </div>
   <div class="field">
-    <%= f.label :emergency_name, "Emergency contact" %><br />
+    <%= f.label :emergency_name, "Emergency Contact Name" %><br />
     <%= f.text_field :emergency_name %>
   </div>
   <div class="field">
@@ -41,22 +41,22 @@ Thanks again, and happy hacking!</p>
     <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
   </div>
   <div class="field">
-    <%= f.label :current_skills %><br />
+    <%= f.label :current_skills, "What skills, knowledge and experience do you bring to the community?" %><br />
     <%= f.text_area :current_skills %>
   </div>
   <div class="field">
-    <%= f.label :desired_skills %><br />
+    <%= f.label :desired_skills, "What skills, knowledge and experiences are you looking for in HeatSync?" %><br />
     <%= f.text_area :desired_skills %>
   </div>
 
-  <div><%= f.label :password %><br />
+  <div><%= f.label :password %><% if params[:action]!='new' %> <em>(Only if you want to change your password)</em><% end %><br />
   <%= f.password_field :password %></div>
 
   <div><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></div>
 
   <% if params[:action]!='new' %>
-  <div><%= f.label :current_password %><br />
+  <div><%= f.label :current_password, "Type Your Current Password" %> <em>(For your account's security)</em><br />
   <%= f.password_field :current_password %></div>
   <% end %>
 

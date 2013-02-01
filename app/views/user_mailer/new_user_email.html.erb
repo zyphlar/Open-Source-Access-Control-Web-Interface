@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h2><%= @user.name %> just signed up.</h2>
+    <p>
+      Please contact them at <%= @user.email %><%= " or "+@user.phone.to_s unless @user.phone.blank? %> to set up a
+      new user orientation, waiver, welcome, payment help, etc.<br/>
+    </p>
+    <p>
+      To login to the site, just follow this link: <%= @url %>
+    </p>
+  </body>
+</html>

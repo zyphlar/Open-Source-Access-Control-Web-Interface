@@ -1,0 +1,6 @@
+<%= @user.name %> just signed up.
+---
+Please contact them at <%= @user.email %><%= " or "+@user.phone.to_s unless @user.phone.blank? %> to set up a
+new user orientation, waiver, welcome, payment help, etc.
+
+To login to the site, just follow this link: <%= @url %>

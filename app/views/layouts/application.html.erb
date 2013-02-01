@@ -22,7 +22,7 @@
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
     <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
     <%= link_to 'Login', new_user_session_path unless user_signed_in? %>
-    <%= link_to 'Become a Member', new_user_registration_path unless user_signed_in? %>
+    <%= link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
   </div>
   <div id="content">
     <p class="notice"><%= raw(notice) %></p>
