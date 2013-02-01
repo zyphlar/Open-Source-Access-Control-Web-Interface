@@ -5,9 +5,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     @url  = "http://members.heatsynclabs.org"
 
-    @admins = User.where(:name => "Will Bradley")
-    @admins.each do |admin|
-      mail(:to => admin.email, :subject => "New HeatSync Member")
-    end
+    #@admins = User.where(:name => "Will Bradley")
+    #@admins.each do |admin|
+      mail(:to => 'info@heatsynclabs.org', :subject => "New HSL Member: "+user.name)
+    #end
   end
 end
