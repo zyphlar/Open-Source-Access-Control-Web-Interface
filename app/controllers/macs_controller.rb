@@ -13,13 +13,23 @@ def index
   # De-dupe users for the public
   if can? :update, Mac then
     @active_macs = Mac.where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).includes(:user).order("users.name ASC")
-  else
+  elsif user_signed_in? then
     @active_macs = Mac.where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).includes(:user).order("users.name ASC").group("users.name")
+  else
+    @active_macs = Mac.select("mac, note, user_id").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user).order("users.name ASC").group("users.name")
   end
 
   @hidden_macs = Mac.where("macs.active = ? AND macs.hidden = ?", true, true).order("note ASC")
 
   @all_macs = Mac.find(:all, :order => "LOWER(mac)")
+
+  respond_to do |format|
+    format.html
+    format.json {
+      @filtered_macs = Mac.select("macs.mac, users.name").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user)
+      render :json => @filtered_macs 
+    }
+  end
 end
 
   # GET /macs/1
