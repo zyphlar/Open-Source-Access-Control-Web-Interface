@@ -3,4 +3,14 @@
 Please contact them at <%= @user.email %><%= " or "+@user.phone.to_s unless @user.phone.blank? %> to set up a
 new user orientation, waiver, welcome, payment help, etc.
 
-To login to the site, just follow this link: <%= @url %>
+User Details: <%= link_to @url+user_path(@user), @url+user_path(@user) %>
+
+What skills, knowledge and experience do you bring to the community?
+<%= simple_format @user.current_skills %>
+
+What skills, knowledge and experiences are you looking for in HeatSync?
+<%= simple_format @user.desired_skills %>
+
+How'd you find out about HeatSync?
+<%= simple_format @user.marketing_source %>
+

@@ -7,10 +7,23 @@
     <h2><%= @user.name %> just signed up.</h2>
     <p>
       Please contact them at <%= @user.email %><%= " or "+@user.phone.to_s unless @user.phone.blank? %> to set up a
-      new user orientation, waiver, welcome, payment help, etc.<br/>
+      new user orientation, waiver, welcome, payment help, etc.
     </p>
     <p>
-      To login to the site, just follow this link: <%= @url %>
+      User Details: <%= link_to @url+user_path(@user), @url+user_path(@user) %>
     </p>
+  <p>
+    <b>What skills, knowledge and experience do you bring to the community?</b>
+    <%= simple_format @user.current_skills %>
+  </p>
+  <p>
+    <b>What skills, knowledge and experiences are you looking for in HeatSync?</b>
+    <%= simple_format @user.desired_skills %>
+  </p>
+  <p>
+    <b>How'd you find out about HeatSync?</b>
+    <%= simple_format @user.marketing_source %>
+  </p>
+
   </body>
 </html>
