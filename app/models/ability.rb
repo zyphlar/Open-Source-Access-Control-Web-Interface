@@ -16,10 +16,6 @@ class Ability
       can :read, User, :id => user.id #TODO: why can users update themselves?
       can :read, UserCertification, :user_id => user.id
 
-      # Admins can manage all
-      if user.admin?
-        can :manage, :all
-      end
       # Instructors can manage certs and see users
       if user.instructor? 
         can :manage, Certification
@@ -31,6 +27,11 @@ class Ability
         can :read, User, :hidden => [nil,false]
         can :read, UserCertification
       end 
+
+      # Admins can manage all
+      if user.admin?
+        can :manage, :all
+      end
 
       # Prevent all destruction for now
       cannot :destroy, User
