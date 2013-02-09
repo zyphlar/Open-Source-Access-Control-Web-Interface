@@ -26,7 +26,7 @@ def index
   respond_to do |format|
     format.html
     format.json {
-      @filtered_macs = Mac.select("macs.mac, users.name").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user)
+      @filtered_macs = Mac.select("macs.mac, users.name, macs.note").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user)
       render :json => @filtered_macs 
     }
   end
