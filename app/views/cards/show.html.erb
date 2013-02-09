@@ -1,6 +1,6 @@
 <p>
   <b>User:</b>
-  <%= @card.user.name unless @card.user.blank? %>
+  <%= link_to @card.user.name, @card.user unless @card.user.blank? %>
 </p>
 
 <p>
@@ -20,8 +20,19 @@
 
 <p>
   <b>Card Permissions:</b>
-  <%= @card.card_permissions %>
+  <%= if @card.card_permissions == 1 then "Enabled" else "Disabled" end %>
 </p>
+
+<% if can? :read, DoorLog %>
+<p>
+  <b>Access attempts:</b>
+<ul>
+<% @door_logs.each do |log| %>
+  <li><%= log.created_at %></li>
+<% end %>
+</ul>
+</p>
+<% end %>
 
 <%= link_to 'Upload to Door', upload_path(@card) if can? :upload, @card %>
 <% if can? :update, @card then %><%= link_to 'Edit', edit_card_path(@card) %> |<% end %>

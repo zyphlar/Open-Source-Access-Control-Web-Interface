@@ -9,6 +9,19 @@ class CardsController < ApplicationController
     #authorize! :read, @cards
     @cards = @cards.sort_by{|e| e[:id]}
 
+    if can? :read, DoorLog then
+      most_active_count = 0
+      @most_active_card = nil
+      @cards.each do |card|
+        card_num_R = card.card_number.to_i(16)%32767
+        card[:accesses_this_week] = DoorLog.where('key = "R" AND data =? AND created_at > ?', card_num_R, DateTime.now - 7.days).order("created_at DESC").count
+        if(card[:accesses_this_week] > most_active_count) then 
+          most_active_count = card[:accesses_this_week]
+          @most_active_card = card
+        end
+      end
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @cards }
@@ -18,8 +31,10 @@ class CardsController < ApplicationController
   # GET /cards/1
   # GET /cards/1.json
   def show
-    #@card = Card.find(params[:id])
-
+    if can? :read, DoorLog then
+      card_num_R = @card.card_number.to_i(16)%32767
+      @door_logs = DoorLog.where('key = "R" AND data =?', card_num_R).order("created_at DESC")
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @card }
