@@ -97,7 +97,8 @@ end
   def update
     #Log who updated this
     @mac = Mac.find(params[:id])
-    @mac.user_id = params[:mac][:user_id]
+    @mac.assign_attributes(params[:mac])
+    #@mac.user_id = params[:mac][:user_id]
     authorize! :update, @mac
 
     if can? :manage, Mac then
