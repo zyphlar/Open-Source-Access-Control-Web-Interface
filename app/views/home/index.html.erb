@@ -7,14 +7,24 @@
 <% if user_signed_in? && current_user.member.to_i < current_user.member_level.to_i then %>
 <p class="alert">Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, or this app just got started, but if in doubt please see your profile for payment instructions, or consider updating your membership level to something accurate.<br/>Thanks for supporting HeatSync!</p>
 <% end %>
+<% if ((can? :read, User) && (@recent_user_names.count > 1)) then %>
+<h2>New People:</h2>
+<ul>
+<% @recent_user_names.each do |user| %>
+  <li><%= link_to user.name, user %></li>
+<% end %>
+</ul>
+<% end %>
 <h2>Cool Stats:</h2>
 <dl>
   <dt># of People in this DB:</dt>
-  <dd><%= @num_users %> (<%= @recent_users %> in the last 7 days)</dd>
+  <dd><%= @num_users %> (<%= @recent_users %> new in the last 7 days)</dd>
   <dt># of People Certified:</dt>
-  <dd><%= @num_certs %> (<%= @recent_certs %> in the last 7 days)</dd>
+  <dd><%= @num_certs %> (<%= @recent_certs %> new in the last 7 days)</dd>
   <dt># of Door Accesses Granted:</dt>
-  <dd><%= @num_door_opens %> (<%= @recent_door_opens %> in the last 7 days)</dd>
+  <dd><%= @num_door_opens %> (<%= @today_door_opens %> today, <%= @recent_door_opens %> in the last 7 days)</dd>
   <dt># of Door Accesses Denied:</dt>
   <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last 7 days)</dd>
+  <dt># of Computers in this DB:</dt>
+  <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
 </dl>
