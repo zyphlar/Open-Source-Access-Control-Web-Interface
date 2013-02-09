@@ -12,7 +12,7 @@ class Card < ActiveRecord::Base
 
     # connect to door access system
     source = open("#{door_access_url}?e=#{door_access_password}").read
-    results = source.scan(/authok/)
+    results = source.scan(/ok/)
     if(results.size > 0) then
       #only continue if we've got an OK login
       cardid = self.id.to_s.rjust(3, '0')  #TODO: provide ability for 
@@ -47,7 +47,7 @@ class Card < ActiveRecord::Base
     door_access_password = APP_CONFIG['door_access_password']
 
     source = open("#{door_access_url}?e=#{door_access_password}").read
-    results = source.scan(/authok/)
+    results = source.scan(/ok/)
     if(results.size > 0) then
       @cards.each do |u|
         #only continue if we've got an OK login

@@ -9,7 +9,7 @@ class DoorLog < ActiveRecord::Base
 
     # connect to door access system
     source = open("#{door_access_url}?e=#{door_access_password}").read
-    results = source.scan(/authok/)
+    results = source.scan(/ok/)
     if(results.size > 0) then
       @end_results = Array.new
 
