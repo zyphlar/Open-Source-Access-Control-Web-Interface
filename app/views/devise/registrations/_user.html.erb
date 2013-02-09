@@ -48,6 +48,10 @@ Thanks again, and happy hacking!</p>
     <%= f.label :desired_skills, "What skills, knowledge and experiences are you looking for in HeatSync?" %><br />
     <%= f.text_area :desired_skills %>
   </div>
+  <div class="field">
+    <%= f.label :marketing_source, "How'd you find out about HeatSync?" %><br />
+    <%= f.text_area :marketing_source %>
+  </div>
 
   <div><%= f.label :password %><% if params[:action]!='new' %> <em>(Only if you want to change your password)</em><% end %><br />
   <%= f.password_field :password %></div>

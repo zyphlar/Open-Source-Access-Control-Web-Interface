@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130201042646) do
+ActiveRecord::Schema.define(:version => 20130209103457) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20130201042646) do
     t.string   "desired_skills"
     t.boolean  "instructor"
     t.boolean  "hidden"
+    t.string   "marketing_source"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

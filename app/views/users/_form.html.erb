@@ -78,6 +78,10 @@
     <%= f.text_area :desired_skills %>
   </div>
   <div class="field">
+    <%= f.label :marketing_source, "How'd you find out about HeatSync?" %><br />
+    <%= f.text_area :marketing_source %>
+  </div>
+  <div class="field">
     <%= f.label :member, "Member?" %><br />
     <%= f.select :member, [[nil],["No",0],["Inactive",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
   </div>

@@ -69,6 +69,12 @@
     <b>Desired Skills:</b>
     <%= simple_format @user.desired_skills %>
   </p>
+<% if current_user.admin? then %>
+  <p>
+    <b>Found HeatSync via:</b>
+    <%= simple_format @user.marketing_source %>
+  </p>
+<% end %>
 <p>
   <b>Card:</b>
   <% if current_user.admin? then %>
