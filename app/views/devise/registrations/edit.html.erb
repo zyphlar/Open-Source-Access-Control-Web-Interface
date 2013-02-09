@@ -61,7 +61,10 @@
 <% end %>
 </div>
 
-<%= link_to image_tag(resource.gravatar_url), "https://www.gravatar.com", :title => "Adjust your photo at Gravatar.com" %>
+<div class="caption">
+<%= link_to image_tag(resource.gravatar_url), "https://www.gravatar.com", :title => "Adjust your photo at Gravatar.com" %><br/>
+Adjust your photo <br/>at Gravatar.com
+</div>
 
 <%= render :partial => "user", :locals => { :resource => resource, :html => { :method => :put }, :button_label => "Update Profile" } %>
 
