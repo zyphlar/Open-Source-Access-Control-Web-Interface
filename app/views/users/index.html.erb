@@ -8,8 +8,8 @@
   <col />
   <% if current_user.admin? then %><col /><% end %>
   <col />
-  <% if current_user.admin? %><col /><% end %>
-  <col class="col_highlight" />
+  <% if current_user.admin? %><col />
+  <col class="col_highlight" /><% end %>
   <col />
   <col class="col_highlight" />
   <col />
@@ -26,7 +26,7 @@
     <th><a href="?sort=member">Member?</a></th>
     <th><a href="?sort=card">Card?</a></th>
     <th><a href="?sort=instructor">Instructor?</a></th>
-    <th><a href="?sort=admin">Admin?</a></th>
+    <% if current_user.admin? then %><th><a href="?sort=admin">Admin?</a></th><% end %>
     <th></th>
     <th></th>
   </tr>
@@ -44,10 +44,10 @@
       <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
     </td><% end %>
     <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
-    <td><%= raw(user.member_status) %></td>
+    <td><%= raw(user.member_status_symbol) %></td>
     <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
     <td><%= if user.instructor? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
-    <td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
+    <% if current_user.admin? then %><td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td><% end %>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
   </tr>

@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     when "waiver"
       @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
     when "member"
-      @users = @users.sort_by{ |u| [-u.member.to_i,-u.member_level.to_i,u.name] }
+      @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
     when "card"
       @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
     when "instructor"

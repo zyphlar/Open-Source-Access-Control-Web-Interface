@@ -1,5 +1,7 @@
 Dooraccess::Application.routes.draw do
 
+  resources :payments
+
   resources :user_certifications
 
   resources :certifications

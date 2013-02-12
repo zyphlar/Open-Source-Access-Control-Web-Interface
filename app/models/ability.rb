@@ -28,6 +28,11 @@ class Ability
         can :read, UserCertification
       end 
 
+      # Accountants can manage all
+      if user.accountant?
+        can :manage, Payment
+      end
+
       # Admins can manage all
       if user.admin?
         can :manage, :all
@@ -41,6 +46,7 @@ class Ability
       cannot :destroy, MacLog
       cannot :destroy, UserCertification
       cannot :destroy, DoorLog
+      # no exception for destroying payments
     end 
     # Define abilities for the passed in user here. For example:
     #

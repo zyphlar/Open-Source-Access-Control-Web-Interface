@@ -12,19 +12,13 @@
 
 <p>
   <b>Current Member?</b>
-  <%= raw(@user.member_status) %>
+  <%= raw(@user.member_status_symbol) %>
 </p>
 
 <p>
   <b>Instructor?</b>
   <%= @user.instructor? %>
 </p>
-
-<p>
-  <b>Admin?</b>
-  <%= @user.admin? %>
-</p>
-
 
 <% if current_user.admin? then %>
 <p>
@@ -55,6 +49,10 @@
   <p>
     <b>Payment Method:</b>
     <%= @user.payment_method %>
+  </p>
+  <p>
+    <b>Payee:</b>
+    <%= @user.payee %>
   </p>
   <p>
     <b>Phone:</b>
@@ -93,6 +91,13 @@
   <% end %>
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Created:</b>
+  <%= @user.created_at %>
+</p>
+<% end %>
 
 <% if can? :update, @user then %><%= link_to 'Edit', edit_user_path(@user) %> |<% end %>
 <%= link_to 'Back', users_path %>

@@ -4,6 +4,7 @@ Please contact them at <%= @user.email %><%= " or "+@user.phone.to_s unless @use
 new user orientation, waiver, welcome, payment help, etc.
 
 User Details: <%= link_to @url+user_path(@user), @url+user_path(@user) %>
+Member Level: <%= simple_format @user.member_level %>
 
 What skills, knowledge and experience do you bring to the community?
 <%= simple_format @user.current_skills %>

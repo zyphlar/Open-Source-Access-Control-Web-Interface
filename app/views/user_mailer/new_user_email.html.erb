@@ -12,18 +12,22 @@
     <p>
       User Details: <%= link_to @url+user_path(@user), @url+user_path(@user) %>
     </p>
-  <p>
-    <b>What skills, knowledge and experience do you bring to the community?</b>
-    <%= simple_format @user.current_skills %>
-  </p>
-  <p>
-    <b>What skills, knowledge and experiences are you looking for in HeatSync?</b>
-    <%= simple_format @user.desired_skills %>
-  </p>
-  <p>
-    <b>How'd you find out about HeatSync?</b>
-    <%= simple_format @user.marketing_source %>
-  </p>
+    <p>
+      <b>Member Level:</b>
+      <%= simple_format @user.member_level_string %>
+    </p>
+    <p>
+      <b>What skills, knowledge and experience do you bring to the community?</b>
+      <%= simple_format @user.current_skills %>
+    </p>
+    <p>
+      <b>What skills, knowledge and experiences are you looking for in HeatSync?</b>
+      <%= simple_format @user.desired_skills %>
+    </p>
+    <p>
+      <b>How'd you find out about HeatSync?</b>
+      <%= simple_format @user.marketing_source %>
+    </p>
 
   </body>
 </html>

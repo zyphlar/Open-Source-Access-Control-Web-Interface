@@ -1,0 +1,29 @@
+<p>
+  <b>User:</b>
+  <%= @payment.user.name_with_payee_and_member_level unless @payment.user.blank? %>
+</p>
+
+<p>
+  <b>Paid for month beginning:</b>
+  <%= @payment.date %>
+</p>
+
+<p>
+  <b>Last Modified by:</b>
+  <%= user = @users.find{|u| u.id == @payment.created_by}; link_to user.name, user unless user.blank? %>
+</p>
+
+<p>
+  <b>Created date:</b>
+  <%= @payment.created_at %>
+</p>
+
+<p>
+  <b>Updated date:</b>
+  <%= @payment.updated_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Destroy', @payment, :confirm => 'Are you sure you want to destroy this payment?', :method => :delete if can? :destroy, @payment %> | 
+<%= link_to 'Back', payments_path %>

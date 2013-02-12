@@ -66,6 +66,10 @@
     <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
   </div>
   <div class="field">
+    <%= f.label :payee %><br />
+    <%= f.text_field :payee%>
+  </div>
+  <div class="field">
     <%= f.label :phone %><br />
     <%= f.text_field :phone %>
   </div>
@@ -82,16 +86,16 @@
     <%= f.text_area :marketing_source %>
   </div>
   <div class="field">
-    <%= f.label :member, "Member?" %><br />
-    <%= f.select :member, [[nil],["No",0],["Inactive",1],["Volunteer",10],["Associate",25],["Basic",50],["Plus",100]]  %>
-  </div>
-  <div class="field">
     <%= f.label :instructor, "Instructor?" %><br />
     <%= f.check_box :instructor %>
   </div>
   <div class="field">
     <%= f.label :admin, "Admin?" %><br />
     <%= f.check_box :admin %>
+  </div>
+  <div class="field">
+    <%= f.label :accountant, "Accountant?" %><br />
+    <%= f.check_box :accountant %>
   </div>
   <div class="field">
     <%= f.label :hidden, "Hidden?" %><br />

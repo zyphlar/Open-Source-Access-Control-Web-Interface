@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130209103457) do
+ActiveRecord::Schema.define(:version => 20130212083412) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(:version => 20130209103457) do
 
   add_index "macs", ["user_id"], :name => "index_macs_on_user_id"
 
+  create_table "payments", :force => true do |t|
+    t.integer  "user_id"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "created_by"
+  end
+
+  add_index "payments", ["user_id"], :name => "index_payments_on_user_id"
+
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"
     t.integer  "certification_id"
@@ -96,6 +106,8 @@ ActiveRecord::Schema.define(:version => 20130209103457) do
     t.boolean  "instructor"
     t.boolean  "hidden"
     t.string   "marketing_source"
+    t.string   "payee"
+    t.boolean  "accountant"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
