@@ -1,8 +1,19 @@
-<h2>Edit Your Profile</h2>
+<h2>Profile:</h2>
 
 <%= devise_error_messages! %>
 
 <div class="payment_links">
+
+  <% if can? :read, resource.payments then %>
+  <h3>Recorded Payments:</h3>
+  <ul>
+    <% resource.payments.each do |payment| %>
+      <li><%= payment.date %></li>
+    <% end %>
+  </ul>
+  <hr/>
+  <% end %>
+
 <% if resource.payment_method == "Dwolla" %>
 <h3>Dwolla Payment Link</h3>
   <% if resource.member_level == "25" %>

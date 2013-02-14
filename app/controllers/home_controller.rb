@@ -6,7 +6,7 @@ def index
   @num_users = User.count
   @recent_users = User.where("created_at > ?", DateTime.now - 7.days).count
   if can? :read, User then
-    @recent_user_names = User.where("created_at > ?", DateTime.now - 7.days)
+    @recent_user_names = User.where("member_level > 10").accessible_by(current_ability).order('created_at desc').limit(5)
   end
   @num_door_opens = DoorLog.where("key = 'G'").count
   @today_door_opens = DoorLog.where("key = 'G' AND created_at > ?", DateTime.now - 1.day).count

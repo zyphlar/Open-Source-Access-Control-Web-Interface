@@ -94,6 +94,17 @@
 
 <% if current_user.admin? then %>
 <p>
+  <b>Payments:</b>
+  <ul>
+  <% @payments.each do |payment| %>
+    <li><%= payment.date %></li>
+  <% end %>
+  </ul>
+</p>
+<% end %>
+
+<% if current_user.admin? then %>
+<p>
   <b>Created:</b>
   <%= @user.created_at %>
 </p>

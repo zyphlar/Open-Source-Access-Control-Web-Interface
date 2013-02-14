@@ -14,10 +14,10 @@
 <tr>
 <td>
 <% if ((can? :read, @recent_user_names) && (@recent_user_names.count > 1)) then %>
-<h2>New People:</h2>
+<h2>New People: <em>(say hi!)</em></h2>
 <ul>
 <% @recent_user_names.each do |user| %>
-  <li><%= link_to user.name, user %></li>
+  <li><%= link_to user.name, user %> <%= raw(user.member_status_symbol) %> <em>(Signed up <%= user.created_at.strftime("%b %d") %>)</em></li>
 <% end %>
 </ul>
 <% end %>
@@ -45,7 +45,22 @@
   <li><%= link_to "IRC", "irc://irc.freenode.net#heatsynclabs" %></li>
   <li><%= link_to "Live Webcams", "http://live.heatsynclabs.org/" %></li>
   <li>Lab Phone: (480) 751-1929</li>
+  <li>
+    <style type="text/css">
+     form input {font-family: 'Lucida Console', Monaco, monospace; }
+    </style>
+    
+    <b>Send a Message!</b>
+    <form method="post" action="http://tweet.zyphon.com/signage.php">
+      <em>Type here and your message will show up on the LED sign in the front window!</em><br/>
+      <em>(Please be nice!)</em><br/>
+      <input type="text" name="msg" id="msg" value="  Hello" size="9" /> (max 9 chars per line)<br/>
+      <input type="text" name="msg2" id="msg2" value="  World" size="9" /><br/>
+      <input type="submit" name="submitbutton" id="submitbutton" value="Go!" />
+    </form>
+  </li>
 </ul>
+
 </td>
 </tr>
 </table>

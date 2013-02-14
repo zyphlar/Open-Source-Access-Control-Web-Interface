@@ -36,6 +36,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @payments = Payment.where(:user_id => @user.id).order('date desc').limit(10)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @user }
