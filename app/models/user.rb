@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
       10
     when 25..999
       if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 1.month)
+        if self.payments.last.date < (DateTime.now - 45.days)
           3
         else
           case self.member_level.to_i
@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
     case self.member_level.to_i
     when 0
       if self.payments.count > 0 then
-      "<span class='hoverinfo' title='Former Member'>:(</span>"
+      "<span class='hoverinfo' title='Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>:(</span>"
       else
       "<!-- Not a member -->"
       end
@@ -89,8 +89,8 @@ class User < ActiveRecord::Base
       "<span class='hoverinfo' title='Volunteer'>&#9684;</span>"
     when 25..999
       if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 1.month) 
-          "<span class='hoverinfo' title='Lapsed'>&#9676;</span>"
+        if self.payments.last.date < (DateTime.now - 45.days) 
+          "<span class='hoverinfo' title='Recently Lapsed (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>&#9676;</span>"
         else
           case self.member_level.to_i
           when 25..49
