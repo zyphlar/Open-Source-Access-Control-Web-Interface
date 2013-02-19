@@ -4,7 +4,7 @@
 <%= link_to 'Upload all cards', upload_all_path if can? :upload_all, Card %>
 <%= link_to 'Door Logs', door_logs_path if can? :read, DoorLog %>
 <p>
-<b>Most Active Card Last 7 Days:</b> <%= @most_active_card.name %> (<%= @most_active_card.accesses_this_week %> times)
+<b>Most Active Card Last 7 Days:</b> <%= @most_active_card.name unless @most_active_card.blank? %> (<%= @most_active_card.accesses_this_week unless @most_active_card.blank? %> times)
 </p>
 
 <table>
