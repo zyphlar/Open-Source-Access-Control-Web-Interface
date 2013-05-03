@@ -5,7 +5,7 @@ class PaymentsController < ApplicationController
 
   # Load users and certs based on current ability
   before_filter do
-    @users = User.accessible_by(current_ability).sort_by(&:name_with_payee_and_member_level)
+    @users = User.where(:hidden => false).where("member_level > 10").accessible_by(current_ability).sort_by(&:name_with_payee_and_member_level)
   end
 
   before_filter :only => [:create, :update] do

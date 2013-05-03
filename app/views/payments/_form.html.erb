@@ -13,11 +13,11 @@
 
   <div class="field">
     <%= f.label :user_id, "User" %><br />
-    <%= collection_select(:payment, :user_id, @users, :id, :name_with_payee_and_member_level) %>
+    <%= collection_select(:payment, :user_id, @users, :id, :name_with_payee_and_member_level) %> (inactive members are not shown.)
   </div>
   <div class="field">
     <%= f.label :date, "Paid for month beginning" %><br />
-    <%= f.date_select :date %>
+    <%= f.date_select :date, :default => (DateTime.now - 1.month) %>
   </div>
   <div class="actions">
     <%= f.submit %>

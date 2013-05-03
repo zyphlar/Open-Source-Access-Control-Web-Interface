@@ -108,6 +108,10 @@
   <b>Created:</b>
   <%= @user.created_at %>
 </p>
+<p>
+  <b>Last signed in:</b>
+  <%= @user.current_sign_in_at %>
+</p>
 <% end %>
 
 <% if can? :update, @user then %><%= link_to 'Edit', edit_user_path(@user) %> |<% end %>

@@ -18,8 +18,14 @@
   at <%= @user_certification.updated_at %> 
 </p>
 
-<%= link_to 'Edit', edit_user_certification_path(@user_certification) %> |
-<%= link_to 'Back', user_certifications_path %>
 <p>
-<%= link_to 'Destroy', @user_certification, :confirm => "Are you sure you want to destroy this user's certification?", :method => :delete if can? :destroy, @user_certification %>
+<% if can? :update, @user_certification %>
+  <%= link_to 'Edit', edit_user_certification_path(@user_certification) %> |
+<% end %>
+
+<% if can? :destroy, @user_certification %>
+  <%= link_to 'Delete', @user_certification, :confirm => "Are you sure you want to destroy this user's certification?", :method => :delete %> | 
+<% end %>
+
+<%= link_to 'Back', user_certifications_path %>
 </p>

@@ -20,7 +20,8 @@ class Ability
       if user.instructor? 
         can :manage, Certification
         can [:create,:read], User, :hidden => [nil,false]
-        can :manage, UserCertification
+        can [:create,:read], UserCertification
+        can [:update,:destroy], UserCertification, :created_by => user.id
       end
       # Users can see others' stuff if they've been oriented
       unless user.orientation.blank?
@@ -44,7 +45,7 @@ class Ability
       cannot :destroy, Certification
       cannot :destroy, Mac
       cannot :destroy, MacLog
-      cannot :destroy, UserCertification
+      #cannot :destroy, UserCertification
       cannot :destroy, DoorLog
       # no exception for destroying payments
     end 
