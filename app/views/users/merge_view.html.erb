@@ -1,0 +1,48 @@
+<style type="text/css">
+ #user_to_merge_details, #user_to_keep_details,
+ #user_to_merge_details p, #user_to_keep_details p {
+   font-size: 12px;
+   margin: 0;
+ }
+</style>
+
+<h1>Merging users</h1>
+
+<%= form_tag('/users/merge', :method => :post) do %>
+<b>Everything except the email, password, name, id, hidden, and blank values will be moved to the "user to keep" UNLESS there is a value already there. The "user to merge" will be deleted.</b>
+<table>
+<tr>
+<td>
+  <div class="field">
+    <%= label_tag :user_to_keep, "User to Keep" %><br />
+    <%= collection_select(:user, :to_keep, @users, :id, :name_with_email_and_visibility, :include_blank => true) %>
+  </div>
+  <div id="user_to_keep_details"></div>
+</td>
+<td style="font-size: 16px">&#x25C0;&#x25C0;</td>
+<td>
+  <div class="field">
+    <%= label_tag :user_to_merge, "User to Merge" %><br />
+    <%= collection_select(:user, :to_merge, @users, :id, :name_with_email_and_visibility, :include_blank => true) %>
+  </div>
+  <div id="user_to_merge_details"></div>
+</td>
+</tr>
+</table>
+
+<hr/>
+  <div class="actions">
+    <%= submit_tag "Merge" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', users_path %>
+
+<script>
+$("#user_to_keep").change(function(event,handler){
+  $("#user_to_keep_details").load("/user_summary/"+event.target.value);
+});
+$("#user_to_merge").change(function(event,handler){
+  $("#user_to_merge_details").load("/user_summary/"+event.target.value);
+});
+</script>

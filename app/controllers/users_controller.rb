@@ -43,6 +43,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /user_summary/1
+  def user_summary
+    respond_to do |format|
+      format.html { render :partial => "user_summary" } # show.html.erb
+      format.json { render :json => @user }
+    end 
+  end
+
   # GET /users/new
   # GET /users/new.json
   def new
@@ -81,6 +89,37 @@ class UsersController < ApplicationController
         format.html { render :action => "edit" }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+
+  # GET /users/merge
+  def merge_view
+    @users = @users.sort_by(&:name)
+
+    respond_to do |format|
+      format.html # merge_view.html.erb
+    end
+  end
+
+  # POST /users/merge
+  def merge_action
+    @user_to_keep = User.find(params[:user][:to_keep])
+    Rails.logger.info "USER TO KEEP:"
+    Rails.logger.info @user_to_keep.inspect
+    @user_to_merge = User.find(params[:user][:to_merge])
+    Rails.logger.info "USER TO MERGE:"
+    Rails.logger.info @user_to_merge.inspect
+
+    @user_to_keep.absorb_user(@user_to_merge)
+
+    Rails.logger.info "RESULT:"
+    Rails.logger.info @user_to_keep.inspect
+    Rails.logger.info @user_to_keep.cards.inspect
+    Rails.logger.info @user_to_keep.user_certifications.inspect
+    Rails.logger.info @user_to_keep.payments.inspect
+
+    respond_to do |format|
+      format.html { redirect_to @user_to_keep, :notice => 'Users successfully merged.' }
     end
   end
 

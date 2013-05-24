@@ -18,6 +18,48 @@ class User < ActiveRecord::Base
 
   after_create :send_new_user_email
 
+  def absorb_user(user_to_absorb)
+    # copy all attributes except email, password, name, and anything that isn't blank on the destination
+    user_to_absorb.attributes.each_pair {|k,v|
+      unless (v.nil? || k == :id || k == :email || k == :password || k == :name || k == :password_confirmation || k == :hidden || k == 'hidden' || k == :encrypted_password || !self.attributes[k].blank? )
+        Rails.logger.info "Updating "+k.to_s+" from "+self[k].to_s
+        self[k] = v
+        Rails.logger.info "Updated "+k.to_s+" to "+self[k].to_s
+      end
+    }
+
+    self.save!
+
+    user_to_absorb.cards.each {|card| 
+      Rails.logger.info "CARD BEFORE: "+card.inspect
+      card.user_id = self.id
+      card.save!
+      Rails.logger.info "CARD AFTER: "+card.inspect
+    }
+    user_to_absorb.user_certifications.each {|user_cert|
+      Rails.logger.info "CERT BEFORE: "+user_cert.inspect
+      user_cert.user_id = self.id
+      user_cert.save!
+      Rails.logger.info "CERT AFTER: "+user_cert.inspect
+    }
+    user_to_absorb.payments.each {|payment|
+      Rails.logger.info "PAYMENT BEFORE: "+payment.inspect
+      payment.user_id = self.id
+      payment.save!
+      Rails.logger.info "PAYMENT AFTER: "+payment.inspect
+    }
+
+    user_to_absorb.destroy
+  end
+
+  def name_with_email_and_visibility
+    if hidden then
+      "#{name} (#{email}) HIDDEN"
+    else
+      "#{name} (#{email})"
+    end
+  end
+
   def name_with_payee_and_member_level
     if payee.blank? then
       "#{name} - #{member_level_string}"

@@ -40,8 +40,8 @@ class Ability
       end
 
       # Prevent all destruction for now
-      cannot :destroy, User
-      cannot :destroy, Card
+      #cannot :destroy, User
+      #cannot :destroy, Card
       cannot :destroy, Certification
       cannot :destroy, Mac
       cannot :destroy, MacLog

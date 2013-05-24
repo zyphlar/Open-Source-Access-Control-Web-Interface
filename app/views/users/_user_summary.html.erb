@@ -1,0 +1,95 @@
+<% user ||= @user #unless @user.blank? %>
+
+<p>
+  <b>Name:</b>
+  <%= user.name %>
+</p>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Email:</b>
+  <%= user.email %>
+</p>
+
+<p>
+  <b>Orientation?</b>
+  <%= user.orientation.strftime("%B %d %Y") unless user.orientation.blank? %>
+</p>
+<% end %>
+
+<p>
+  <b>Waiver?</b>
+  <%= user.waiver.strftime("%B %d %Y") unless user.waiver.blank? %>
+</p>
+
+<p>
+  <b>Current Member?</b>
+  <%= raw(user.member_status_symbol) %>
+</p>
+
+<% if current_user.admin? then %>
+  <p>
+    <b>Desired Member Level:</b>
+    <%= user.member_level %>
+  </p>
+  <p>
+    <b>Payment Method:</b>
+    <%= user.payment_method %>
+  </p>
+  <p>
+    <b>Payee:</b>
+    <%= user.payee %>
+  </p>
+  <p>
+    <b>Phone:</b>
+    <%= user.phone %>
+  </p>
+<% end %>
+  <p>
+    <b>Current Skills:</b>
+    <%= simple_format user.current_skills %>
+  </p>
+  <p>
+    <b>Desired Skills:</b>
+    <%= simple_format user.desired_skills %>
+  </p>
+<p>
+  <b>Card:</b>
+  <% if current_user.admin? then %>
+    <% user.cards.each do |c| %>
+      <%= link_to c.card_number, c %><%= "," unless c == user.cards.last %>
+    <% end %>
+  <% else %>
+    <%= unless user.cards.blank? then raw("&#x2713;") end %>
+  <% end %>
+</p>
+
+<b>Certifications:</b>
+<ul>
+  <% user.certifications.each do |certification| %>
+    <li><%= link_to certification.name, certification %></li>
+  <% end %>
+  <% if user.certifications.blank? %><li>n/a</li><% end %>
+</ul>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Payments:</b>
+  <ul>
+  <% user.payments.each do |payment| %>
+    <li><%= payment.date %></li>
+  <% end %>
+  </ul>
+</p>
+<% end %>
+
+<% if current_user.admin? then %>
+<p>
+  <b>Created:</b>
+  <%= user.created_at %>
+</p>
+<p>
+  <b>Last signed in:</b>
+  <%= user.current_sign_in_at %>
+</p>
+<% end %>

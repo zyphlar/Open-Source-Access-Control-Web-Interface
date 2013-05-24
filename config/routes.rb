@@ -18,6 +18,9 @@ Dooraccess::Application.routes.draw do
       end
   end
 
+  match 'user_summary/:id' => 'users#user_summary' # User summary view
+  match 'users/merge' => 'users#merge_view', :via => :get # Merge view
+  match 'users/merge' => 'users#merge_action', :via => :post # Merge action
   resources :users
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 

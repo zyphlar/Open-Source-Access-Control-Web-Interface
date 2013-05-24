@@ -28,7 +28,13 @@
 <% if !@cards.blank? %>
   <% @cards.each do |card| %>
   <tr>
-    <td><%= link_to card.user.name, card %></td>
+    <td>
+      <% if card.user.nil? %>
+        n/a
+      <% else %>
+        <%= link_to card.user.name , card %>
+      <% end %>
+    </td>
     <td><%= card.name %></td>
     <td><%= card.id %></td>
     <td><%= card.card_number %></td>
