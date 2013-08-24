@@ -11,7 +11,13 @@
         <td><%= ipn.payment_date %></td>
         <td><%= ipn.first_name %> <%= ipn.last_name %></td> 
         <td><%= ipn.item_name %></td>
-        <td><%= ipn.payment_gross %></td>
+        <td>
+          <% if ipn.payment_gross.blank? %>
+            <%= ipn.txn_type %>
+          <% else %>
+            <%= ipn.payment_gross %>
+          <% end %>
+        </td>
         <td>
           <% if ipn.payment.present? %>
             <%= link_to "Linked Payment", ipn.payment %>
@@ -20,6 +26,7 @@
           <% end %>
         </td>
         <td><%= link_to "Details", ipn %></td>
+        <td><%= link_to "Validate", validate_ipn_path(ipn) %></td>
       </tr>
     <% end %>
   </table>

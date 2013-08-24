@@ -1,3 +1,4 @@
+require 'net/http'
 class Ipn < ActiveRecord::Base
   attr_accessible :data
   belongs_to :payment
@@ -16,6 +17,32 @@ class Ipn < ActiveRecord::Base
     return ipn
   end
 
+  # Post back to Paypal to make sure it's valid
+  def validate!
+    uri = URI.parse('https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate')
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = 60
+    http.read_timeout = 60
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.use_ssl = true
+    response = http.post(uri.request_uri, self.data,
+                         'Content-Length' => "#{self.data.size}",
+                         'User-Agent' => "Ruby on Rails"
+                       ).body
+
+    unless ["VERIFIED", "INVALID"].include?(response)
+      Rails.logger.error "Faulty paypal result: #{response}"
+      return false
+    end
+    unless response == "VERIFIED"
+      Rails.logger.error "Invalid IPN: #{response}" 
+      return false
+    end
+
+    return true
+  end
+
   def link_payment
     create_payment
   end
@@ -26,25 +53,34 @@ class Ipn < ActiveRecord::Base
     user = User.find_by_email(self.payer_email)
     user = User.find_by_payee(self.payer_email) if user.nil? && self.payer_email.present?
 
-    # Only create payments if the amount matches a member level
+    # Only create payments if the IPN matches a member
     if user.present?
-      if User.member_levels[self.payment_gross.to_i].present?
-        payment = Payment.new
-        payment.date = self.payment_date
-        payment.user_id = user.id
-        payment.amount = self.payment_gross
-        if payment.save
-          self.payment_id = payment.id
-          self.save!
+      # And is a payment (not a cancellation, etc)
+      payment_types = ["subscr_payment","send_money"]
+      if payment_types.include?(self.txn_type)
+        # And a member level
+        if User.member_levels[self.payment_gross.to_i].present?
+          payment = Payment.new
+          payment.date = Date.strptime(self.payment_date, "%H:%M:%S %b %e, %Y %Z")
+          payment.user_id = user.id
+          payment.amount = self.payment_gross
+          if payment.save
+            self.payment_id = payment.id
+            self.save!
+          else
+            return [false, "Unable to link payment. Payment error: #{payment.errors.full_messages.first}"]
+          end
         else
-          return [false, "Unable to link payment. Payment error: #{payment.errors.full_messages.first}"]
+          return [false, "Unable to link payment. Couldn't find membership level '#{self.payment_gross.to_i}'."]
         end
       else
-        return [false, "Unable to link payment. Couldn't find membership level '#{self.payment_gross.to_i}'."]
+        return [false, "Unable to link payment. Transaction is a '#{self.txn_type}' instead of '#{payment_types.inspect}'."]
       end
     else
       return [false, "Unable to link payment. Couldn't find user/payee '#{self.payer_email}'."]
     end
+
+    return [true]
   end
 
 end

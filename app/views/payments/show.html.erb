@@ -1,6 +1,6 @@
 <p>
   <b>User:</b>
-  <%= @payment.user.name_with_payee_and_member_level unless @payment.user.blank? %>
+  <%= link_to @payment.user.name_with_payee_and_member_level, @payment.user unless @payment.user.blank? %>
 </p>
 
 <p>
