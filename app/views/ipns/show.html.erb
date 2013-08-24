@@ -1,0 +1,17 @@
+<h2>IPN Details</h2>
+
+<% @ipn.attributes.except("data","payment_id").each do |attr| %>
+<p>
+  <b><%= attr.first.to_s %>:</b>
+  <%= @ipn.attributes[attr.first] %>
+</p>
+<% end %>
+<p>
+  <% if @ipn.payment.present? %>
+    <%= link_to "Payment", @ipn.payment %>
+  <% else %>
+    Couldn't link '<%= @ipn.payer_email %>' or payment amount '<%= @ipn.payment_gross.to_i %>' not a valid membership level. Please create payment manually.
+  <% end %>
+</p>
+
+<%= link_to "Back", ipns_path %>

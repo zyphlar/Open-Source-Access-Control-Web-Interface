@@ -85,6 +85,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.member_levels
+    {25 => "Associate", 50 => "Basic", 100 => "Plus"}
+  end
+
   def member_status
     case self.member_level.to_i
     when 0

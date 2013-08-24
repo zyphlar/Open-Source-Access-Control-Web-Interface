@@ -19,6 +19,10 @@
     <%= f.label :date, "Paid for month beginning" %><br />
     <%= f.date_select :date, :default => (DateTime.now - 1.month) %>
   </div>
+  <div class="field">
+    <%= f.label :amount %><br />
+    <%= f.number_field :amount %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

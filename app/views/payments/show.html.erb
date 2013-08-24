@@ -9,8 +9,18 @@
 </p>
 
 <p>
+  <b>Amount:</b>
+  <%= @payment.amount %>
+</p>
+
+<p>
   <b>Last Modified by:</b>
-  <%= user = @users.find{|u| u.id == @payment.created_by}; link_to user.name, user unless user.blank? %>
+  <% user = @users.find{|u| u.id == @payment.created_by} %>
+  <% if user.blank? %>
+    n/a
+  <% else %>
+    <%= link_to user.name, user %>
+  <% end %>
 </p>
 
 <p>
@@ -22,6 +32,13 @@
   <b>Updated date:</b>
   <%= @payment.updated_at %>
 </p>
+
+<% if @payment.ipn.present? %>
+  <p>
+    <%= link_to "Paid via PayPal", @payment.ipn %>
+  </p>
+<% end %>
+
 
 
 <%= link_to 'Edit', edit_payment_path(@payment) %> |

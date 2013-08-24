@@ -1,4 +1,6 @@
 Dooraccess::Application.routes.draw do
+  resources :ipns
+  match 'ipns/:id/link' => 'ipns#link', :as => :link_ipn
 
   resources :payments
 

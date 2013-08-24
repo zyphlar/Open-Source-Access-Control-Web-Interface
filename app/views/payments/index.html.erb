@@ -6,6 +6,7 @@
   <tr>
     <th>User</th>
     <th>Paid for month <br/>beginning</th>
+    <th>Amount</th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,6 +16,7 @@
   <tr>
     <td><%= link_to payment.user.name_with_payee_and_member_level, payment.user unless payment.user.blank? %></td>
     <td><%= payment.human_date %></td>
+    <td><%= payment.amount %></td>
     <td><%= link_to 'Details', payment %></td>
     <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
   </tr>

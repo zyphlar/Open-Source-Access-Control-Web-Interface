@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212083412) do
+ActiveRecord::Schema.define(:version => 20130824072157) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -33,6 +34,27 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.integer  "data"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "ipns", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "txn_id"
+    t.string   "txn_type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "payer_business_name"
+    t.string   "payer_email"
+    t.string   "payer_id"
+    t.string   "auth_amount"
+    t.string   "payment_date"
+    t.string   "payment_fee"
+    t.string   "payment_gross"
+    t.string   "payment_status"
+    t.string   "item_name"
+    t.string   "payment_type"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "mac_logs", :force => true do |t|
@@ -64,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "created_by"
+    t.decimal  "amount"
   end
 
   add_index "payments", ["user_id"], :name => "index_payments_on_user_id"

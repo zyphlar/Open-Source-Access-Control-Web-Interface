@@ -1,0 +1,123 @@
+  <%= form_tag('/ipns') do |f| %>
+
+  <style type="text/css">
+    label { 
+      width: 10em;
+      display: inline-block;}
+  </style>
+
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+  <div class="field">
+    <%= label_tag :first_name %>
+    <%= text_field_tag :first_name, "John" %>
+  </div>
+  <div class="field">
+    <%= label_tag :last_name %>
+    <%= text_field_tag :last_name, "Smith" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payer_email %>
+    <%= text_field_tag :payer_email, "jsmith@example.com" %>
+  </div>
+  <div class="field">
+    <%= label_tag :item_name %>
+    <%= text_field_tag :item_name, "Associate Membership" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payment_gross %>
+    <%= text_field_tag :payment_gross, "25.00" %>
+  </div>
+  <div class="field">
+    <%= label_tag :transaction_subject %>
+    <%= text_field_tag :transaction_subject, "" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payment_date %>
+    <%= text_field_tag :payment_date, Date.today.to_s %>
+  </div>
+  <div class="field">
+    <%= label_tag :txn_type %>
+    <%= text_field_tag :txn_type, "subscr_payment" %>
+  </div>
+  <div class="field">
+    <%= label_tag :subscr_id %>
+    <%= text_field_tag :subscr_id, "I-1234567890" %>
+  </div>
+  <div class="field">
+    <%= label_tag :residence_country %>
+    <%= text_field_tag :residence_country, "US" %>
+  </div>
+  <div class="field">
+    <%= label_tag :mc_currency %>
+    <%= text_field_tag :mc_currency, "USD" %>
+  </div>
+  <div class="field">
+    <%= label_tag :business %>
+    <%= text_field_tag :business, "hslfinances@gmail.com" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payment_type %>
+    <%= text_field_tag :payment_type, "instant" %>
+  </div>
+  <div class="field">
+    <%= label_tag :protection_eligibility %>
+    <%= text_field_tag :protection_eligibility, "Ineligible" %>
+  </div>
+  <div class="field">
+    <%= label_tag :verify_sign %>
+    <%= text_field_tag :verify_sign, "12ru9021j9f21j90fj1290fj2910fj0219fj0" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payer_status %>
+    <%= text_field_tag :payer_status, "verified" %>
+  </div>
+  <div class="field">
+    <%= label_tag :txn_id %>
+    <%= text_field_tag :txn_id, "1234567890" %>
+  </div>
+  <div class="field">
+    <%= label_tag :receiver_email %>
+    <%= text_field_tag :receiver_email, "hslfinances@gmail.com" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payer_id %>
+    <%= text_field_tag :payer_id, "V812314914" %>
+  </div>
+  <div class="field">
+    <%= label_tag :receiver_id %>
+    <%= text_field_tag :receiver_id, "V90R1280182" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payment_status %>
+    <%= text_field_tag :payment_status, "Completed" %>
+  </div>
+  <div class="field">
+    <%= label_tag :payment_fee %>
+    <%= text_field_tag :payment_fee, "0.85" %>
+  </div>
+  <div class="field">
+    <%= label_tag :mc_fee %>
+    <%= text_field_tag :mc_fee, "0.85" %>
+  </div>
+  <div class="field">
+    <%= label_tag :mc_gross %>
+    <%= text_field_tag :mc_gross, "25.00" %>
+  </div>
+  <div class="field">
+    <%= label_tag :charset %>
+    <%= text_field_tag :charset, "windows-1252" %>
+  </div>
+  <div class="field">
+    <%= label_tag :notify_version %>
+    <%= text_field_tag :notify_version, "3.7" %>
+  </div>
+  <div class="field">
+    <%= label_tag :ipn_track_id %>
+    <%= text_field_tag :ipn_track_id, "9d3d032d9070" %>
+  </div>
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+  <% end %>
