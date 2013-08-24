@@ -15,11 +15,21 @@ class IpnsController < ApplicationController
   end
 
   def create
-    #TODO: ensure the request is actually from paypal
     @ipn = Ipn.new_from_dynamic_params(params)
     @ipn.data = params.to_json
     @ipn.save
     render :nothing => true
+    unless @ipn.validate!
+      Rails.logger.error "Unable to validate IPN: #{@ipn.inspect}"
+    end
+  end
+
+  def validate
+    if @ipn.validate!
+      redirect_to ipns_url, :notice => 'Valid!' 
+    else
+      redirect_to ipns_url, :notice => 'INVALID'
+    end
   end
 
   def link
