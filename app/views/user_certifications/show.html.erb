@@ -1,6 +1,6 @@
 <p>
   <b>User:</b>
-  <%= @user_certification.user.name %>
+  <%= @user_certification.user_name %>
 </p>
 
 <p>
@@ -14,7 +14,12 @@
 </p>
 
 <p>
-  <b>Updated:</b> by <%= link_to @updated_by.name, @updated_by unless @updated_by.blank? %>
+  <b>Updated:</b> by 
+  <% if @updated_by.blank? %>
+    #<%= @user_certification.updated_by ||= "nil" %>
+  <% else %>
+    <%= link_to @updated_by.name, @updated_by %>
+  <% end %>
   at <%= @user_certification.updated_at %> 
 </p>
 

@@ -5,4 +5,12 @@ class UserCertification < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :certification
+
+  def user_name   
+    if user.blank?
+      return "n/a (user ##{user_id} missing)"
+    else
+      return self.user.name 
+    end
+  end
 end
