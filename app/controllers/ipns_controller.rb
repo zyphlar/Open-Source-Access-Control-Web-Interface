@@ -1,5 +1,5 @@
 class IpnsController < ApplicationController
-  load_and_authorize_resource :ipn, :except => "create"
+  load_and_authorize_resource :ipn, :except => [:new, :create]
   before_filter :authenticate_user!
 
   protect_from_forgery :except => [:create]
