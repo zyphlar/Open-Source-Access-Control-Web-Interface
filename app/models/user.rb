@@ -122,35 +122,50 @@ class User < ActiveRecord::Base
   end
 
   def member_status_symbol
+    # Begin output buffer
+    message = ""
+    icon = ""
+    flair = ""
+
+    # First status item is level
     case self.member_level.to_i
-    when 0
+    when 0..9
       if self.payments.count > 0 then
-      "<span class='hoverinfo' title='Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>:(</span>"
+        message = "Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
+        icon = :timeout
       else
-      "<!-- Not a member -->"
+        message = "Not a Member"
+        icon = :no
       end
-    when 1
-      "Unable"
     when 10..24
-      "<span class='hoverinfo' title='Volunteer'>&#9684;</span>"
+      message = "Volunteer"
+      icon = :heart
+    when 25..49
+      message = member_level_string
+      icon = :copper
+    when 50..99
+      message = member_level_string
+      icon = :silver
+    when 100..999
+      message = member_level_string
+      icon = :gold
+    end
+
+    # Second status item is payment status
+    case self.member_level.to_i
     when 25..999
+      # There are payments
       if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 45.days) 
-          "<span class='hoverinfo' title='Recently Lapsed (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>&#9676;</span>"
+        # They're on time
+        if self.payments.last.date > (DateTime.now - 45.days) 
+          flair = "-paid"
         else
-          case self.member_level.to_i
-          when 25..49
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9681;</span>"
-          when 50..99
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9685;</span>"
-          when 100..999
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9679;</span>"
-          end
+          message = "Last Payment (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
         end
-      else
-        "<span class='hoverinfo' title='No Payments'>?</span>"
       end
     end
+
+    return "<img src='#{icon}#{flair}-coin.png' title='#{message}' />"
   end
 
   private
