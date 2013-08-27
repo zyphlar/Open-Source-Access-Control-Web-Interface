@@ -8,13 +8,10 @@
   <%= simple_format @certification.description %>
 </p>
 
-<b>Certified Users:</b>
-<ul>
-  <% @certification_users.each do |user| %>
-      <li><%= link_to user.name, user %></li>
-  <% end %>
-  <% if @certification_users.blank? then %><li>n/a</li><% end %>
-</ul>
+<p>
+  <b>Certified Users:</b>
+  <%= link_to "Click Here", user_certifications_path %>
+</p>
 
 <% if can? :update, @certification %><%= link_to 'Edit', edit_certification_path(@certification) %> |<% end %>
 <%= link_to 'Back', certifications_path %>
