@@ -7,6 +7,10 @@ class UserCertification < ActiveRecord::Base
   belongs_to :certification
 
   def user_name
-    self.user.name unless self.user.blank?
+    if self.user.blank?
+      ""
+    else
+      self.user.name 
+    end
   end
 end
