@@ -90,42 +90,22 @@ class User < ActiveRecord::Base
   end
 
   def member_status
-    case self.member_level.to_i
-    when 0
-      if self.payments.count > 0 then
-       2
-      else
-       -1
-      end
-    when 1
-      1
-    when 10..24
-      10
-    when 25..999
-      if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 45.days)
-          3
-        else
-          case self.member_level.to_i
-          when 25..49
-            25
-          when 50..99
-            50
-          when 100..999
-            100
-          end
-        end
-      else
-        return 0
-      end
-    end
+    member_status_calculation[:rank]
   end
 
   def member_status_symbol
+    results = member_status_calculation
+    return "<img src='#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
+  end
+
+  private
+
+  def member_status_calcuation
     # Begin output buffer
     message = ""
     icon = ""
     flair = ""
+    rank = 0
 
     # First status item is level
     case self.member_level.to_i
@@ -133,22 +113,28 @@ class User < ActiveRecord::Base
       if self.payments.count > 0 then
         message = "Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
         icon = :timeout
+        rank = 1
       else
         message = "Not a Member"
         icon = :no
+        rank = 0
       end
     when 10..24
       message = "Volunteer"
       icon = :heart
+      rank = 100
     when 25..49
       message = member_level_string
       icon = :copper
+      rank = 250
     when 50..99
       message = member_level_string
       icon = :silver
+      rank = 500
     when 100..999
       message = member_level_string
       icon = :gold
+      rank = 1000
     end
 
     # Second status item is payment status
@@ -161,14 +147,16 @@ class User < ActiveRecord::Base
           flair = "-paid"
         else
           message = "Last Payment (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
+          rank = rank/10
         end
+      else
+        message = "No Payments Recorded"
+        rank = rank/10
       end
     end
 
-    return "<img src='#{icon}#{flair}-coin.png' title='#{message}' />"
+    return [:message => message, :icon => icon, :flair => flair, :rank => rank]
   end
-
-  private
 
   def send_new_user_email
     Rails.logger.info UserMailer.new_user_email(self).deliver
