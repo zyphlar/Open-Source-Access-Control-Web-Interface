@@ -11,7 +11,7 @@
     <a href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
-    <% if can? :manage, UserCertification %>
+    <% if can? :create, UserCertification %>
       <%= link_to 'Cert Classes', certifications_path if can? :read, Certification %>
       <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
     <% else %>
