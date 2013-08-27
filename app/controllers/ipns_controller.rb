@@ -1,6 +1,6 @@
 class IpnsController < ApplicationController
   load_and_authorize_resource :ipn, :except => [:new, :create]
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:new, :create]
 
   protect_from_forgery :except => [:create]
 
@@ -19,9 +19,9 @@ class IpnsController < ApplicationController
     @ipn.data = params.to_json
     @ipn.save
     render :nothing => true
-    unless @ipn.validate!
-      Rails.logger.error "Unable to validate IPN: #{@ipn.inspect}"
-    end
+    #unless @ipn.validate!
+    #  Rails.logger.error "Unable to validate IPN: #{@ipn.inspect}"
+    #end
   end
 
   def validate

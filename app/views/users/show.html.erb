@@ -74,7 +74,7 @@
   </p>
 <% end %>
 <p>
-  <b>Card:</b>
+  <b>Card:</b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, Card %>
   <% if current_user.admin? then %>
     <% @user.cards.each do |c| %>
       <%= link_to c.card_number, c %><%= "," unless c == @user.cards.last %>
@@ -84,7 +84,7 @@
   <% end %>
 </p>
 
-<b>Certifications:</b>
+<b>Certifications:</b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, UserCertification %>
 <ul>
   <% @user.certifications.each do |certification| %>
     <li><%= link_to certification.name, certification %></li>
