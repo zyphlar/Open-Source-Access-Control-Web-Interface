@@ -2,7 +2,8 @@ class Card < ActiveRecord::Base
   require 'open-uri'
 
   attr_accessible :id, :user_id, :name, :card_number, :card_permissions
-  validates_uniqueness_of :id,:card_number
+  validates_presence_of :user_id, :card_number, :card_permissions
+  validates_uniqueness_of :id, :card_number
   belongs_to :user
 
   def upload_to_door

@@ -11,9 +11,10 @@
     </div>
   <% end %>
 
+  <% @card.user_id = params[:user] if params[:user].present? %>
   <div class="field">
     <%= f.label :user %><br />
-    <%= collection_select(:card, :user_id, User.all.sort_by(&:name), :id, :name) %>
+    <%= collection_select(:card, :user_id, User.all.sort_by(&:name), :id, :name, :include_blank => true) %>
   </div>
   <div class="field">
     <%= f.label :name, "Card Note" %><br />
