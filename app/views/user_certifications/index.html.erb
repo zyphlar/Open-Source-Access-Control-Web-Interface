@@ -7,7 +7,7 @@
     <dt><%= cert.name %></dt>
     <% user_certifications.sort{|a,b| a.user_name <=> b.user_name}.each do |user_certification| %>
       <dd>
-        <%= link_to user_certification.user_name, user_certification  %>
+        <%= link_to user_certification.user_name, user_certification %>
       </dd>
     <% end %>
   </dl>

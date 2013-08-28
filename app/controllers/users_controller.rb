@@ -33,6 +33,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def inactive
+    @users = @users.all.select{|u| u if u.payment_status == false }.sort_by{ |u| -u.delinquency }
+  end
+ 
   # GET /users/1
   # GET /users/1.json
   def show
@@ -69,7 +73,7 @@ class UsersController < ApplicationController
   def create
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_url, :notice => 'User was successfully created.' }
+        format.html { redirect_to @user, :notice => 'User was successfully created.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -83,7 +87,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to users_url, :notice => 'User was successfully updated.' }
+        format.html { redirect_to @user, :notice => 'User was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

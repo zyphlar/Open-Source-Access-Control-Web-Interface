@@ -85,71 +85,107 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.member_levels
+    {25 => "Associate", 50 => "Basic", 75 => "Basic", 100 => "Plus"}
+  end
+
+  def payment_status
+    results = payment_status_calculation
+    return results[:paid]
+  end
+
   def member_status
-    case self.member_level.to_i
-    when 0
-      if self.payments.count > 0 then
-       2
-      else
-       -1
-      end
-    when 1
-      1
-    when 10..24
-      10
-    when 25..999
-      if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 45.days)
-          3
-        else
-          case self.member_level.to_i
-          when 25..49
-            25
-          when 50..99
-            50
-          when 100..999
-            100
-          end
-        end
-      else
-        return 0
-      end
-    end
+    results = member_status_calculation
+    return results[:rank]
   end
 
   def member_status_symbol
-    case self.member_level.to_i
-    when 0
-      if self.payments.count > 0 then
-      "<span class='hoverinfo' title='Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>:(</span>"
-      else
-      "<!-- Not a member -->"
-      end
-    when 1
-      "Unable"
-    when 10..24
-      "<span class='hoverinfo' title='Volunteer'>&#9684;</span>"
-    when 25..999
-      if self.payments.count > 0 then
-        if self.payments.last.date < (DateTime.now - 45.days) 
-          "<span class='hoverinfo' title='Recently Lapsed (#{(DateTime.now - self.payments.last.date).to_i} days ago)'>&#9676;</span>"
-        else
-          case self.member_level.to_i
-          when 25..49
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9681;</span>"
-          when 50..99
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9685;</span>"
-          when 100..999
-            "<span class='hoverinfo' title='#{member_level_string}'>&#9679;</span>"
-          end
-        end
-      else
-        "<span class='hoverinfo' title='No Payments'>?</span>"
-      end
+    results = member_status_calculation
+    return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
+  end
+
+  def delinquency
+    if self.payments.count > 0
+      paydate = self.payments.maximum(:date)
+      (Date.today - paydate).to_i
+    else
+      (Date.today - self.created_at.to_date).to_i
     end
   end
 
   private
+
+  def member_status_calculation
+    # Begin output buffer
+    message = ""
+    icon = ""
+    flair = ""
+    rank = 0
+
+    # First status item is level
+    case self.member_level.to_i
+    when 0..9
+      if self.payments.count > 0 then
+        message = "Former Member (#{(DateTime.now - self.payments.maximum(:date)).to_i/30} months ago)"
+        icon = :timeout
+        rank = 1
+      else
+        message = "Not a Member"
+        icon = :no
+        rank = 0
+      end
+    when 10..24
+      message = "Volunteer"
+      icon = :heart
+      rank = 101
+    when 25..49
+      message = member_level_string
+      icon = :copper
+      rank = 250
+    when 50..99
+      message = member_level_string
+      icon = :silver
+      rank = 500
+    when 100..999
+      message = member_level_string
+      icon = :gold
+      rank = 1000
+    end
+
+    payment_results = payment_status_calculation
+    flair = payment_results[:flair]
+    rank = rank/10 unless payment_results[:paid]
+    message = payment_results[:message] unless payment_results[:message].blank?
+    
+    return {:message => message, :icon => icon, :flair => flair, :rank => rank}
+  end
+
+  def payment_status_calculation
+    flair = ""
+    message = ""
+    paid = true
+
+    # Second status item is payment status
+    case self.member_level.to_i
+    when 25..999
+      # There are payments
+      if self.payments.count > 0 then
+        # They're on time
+        if self.payments.maximum(:date) > (DateTime.now - 60.days) 
+          flair = "-paid"
+          paid = true
+        else
+          message = "Last Payment #{(DateTime.now - self.payments.maximum(:date)).to_i/30} months ago"
+          paid = false
+        end
+      else
+        message = "No Payments Recorded"
+        paid = false
+      end
+    end
+    return {:message => message, :paid => paid, :flair => flair}
+  end
+
 
   def send_new_user_email
     Rails.logger.info UserMailer.new_user_email(self).deliver

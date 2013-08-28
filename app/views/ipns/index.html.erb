@@ -1,0 +1,35 @@
+<h2>PayPal IPN Records</h2>
+<p>
+  <em>Automatically loaded from PayPal's servers</em>
+</p>
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Item</th>
+        <th>Amount</th>
+      </tr>
+    <% @ipns.sort_by(&:date_parsed).reverse!.each do |ipn| %>
+      <tr>
+        <td><%= ipn.payment_date %></td>
+        <td><%= ipn.first_name %> <%= ipn.last_name %></td> 
+        <td><%= ipn.item_name %></td>
+        <td>
+          <% if ipn.payment_gross.blank? %>
+            <%= ipn.txn_type %>
+          <% else %>
+            <%= ipn.payment_gross %>
+          <% end %>
+        </td>
+        <td>
+          <% if ipn.payment.present? %>
+            <%= link_to "Linked Payment", ipn.payment %>
+          <% else %>
+            <%= link_to "Try to link email '#{ipn.payer_email}' at membership level '#{ipn.payment_gross.to_i}'", link_ipn_path(ipn) %>
+          <% end %>
+        </td>
+        <td><%= link_to "Details", ipn %></td>
+        <td><%= link_to "Validate", validate_ipn_path(ipn) %></td>
+      </tr>
+    <% end %>
+  </table>

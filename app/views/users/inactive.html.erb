@@ -1,14 +1,5 @@
-<h1>HeatSync People</h1>
+<h1>Inactive Users</h1>
 
-<% if can? :create, User %>
-  <%= link_to 'New User', new_user_path %>
-<% end %>
-<% if can? :manage, User %>
-  | <%= link_to 'Merge Users', users_merge_path %>
-<% end %>
-<% if current_user.admin? %>
-  | <%= link_to 'Inactive Users', users_inactive_path %>
-<% end %>
 <table>
   <col />
   <col />
@@ -22,17 +13,17 @@
   <col class="col_highlight" />
   <tr>
     <th></th>
-    <th><a href="?sort=name">Name</a></th>
-    <% if current_user.admin? then %><th><a href="?sort=email">Email</a></th><% end %>
-    <th><a href="?sort=certifications">Certifications</a></th>
+    <th>Name</th>
+    <% if current_user.admin? then %><th>Email</th><% end %>
+    <th>Certifications</th>
     <% if current_user.admin? then %>
-    <th><a href="?sort=orientation">Orientation?</a></th>
+    <th>Orientation?</th>
     <% end %>
-    <th><a href="?sort=waiver">Waiver?</a></th>
-    <th><a href="?sort=member">Member?</a></th>
-    <th><a href="?sort=card">Card?</a></th>
-    <th><a href="?sort=instructor">Instructor?</a></th>
-    <% if current_user.admin? then %><th><a href="?sort=admin">Admin?</a></th><% end %>
+    <th>Card?</th>
+    <th>Pmt Method</th>
+    <th>Desired Level</th>
+    <th>Last Payment</th>
+    <th>Joined</th>
     <th></th>
     <th></th>
   </tr>
@@ -49,11 +40,17 @@
     <% if current_user.admin? then %><td>
       <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
     </td><% end %>
-    <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
-    <td><%= raw(user.member_status_symbol) %></td>
     <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
-    <td><%= if user.instructor? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
-    <% if current_user.admin? then %><td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td><% end %>
+    <td><%= user.payment_method %></td>
+    <td><%= user.member_level %></td>
+    <td><% delinquency = user.delinquency %>
+      <% if delinquency == 9999 %>
+        No Payments
+      <% else %>
+        <%= (delinquency/30).to_s+" mo. ago" %>
+      <% end %>
+    </td>
+    <td><%= user.created_at.to_date %></td>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
   </tr>

@@ -1,0 +1,35 @@
+<h2>PayPal CSV Records</h2>
+<p>
+  <%= link_to "Upload CSV", new_paypal_csv_path %>
+</p>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Name</th>
+    <th>Item</th>
+    <th>Amount</th>
+  </tr>
+<% @paypal_csvs.sort_by(&:date_parsed).reverse!.each do |paypal_csv| %>
+  <tr>
+    <td><%= paypal_csv.date %></td>
+    <td><%= paypal_csv._name %></td> 
+    <td><%= paypal_csv._item_title %></td>
+    <td>
+      <% if paypal_csv._gross.blank? %>
+        <%= paypal_csv._type %>
+      <% else %>
+        <%= paypal_csv._gross %>
+      <% end %>
+    </td>
+    <td>
+      <% if paypal_csv.payment.present? %>
+        <%= link_to "Linked Payment", paypal_csv.payment %>
+      <% else %>
+        <%= link_to "Try to link email '#{paypal_csv._from_email_address}' at membership level '#{paypal_csv._gross.to_i}'", link_paypal_csv_path(paypal_csv) %>
+      <% end %>
+    </td>
+    <td><%= link_to "Details", paypal_csv %></td>
+  </tr>
+<% end %>
+</table>

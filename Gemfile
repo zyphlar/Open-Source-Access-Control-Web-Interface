@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '1.9.3'
+
 gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
@@ -40,7 +42,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug'
+#gem 'debugger'
 
 #gem "paperclip", "~> 3.0"
 gem 'gravtastic'
+
+gem 'passenger'

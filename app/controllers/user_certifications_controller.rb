@@ -6,7 +6,7 @@ class UserCertificationsController < ApplicationController
 
   # Load users and certs based on current ability
   before_filter :only => [:new, :edit, :create, :update] do
-    @users = User.where(:hidden => false).accessible_by(current_ability).sort_by(&:name)
+    @users = User.where(:hidden => [false,nil]).accessible_by(current_ability).sort_by(&:name)
     @certifications = Certification.accessible_by(current_ability).sort_by(&:name)
   end
   

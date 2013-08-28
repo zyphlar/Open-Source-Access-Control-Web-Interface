@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212083412) do
+ActiveRecord::Schema.define(:version => 20130828104240) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -33,6 +33,27 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.integer  "data"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "ipns", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "txn_id"
+    t.string   "txn_type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "payer_business_name"
+    t.string   "payer_email"
+    t.string   "payer_id"
+    t.string   "auth_amount"
+    t.string   "payment_date"
+    t.string   "payment_fee"
+    t.string   "payment_gross"
+    t.string   "payment_status"
+    t.string   "item_name"
+    t.string   "payment_type"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "mac_logs", :force => true do |t|
@@ -64,9 +85,35 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "created_by"
+    t.decimal  "amount"
   end
 
   add_index "payments", ["user_id"], :name => "index_payments_on_user_id"
+
+  create_table "paypal_csvs", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "date"
+    t.string   "_time"
+    t.string   "_time_zone"
+    t.string   "_name"
+    t.string   "_type"
+    t.string   "_status"
+    t.string   "_currency"
+    t.string   "_gross"
+    t.string   "_fee"
+    t.string   "_net"
+    t.string   "_from_email_address"
+    t.string   "_to_email_address"
+    t.string   "_transaction_id"
+    t.string   "_counterparty_status"
+    t.string   "_address_status"
+    t.string   "_item_title"
+    t.string   "_item_id"
+    t.string   "string"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"

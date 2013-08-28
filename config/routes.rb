@@ -1,4 +1,11 @@
 Dooraccess::Application.routes.draw do
+  match 'ipns/import' => 'ipns#import', :as => :import_ipn
+  resources :ipns
+  match 'ipns/:id/link' => 'ipns#link', :as => :link_ipn
+  match 'ipns/:id/validate' => 'ipns#validate', :as => :validate_ipn
+
+  resources :paypal_csvs
+  match 'paypal_csvs/:id/link' => 'paypal_csvs#link', :as => :link_paypal_csv
 
   resources :payments
 
@@ -21,6 +28,7 @@ Dooraccess::Application.routes.draw do
   match 'user_summary/:id' => 'users#user_summary' # User summary view
   match 'users/merge' => 'users#merge_view', :via => :get # Merge view
   match 'users/merge' => 'users#merge_action', :via => :post # Merge action
+  match 'users/inactive' => 'users#inactive' # Inactive users report
   resources :users
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 
