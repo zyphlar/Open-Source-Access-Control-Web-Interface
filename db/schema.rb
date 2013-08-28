@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130824072157) do
+ActiveRecord::Schema.define(:version => 20130828104240) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -89,6 +90,31 @@ ActiveRecord::Schema.define(:version => 20130824072157) do
   end
 
   add_index "payments", ["user_id"], :name => "index_payments_on_user_id"
+
+  create_table "paypal_csvs", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "date"
+    t.string   "_time"
+    t.string   "_time_zone"
+    t.string   "_name"
+    t.string   "_type"
+    t.string   "_status"
+    t.string   "_currency"
+    t.string   "_gross"
+    t.string   "_fee"
+    t.string   "_net"
+    t.string   "_from_email_address"
+    t.string   "_to_email_address"
+    t.string   "_transaction_id"
+    t.string   "_counterparty_status"
+    t.string   "_address_status"
+    t.string   "_item_title"
+    t.string   "_item_id"
+    t.string   "string"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"

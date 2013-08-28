@@ -4,6 +4,9 @@ Dooraccess::Application.routes.draw do
   match 'ipns/:id/link' => 'ipns#link', :as => :link_ipn
   match 'ipns/:id/validate' => 'ipns#validate', :as => :validate_ipn
 
+  resources :paypal_csvs
+  match 'paypal_csvs/:id/link' => 'paypal_csvs#link', :as => :link_paypal_csv
+
   resources :payments
 
   resources :user_certifications

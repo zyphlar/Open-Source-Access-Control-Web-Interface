@@ -1,0 +1,15 @@
+<style type="text/css">
+  label { 
+    width: 10em;
+    display: inline-block;}
+</style>
+
+<%= form_tag('/paypal_csvs', :multipart => true) do |f| %>
+  <div class="field">
+    <%= label_tag :file %>
+    <%= file_field_tag :file %>
+  </div>
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+<% end %>

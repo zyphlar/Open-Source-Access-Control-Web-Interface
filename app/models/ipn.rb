@@ -5,6 +5,14 @@ class Ipn < ActiveRecord::Base
 
   after_create :create_payment
 
+  def date_parsed
+    begin
+      Date.strptime(self.payment_date, "%H:%M:%S %b %e, %Y %Z")
+    rescue
+      Date.new
+    end
+  end
+
   def self.new_from_dynamic_params(params)
     ipn = Ipn.new()
 

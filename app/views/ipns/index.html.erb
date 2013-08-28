@@ -6,7 +6,7 @@
         <th>Item</th>
         <th>Amount</th>
       </tr>
-    <% @ipns.reverse!.each do |ipn| %>
+    <% @ipns.sort_by(&:date_parsed).reverse!.each do |ipn| %>
       <tr>
         <td><%= ipn.payment_date %></td>
         <td><%= ipn.first_name %> <%= ipn.last_name %></td> 
