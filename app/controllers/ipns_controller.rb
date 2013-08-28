@@ -24,6 +24,16 @@ class IpnsController < ApplicationController
     #end
   end
 
+  def import
+    @ipn = Ipn.new_from_dynamic_params(params)
+    @ipn.data = params.to_json
+    @ipn.save
+    redirect_to ipn_path(@ipn)
+    #unless @ipn.validate!
+    #  Rails.logger.error "Unable to validate IPN: #{@ipn.inspect}"
+    #end
+  end
+
   def validate
     if @ipn.validate!
       redirect_to ipns_url, :notice => 'Valid!' 

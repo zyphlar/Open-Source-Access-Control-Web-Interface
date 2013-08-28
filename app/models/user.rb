@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def self.member_levels
-    {25 => "Associate", 50 => "Basic", 100 => "Plus"}
+    {25 => "Associate", 50 => "Basic", 75 => "Basic", 100 => "Plus"}
   end
 
   def member_status
@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
       # There are payments
       if self.payments.count > 0 then
         # They're on time
-        if self.payments.last.date > (DateTime.now - 45.days) 
+        if self.payments.last.date > (DateTime.now - 60.days) 
           flair = "-paid"
         else
           message = "Last Payment #{(DateTime.now - self.payments.last.date).to_i/30} months ago"

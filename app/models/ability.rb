@@ -3,14 +3,20 @@ class Ability
 
   def initialize(user)
     # Anonymous can read mac
-    can :read, Mac
+    today = Date.today
+    event = Date.new(2013,9,1)
+    
+    unless today == event
+      can :read, Mac
+      can :scan, Mac # Need anonymous so CRON can scan
+    end
 
     if !user.nil?
 
       # By default, users can only see their own stuff
       can :read, Card, :user_id => user.id
       can :read, Certification
-      can :read_details, Mac
+      can :read_details, Mac unless today == event
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
       can :read, User, :id => user.id #TODO: why can users update themselves?
