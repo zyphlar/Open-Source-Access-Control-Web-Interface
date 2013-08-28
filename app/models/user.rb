@@ -90,17 +90,18 @@ class User < ActiveRecord::Base
   end
 
   def member_status
-    member_status_calculation[:rank]
+    results = member_status_calculation
+    return results[:rank]
   end
 
   def member_status_symbol
     results = member_status_calculation
-    return "<img src='#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
+    return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
   end
 
   private
 
-  def member_status_calcuation
+  def member_status_calculation
     # Begin output buffer
     message = ""
     icon = ""
@@ -122,7 +123,7 @@ class User < ActiveRecord::Base
     when 10..24
       message = "Volunteer"
       icon = :heart
-      rank = 100
+      rank = 101
     when 25..49
       message = member_level_string
       icon = :copper
@@ -146,7 +147,7 @@ class User < ActiveRecord::Base
         if self.payments.last.date > (DateTime.now - 45.days) 
           flair = "-paid"
         else
-          message = "Last Payment (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
+          message = "Last Payment #{(DateTime.now - self.payments.last.date).to_i/30} months ago"
           rank = rank/10
         end
       else
@@ -155,7 +156,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    return [:message => message, :icon => icon, :flair => flair, :rank => rank]
+    return {:message => message, :icon => icon, :flair => flair, :rank => rank}
   end
 
   def send_new_user_email
