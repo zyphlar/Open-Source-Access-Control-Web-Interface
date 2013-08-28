@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-#ruby '1.9.3'
+ruby '1.9.3'
 
 gem 'rails', '3.2.3'
 
@@ -46,3 +46,5 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 #gem "paperclip", "~> 3.0"
 gem 'gravtastic'
+
+gem 'passenger'

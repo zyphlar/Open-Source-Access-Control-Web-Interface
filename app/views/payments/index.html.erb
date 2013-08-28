@@ -1,7 +1,12 @@
 <h1>Listing payments</h1>
 
-<%= link_to 'New Payment', new_payment_path %>
-<br />
+<p>
+<b>Create Payments:</b>
+<%= link_to 'Manually', new_payment_path %> |
+<%= link_to 'Batched CSV', paypal_csvs_path %> |
+<%= link_to 'IPN', ipns_path %>
+</p>
+
 <table>
   <tr>
     <th>User</th>

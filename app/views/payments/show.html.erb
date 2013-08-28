@@ -35,7 +35,12 @@
 
 <% if @payment.ipn.present? %>
   <p>
-    <%= link_to "Paid via PayPal", @payment.ipn %>
+    <%= link_to "Paid via PayPal (IPN)", @payment.ipn %>
+  </p>
+<% end %>
+<% if @payment.paypal_csv.present? %>
+  <p>
+    <%= link_to "Paid via PayPal (CSV)", @payment.paypal_csv %>
   </p>
 <% end %>
 
