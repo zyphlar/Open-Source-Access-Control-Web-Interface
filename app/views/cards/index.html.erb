@@ -7,7 +7,7 @@
 <b>Most Active Card Last 7 Days:</b> <%= @most_active_card.name unless @most_active_card.blank? %> (<%= @most_active_card.accesses_this_week unless @most_active_card.blank? %> times)
 </p>
 
-<table>
+<table class="lined-table">
   <col />
   <col />
   <col class="col_highlight" />
@@ -32,6 +32,7 @@
       <% if card.user.nil? %>
         n/a
       <% else %>
+        <%= raw(card.user.member_status_symbol) %>
         <%= link_to card.user.name , card %>
       <% end %>
     </td>

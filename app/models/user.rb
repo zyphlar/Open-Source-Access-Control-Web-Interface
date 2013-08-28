@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
 
   def member_status_symbol
     results = member_status_calculation
-    return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
+    return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' class='member-status-symbol' />"
   end
 
   def delinquency
