@@ -5,6 +5,8 @@ def index
   @recent_certs = UserCertification.where("created_at > ?", DateTime.now - 7.days).count
   @num_users = User.count
   @recent_users = User.where("created_at > ?", DateTime.now - 7.days).count
+  @num_paid_users = User.all.select{|u| u.member_status >= 250 }.count
+  @num_delinquent_users = User.all.select{|u| !u.payment_status }.count
   if can? :read, User then
     @recent_user_names = User.where("member_level > 10").accessible_by(current_ability).order('created_at desc').limit(5)
   end

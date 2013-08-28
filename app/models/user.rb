@@ -89,6 +89,11 @@ class User < ActiveRecord::Base
     {25 => "Associate", 50 => "Basic", 75 => "Basic", 100 => "Plus"}
   end
 
+  def payment_status
+    results = payment_status_calculation
+    return results[:paid]
+  end
+
   def member_status
     results = member_status_calculation
     return results[:rank]
@@ -97,6 +102,15 @@ class User < ActiveRecord::Base
   def member_status_symbol
     results = member_status_calculation
     return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' />"
+  end
+
+  def delinquency
+    if self.payments.count > 0
+      paydate = self.payments.maximum(:date)
+      (Date.today - paydate).to_i
+    else
+      (Date.today - self.created_at.to_date).to_i
+    end
   end
 
   private
@@ -112,7 +126,7 @@ class User < ActiveRecord::Base
     case self.member_level.to_i
     when 0..9
       if self.payments.count > 0 then
-        message = "Former Member (#{(DateTime.now - self.payments.last.date).to_i} days ago)"
+        message = "Former Member (#{(DateTime.now - self.payments.maximum(:date)).to_i/30} months ago)"
         icon = :timeout
         rank = 1
       else
@@ -138,26 +152,40 @@ class User < ActiveRecord::Base
       rank = 1000
     end
 
+    payment_results = payment_status_calculation
+    flair = payment_results[:flair]
+    rank = rank/10 unless payment_results[:paid]
+    message = payment_results[:message] unless payment_results[:message].blank?
+    
+    return {:message => message, :icon => icon, :flair => flair, :rank => rank}
+  end
+
+  def payment_status_calculation
+    flair = ""
+    message = ""
+    paid = true
+
     # Second status item is payment status
     case self.member_level.to_i
     when 25..999
       # There are payments
       if self.payments.count > 0 then
         # They're on time
-        if self.payments.last.date > (DateTime.now - 60.days) 
+        if self.payments.maximum(:date) > (DateTime.now - 60.days) 
           flair = "-paid"
+          paid = true
         else
-          message = "Last Payment #{(DateTime.now - self.payments.last.date).to_i/30} months ago"
-          rank = rank/10
+          message = "Last Payment #{(DateTime.now - self.payments.maximum(:date)).to_i/30} months ago"
+          paid = false
         end
       else
         message = "No Payments Recorded"
-        rank = rank/10
+        paid = false
       end
     end
-
-    return {:message => message, :icon => icon, :flair => flair, :rank => rank}
+    return {:message => message, :paid => paid, :flair => flair}
   end
+
 
   def send_new_user_email
     Rails.logger.info UserMailer.new_user_email(self).deliver

@@ -45,6 +45,7 @@ class Ipn < ActiveRecord::Base
     end
     unless response == "VERIFIED"
       Rails.logger.error "Invalid IPN: #{response}" 
+      Rails.logger.error "Data: #{self.data}"
       return false
     end
 
@@ -58,8 +59,8 @@ class Ipn < ActiveRecord::Base
   private
   def create_payment
     # find user by email, then by payee
-    user = User.find_by_email(self.payer_email)
-    user = User.find_by_payee(self.payer_email) if user.nil? && self.payer_email.present?
+    user = User.where("lower(email) = ?", self._from_email_address.downcase).first
+    user = User.where("lower(payee) = ?", self._from_email_address.downcase).first if user.nil? && self._from_email_address.present?
 
     # Only create payments if the IPN matches a member
     if user.present?

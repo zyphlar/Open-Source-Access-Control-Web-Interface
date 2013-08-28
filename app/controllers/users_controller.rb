@@ -33,6 +33,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def inactive
+    @users = @users.all.select{|u| u if u.payment_status == false }.sort_by{ |u| -u.delinquency }
+  end
+ 
   # GET /users/1
   # GET /users/1.json
   def show

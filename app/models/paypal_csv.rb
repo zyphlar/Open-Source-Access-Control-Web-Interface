@@ -38,8 +38,8 @@ class PaypalCsv < ActiveRecord::Base
   private
   def create_payment
     # find user by email, then by payee
-    user = User.find_by_email(self._from_email_address)
-    user = User.find_by_payee(self._from_email_address) if user.nil? && self._from_email_address.present?
+    user = User.where("lower(email) = ?", self._from_email_address.downcase).first
+    user = User.where("lower(payee) = ?", self._from_email_address.downcase).first if user.nil? && self._from_email_address.present?
 
     # Only create payments if the CSV matches a member
     if user.present?

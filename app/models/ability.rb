@@ -35,9 +35,11 @@ class Ability
         can :read, UserCertification
       end 
 
-      # Accountants can manage all
+      # Accountants can manage payments
       if user.accountant?
         can :manage, Payment
+        can :manage, Ipn
+        can :manage, PaypalCsv
       end
 
       # Admins can manage all
