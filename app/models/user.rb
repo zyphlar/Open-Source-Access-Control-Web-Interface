@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :certifications, :through => :user_certifications
   has_many :payments
 
-  validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https))
+  validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https)), :allow_blank => true
 
   after_create :send_new_user_email
 
