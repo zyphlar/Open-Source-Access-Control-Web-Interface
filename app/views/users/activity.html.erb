@@ -1,18 +1,62 @@
 <h1>Recent User Activity</h1>
 
+<h2>New Users</h2>
 <table>
   <tr>
+    <th>Name</th>
+    <th>Member Level</th>
+    <th>Account Created</th>
+    <th>Waiver</th>
+    <th>Orientation</th>
+    <th>Payment</th>
+    <th></th>
+  </tr>
+  
+<% if !@new_users.blank? %>
+  <% @new_users.sort_by(&:created_at).reverse!.each do |user| %>
+  <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= link_to user.name, user %></td>
+    <td><%= user.member_level_string %></td>
+    <td><% if user.created_at.present? %> 
+      <%= distance_of_time_in_words(DateTime.now, user.created_at.to_date)+" ago" %>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+    <td><% if user.waiver.present? %> 
+      <%= distance_of_time_in_words(DateTime.now, user.waiver.to_date)+" ago" %>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+    <td><% if user.orientation.present? %> 
+      <%= distance_of_time_in_words(DateTime.now, user.orientation.to_date)+" ago" %>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+    <td><% if user.payments.present? %> 
+      <%= distance_of_time_in_words(Date.today, user.payments.maximum(:date))+" ago" %>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<h2>Logins</h2>
+<table>
+  <tr>
+    <th>Name</th>
     <th>Current Sign In</th>
     <th>Last Sign In</th>
     <th>Sign In Count</th>
-    <th>Name</th>
     <th>Account Created</th>
     <th></th>
   </tr>
   
-<% if !@users.blank? %>
-  <% @users.sort_by(&:current_sign_in_at).reverse!.each do |user| %>
+<% if !@user_logins.blank? %>
+  <% @user_logins.sort_by(&:current_sign_in_at).reverse!.each do |user| %>
   <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= link_to user.name, user %></td>
     <td><%= distance_of_time_in_words DateTime.now, user.current_sign_in_at %> ago</td>
     <td>
       <% if user.last_sign_in_at != user.current_sign_in_at %>
@@ -20,9 +64,7 @@
       <% end %>
     </td>
     <td><%= user.sign_in_count  %> times</td>
-    <td><%= link_to user.name, user %></td>
     <td><%= distance_of_time_in_words DateTime.now, user.created_at %> ago</td>
-    <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
   </tr>
   <% end %>
 <% end %>

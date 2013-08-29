@@ -40,7 +40,8 @@ class UsersController < ApplicationController
 
   # Recent user activity
   def activity
-    @users = User.where(:last_sign_in_at => 1.month.ago..Date.today)
+    @user_logins = User.where(:last_sign_in_at => 1.month.ago..Date.today)
+    @new_users = User.where(:created_at => 3.months.ago..Date.today)
   end
  
   # GET /users/1
