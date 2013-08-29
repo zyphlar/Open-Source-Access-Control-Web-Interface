@@ -8,6 +8,7 @@
 <% end %>
 <% if current_user.admin? %>
   | <%= link_to 'Inactive Users', users_inactive_path %>
+  | <%= link_to 'Recent Activity', users_activity_path %>
 <% end %>
 <table>
   <col />

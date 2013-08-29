@@ -1,0 +1,30 @@
+<h1>Recent User Activity</h1>
+
+<table>
+  <tr>
+    <th>Current Sign In</th>
+    <th>Last Sign In</th>
+    <th>Sign In Count</th>
+    <th>Name</th>
+    <th>Account Created</th>
+    <th></th>
+  </tr>
+  
+<% if !@users.blank? %>
+  <% @users.sort_by(&:current_sign_in_at).reverse!.each do |user| %>
+  <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= distance_of_time_in_words DateTime.now, user.current_sign_in_at %> ago</td>
+    <td>
+      <% if user.last_sign_in_at != user.current_sign_in_at %>
+        <%= distance_of_time_in_words DateTime.now, user.last_sign_in_at  %> ago
+      <% end %>
+    </td>
+    <td><%= user.sign_in_count  %> times</td>
+    <td><%= link_to user.name, user %></td>
+    <td><%= distance_of_time_in_words DateTime.now, user.created_at %> ago</td>
+    <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+

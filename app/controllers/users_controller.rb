@@ -33,8 +33,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # 'Active' users who haven't paid recently
   def inactive
     @users = @users.all.select{|u| u if u.payment_status == false }.sort_by{ |u| -u.delinquency }
+  end
+
+  # Recent user activity
+  def activity
+    @users = User.where(:last_sign_in_at => 1.month.ago..Date.today)
   end
  
   # GET /users/1

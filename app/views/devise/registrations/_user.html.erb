@@ -1,12 +1,21 @@
 <% if params[:flash] == "welcome_msg" then %>
 <p class="notice"><strong>Thank for you choosing to become a HeatSync Labs member!</strong> As we foster this community of learning, science, and the arts every member is important. <br/><br/>
-You can get your payments started by following the instructions on this page. <strong>Please note electronic recurring payments are -highly- encouraged</strong>-- we do not have staff. If you must pay via cash/check, please consider prepaying for 3, 6 or 12 months up front.<br/><br/>
-<strong>To claim member benefits</strong> such as storage, grab a volunteer during your next stop into HeatSync or schedule a time to meet up in advance. Someone should also be contacting you shortly via the email address you provided.<br/><br/>
+You can get your payments started by clicking the payment button on this page or contacting a HeatSync member. <strong>Please note electronic recurring payments are -highly- encouraged</strong>-- we do not have paid staff. If you must pay via cash/check, please consider prepaying for 3, 6 or 12 months up front to reduce volunteer workload.<br/><br/>
+<strong>To claim member benefits</strong> such as storage, grab a volunteer during your next stop into HeatSync or schedule a time to meet up in advance. Someone should also be contacting you shortly via the email address you provided to schedule a New Member Orientation as well. After the orientation, you'll be equipped to be an awesome member of our community, and this website will get a lot more useful.<br/><br/>
 Please also note that certain privileges like 24/7 card access require community approval.<br/><br/>
 Thanks again, and happy hacking!</p>
 <% end %>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => html) do |f| %>
+  <div class="field">
+    <%= f.label :member_level, "Membership Level" %><br />
+    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate ($25)",25],["Basic ($50)",50],["Plus ($100)",100]]  %>
+  </div>
+
+  <div class="field">
+    <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
+  </div>
+
   <div class="field">
     <%= f.label :name, "Full Name" %><br />
     <%= f.text_field :name %>
@@ -15,12 +24,28 @@ Thanks again, and happy hacking!</p>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email %>
+    <%= f.check_box :email_visible %>
+    <%= f.label :email_visible, "Show Email to All Members?" %>
   </div>
 
   <div class="field">
     <%= f.label :phone %><br />
     <%= f.text_field :phone %>
+    <%= f.check_box :phone_visible %>
+    <%= f.label :phone_visible, "Show Phone to All Members?" %>
   </div>
+
+  <div class="field">
+    <%= f.label :twitter_url %>
+    <%= f.text_field :twitter_url, :placeholder => "https://twitter.com/heatsynclabs" %><br/>
+    <%= f.label :facebook_url %>
+    <%= f.text_field :facebook_url, :placeholder => "https://www.facebook.com/HeatSyncLabs" %><br/>
+    <%= f.label :github_url %>
+    <%= f.text_field :github_url, :placeholder => "https://github.com/heatsynclabs" %><br/>
+    <%= f.label :website_url %>
+    <%= f.text_field :website_url, :placeholder => "http://www.heatsynclabs.org" %>
+  </div>
+
   <div class="field">
     <%= f.label :emergency_name, "Emergency Contact Name" %><br />
     <%= f.text_field :emergency_name %>
@@ -32,13 +57,6 @@ Thanks again, and happy hacking!</p>
   <div class="field">
     <%= f.label :emergency_email %><br />
     <%= f.text_field :emergency_email %>
-  </div>
-  <div class="field">
-    <%= f.label :member_level, "Membership Level" %><br />
-    <%= f.select :member_level, [[nil],["None",0],["Unable",1],["Volunteer",10],["Associate ($25)",25],["Basic ($50)",50],["Plus ($100)",100]]  %>
-  </div>
-  <div class="field">
-    <%= render :partial => "/users/payment_methods", :locals => { :g => f } %>
   </div>
   <div class="field">
     <%= f.label :current_skills, "What skills, knowledge and experience do you bring to the community?" %><br />
