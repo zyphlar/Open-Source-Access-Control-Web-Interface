@@ -9,8 +9,10 @@
 
 <table>
   <tr>
+    <th>Payee</th>
     <th>User</th>
-    <th>Paid for month <br/>beginning</th>
+    <th>Member level</th>
+    <th>Last Payment</th>
     <th>Amount</th>
     <th></th>
     <th></th>
@@ -19,8 +21,10 @@
 
 <% @payments.each do |payment| %>
   <tr>
-    <td><%= link_to payment.user.name_with_payee_and_member_level, payment.user unless payment.user.blank? %></td>
-    <td><%= payment.human_date %></td>
+    <td><%= payment.user.payee unless payment.user.blank? %></td>
+    <td><%= link_to payment.user.name, payment.user unless payment.user.blank? %></td>
+    <td><%= payment.user.member_level_string unless payment.user.blank? %></td>
+    <td><%= payment.date %></td>
     <td><%= payment.amount %></td>
     <td><%= link_to 'Details', payment %></td>
     <td><%= link_to 'Edit', edit_payment_path(payment) %></td>

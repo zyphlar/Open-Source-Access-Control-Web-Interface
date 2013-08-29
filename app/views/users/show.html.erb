@@ -1,18 +1,35 @@
 <%= image_tag @user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png") %>
 
 <p>
+  <%= raw(@user.member_status_symbol) %>
+  <%= link_to image_tag 'twitter.png', @user.twitter_url if @user.twitter_url.present? %>
+  <%= link_to image_tag 'facebook.png', @user.facebook_url if @user.facebook_url.present? %>
+  <%= link_to image_tag 'github.png', @user.github_url if @user.github_url.present? %>
+  <%= link_to image_tag 'website.png', @user.website_url if @user.website_url.present? %>
+</p>
+
+<p>
   <b>Name:</b>
   <%= @user.name %>
 </p>
 
+<% if current_user.admin? || @user.email_visible %>
+  <p>
+    <b>Email:</b>
+    <%= @user.email %>
+  </p>
+<% end %>
+
+<% if current_user.admin? || @user.phone_visible %>
+  <p>
+    <b>Phone:</b>
+    <%= @user.phone %>
+  </p>
+<% end %>
+
 <p>
   <b>Waiver?</b>
   <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
-</p>
-
-<p>
-  <b>Current Member?</b>
-  <%= raw(@user.member_status_symbol) %>
 </p>
 
 <p>
@@ -21,11 +38,6 @@
 </p>
 
 <% if current_user.admin? then %>
-<p>
-  <b>Email:</b>
-  <%= @user.email %>
-</p>
-
 <p>
   <b>Orientation?</b>
   <%= @user.orientation.strftime("%B %d %Y") unless @user.orientation.blank? %>
@@ -44,7 +56,7 @@
   </p>
   <p>
     <b>Desired Member Level:</b>
-    <%= @user.member_level %>
+    <%= @user.member_level_string %>
   </p>
   <p>
     <b>Payment Method:</b>
@@ -53,10 +65,6 @@
   <p>
     <b>Payee:</b>
     <%= @user.payee %>
-  </p>
-  <p>
-    <b>Phone:</b>
-    <%= @user.phone %>
   </p>
 <% end %>
   <p>
@@ -71,6 +79,10 @@
   <p>
     <b>Found HeatSync via:</b>
     <%= simple_format @user.marketing_source %>
+  </p>
+  <p>
+    <b>Left HeatSync because:</b>
+    <%= simple_format @user.exit_reason %>
   </p>
 <% end %>
 <p>
@@ -94,16 +106,24 @@
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
 
-<% if current_user.admin? then %>
 <p>
-  <b>Payments:</b>
-  <ul>
-  <% @payments.each do |payment| %>
-    <li><%= payment.date %></li>
+  <% if current_user.admin? then %>
+    <b>Payments:</b>
+    <ul>
+    <% @payments.each do |payment| %>
+      <li><%= link_to payment.date, payment %></li>
+    <% end %>
+    </ul>
+  <% else %>
+    <b>Last Payment:</b>
+    <% last_payment = @user.delinquency %>
+    <% if last_payment < 30 %>
+      Less than a month ago
+    <% else %>
+      <%= last_payment/30 %> months ago
+    <% end %>
   <% end %>
-  </ul>
 </p>
-<% end %>
 
 <% if current_user.admin? then %>
 <p>

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130828104240) do
+ActiveRecord::Schema.define(:version => 20130829074549) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -155,6 +156,13 @@ ActiveRecord::Schema.define(:version => 20130828104240) do
     t.string   "marketing_source"
     t.string   "payee"
     t.boolean  "accountant"
+    t.string   "exit_reason"
+    t.string   "twitter_url"
+    t.string   "facebook_url"
+    t.string   "github_url"
+    t.string   "website_url"
+    t.boolean  "email_visible"
+    t.boolean  "phone_visible"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

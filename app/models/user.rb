@@ -9,12 +9,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :admin, :instructor, :member, :emergency_name, :emergency_phone, :current_skills, :desired_skills, :waiver, :emergency_email, :phone, :payment_method, :orientation, :member_level, :certifications, :hidden, :marketing_source, :payee, :accountant #TODO: make admin/instructor/member/etc not accessible
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :admin, :instructor, :member, :emergency_name, :emergency_phone, :current_skills, :desired_skills, :waiver, :emergency_email, :phone, :payment_method, :orientation, :member_level, :certifications, :hidden, :marketing_source, :payee, :accountant, :exit_reason, :twitter_url, :facebook_url, :github_url, :website_url, :email_visible, :phone_visible #TODO: make admin/instructor/member/etc not accessible
 
   has_many :cards
   has_many :user_certifications
   has_many :certifications, :through => :user_certifications
   has_many :payments
+
+  validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https))
 
   after_create :send_new_user_email
 
@@ -45,6 +47,7 @@ class User < ActiveRecord::Base
     user_to_absorb.payments.each {|payment|
       Rails.logger.info "PAYMENT BEFORE: "+payment.inspect
       payment.user_id = self.id
+      payment.amount = 0 if payment.amount.nil? # Bypass validation on amount
       payment.save!
       Rails.logger.info "PAYMENT AFTER: "+payment.inspect
     }
@@ -102,6 +105,10 @@ class User < ActiveRecord::Base
   def member_status_symbol
     results = member_status_calculation
     return "<img src='/#{results[:icon]}#{results[:flair]}-coin.png' title='#{results[:message]}' class='member-status-symbol' />"
+  end
+
+  def last_payment_date
+    self.payments.maximum(:date)
   end
 
   def delinquency
