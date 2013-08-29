@@ -1,6 +1,6 @@
 <h1>User Certifications</h1>
 
-<%= link_to 'New User Certification', new_user_certification_path %>
+<%= link_to 'New User Certification', new_user_certification_path if can? :create, UserCertification %>
 
   <% @grouped_user_certs.sort.each do |cert, user_certifications| %>
   <dl class="collapsible">

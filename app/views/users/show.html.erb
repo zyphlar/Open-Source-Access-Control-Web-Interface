@@ -1,16 +1,13 @@
+<h2><%= @user.name %></h2>
+
 <%= image_tag @user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png") %>
 
 <p>
   <%= raw(@user.member_status_symbol) %>
-  <%= link_to image_tag 'twitter.png', @user.twitter_url if @user.twitter_url.present? %>
-  <%= link_to image_tag 'facebook.png', @user.facebook_url if @user.facebook_url.present? %>
-  <%= link_to image_tag 'github.png', @user.github_url if @user.github_url.present? %>
-  <%= link_to image_tag 'website.png', @user.website_url if @user.website_url.present? %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%= @user.name %>
+  <%= link_to image_tag('/twitter.png', :class => 'social-icon', :title => "Twitter"), @user.twitter_url, :class => 'social-link' if @user.twitter_url.present? %>
+  <%= link_to image_tag('/facebook.png', :class => 'social-icon', :title => "Facebook"), @user.facebook_url, :class => 'social-link' if @user.facebook_url.present? %>
+  <%= link_to image_tag('/github.png', :class => 'social-icon', :title => "Github"), @user.github_url, :class => 'social-link' if @user.github_url.present? %>
+  <%= link_to image_tag('/website.png', :class => 'social-icon', :title => "Website"), @user.website_url, :class => 'social-link' if @user.website_url.present? %>
 </p>
 
 <% if current_user.admin? || @user.email_visible %>
@@ -26,16 +23,14 @@
     <%= @user.phone %>
   </p>
 <% end %>
-
-<p>
-  <b>Waiver?</b>
-  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
-</p>
-
-<p>
-  <b>Instructor?</b>
-  <%= @user.instructor? %>
-</p>
+ <p>
+    <b>Current Skills:</b>
+    <%= simple_format @user.current_skills %>
+  </p>
+  <p>
+    <b>Desired Skills:</b>
+    <%= simple_format @user.desired_skills %>
+  </p>
 
 <% if current_user.admin? then %>
 <p>
@@ -67,14 +62,7 @@
     <%= @user.payee %>
   </p>
 <% end %>
-  <p>
-    <b>Current Skills:</b>
-    <%= simple_format @user.current_skills %>
-  </p>
-  <p>
-    <b>Desired Skills:</b>
-    <%= simple_format @user.desired_skills %>
-  </p>
+
 <% if current_user.admin? then %>
   <p>
     <b>Found HeatSync via:</b>
@@ -85,6 +73,14 @@
     <%= simple_format @user.exit_reason %>
   </p>
 <% end %>
+
+<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, UserCertification %>
+<ul>
+  <% @user.certifications.each do |certification| %>
+    <li><%= link_to certification.name, certification %></li>
+  <% end %>
+  <% if @user.certifications.blank? %><li>n/a</li><% end %>
+</ul>
 <p>
   <b>Card:  </b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, Card %>
   <% if current_user.admin? then %>
@@ -97,14 +93,6 @@
     <%= unless @user.cards.blank? then raw("&#x2713;") end %>
   <% end %>
 </p>
-
-<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, UserCertification %>
-<ul>
-  <% @user.certifications.each do |certification| %>
-    <li><%= link_to certification.name, certification %></li>
-  <% end %>
-  <% if @user.certifications.blank? %><li>n/a</li><% end %>
-</ul>
 
 <p>
   <% if current_user.admin? then %>
@@ -124,6 +112,17 @@
     <% end %>
   <% end %>
 </p>
+ 
+<p>
+  <b>Waiver?</b>
+  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
+</p>
+
+<p>
+  <b>Instructor?</b>
+  <%= @user.instructor? %>
+</p>
+
 
 <% if current_user.admin? then %>
 <p>
