@@ -1,14 +1,13 @@
-<h2><%= @user.name %></h2>
-
-<%= image_tag @user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png") %>
-
-<p>
+<h2>
+  <%= image_tag @user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png"), :class => 'avatar-large' %>
+  <%= @user.name %>
   <%= raw(@user.member_status_symbol) %>
   <%= link_to image_tag('/twitter.png', :class => 'social-icon', :title => "Twitter"), @user.twitter_url, :class => 'social-link' if @user.twitter_url.present? %>
   <%= link_to image_tag('/facebook.png', :class => 'social-icon', :title => "Facebook"), @user.facebook_url, :class => 'social-link' if @user.facebook_url.present? %>
   <%= link_to image_tag('/github.png', :class => 'social-icon', :title => "Github"), @user.github_url, :class => 'social-link' if @user.github_url.present? %>
   <%= link_to image_tag('/website.png', :class => 'social-icon', :title => "Website"), @user.website_url, :class => 'social-link' if @user.website_url.present? %>
-</p>
+</h2>
+
 
 <% if current_user.admin? || @user.email_visible %>
   <p>
