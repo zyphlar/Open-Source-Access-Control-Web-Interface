@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
 
     #@admins = User.where(:name => "Will Bradley")
     #@admins.each do |admin|
-      mail(:to => 'info@heatsynclabs.org', :subject => "New HSL Member: "+user.name)
+      mail(:to => 'member-notifications@heatsynclabs.org', :subject => "New HSL Member: "+user.name)
     #end
   end
 end
