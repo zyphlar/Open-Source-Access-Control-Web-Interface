@@ -9,6 +9,7 @@
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
+/db/*.sqlite3.*
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
@@ -17,5 +18,7 @@
 # Ignore compiled assets
 /public/assets
 
-# Ignore config file
+# Ignore config and database files (passwords)
 /config/config.yml
+/config/database.yml
+/config/initializers/secret_token.rb

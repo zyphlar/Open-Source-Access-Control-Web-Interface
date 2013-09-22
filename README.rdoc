@@ -10,6 +10,8 @@ Distributed under a Creative Commons Attribution 3.0 license http://creativecomm
 
 To use:
 * Load into a Rails 3 environment
-* Rename config/config.yml.example to config/config.yml and edit appropriately
+* Copy config/config.yml.example to config/config.yml and edit appropriately
+* Copy config/database.yml.example to config/database.yml and edit appropriately
+* Copy config/initializers/secret_token.rb.example to config/config/initializers/secret_token.rb and edit appropriately
 * Use the Rails console to create a new User and set user.admin = true
 * Run bundle install, rake db:migrate, etc.

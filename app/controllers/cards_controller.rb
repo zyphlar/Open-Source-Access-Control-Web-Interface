@@ -16,7 +16,7 @@ class CardsController < ApplicationController
       @cards.each do |card|
         card_num_R = card.card_number.to_i(16)%32767
         Rails.logger.info card_num_R
-        card[:accesses_this_week] = DoorLog.where('key = "G" AND data =? AND created_at > ?', card_num_R, DateTime.now - 7.days).order("created_at DESC").count
+        card[:accesses_this_week] = DoorLog.where("key = ? AND data = ? AND created_at > ?", 'G', card_num_R, DateTime.now - 7.days).order("created_at DESC").count
         Rails.logger.info card[:accesses_this_week]
         if(card[:accesses_this_week] > most_active_count) then 
           Rails.logger.info "ACTIVE"
@@ -37,7 +37,7 @@ class CardsController < ApplicationController
   def show
     if can? :read, DoorLog then
       card_num_R = @card.card_number.to_i(16)%32767
-      @door_logs = DoorLog.where('key = "R" AND data =?', card_num_R).order("created_at DESC")
+      @door_logs = DoorLog.where('key = ? AND data = ?', "R", card_num_R).order("created_at DESC")
     end
     respond_to do |format|
       format.html # show.html.erb

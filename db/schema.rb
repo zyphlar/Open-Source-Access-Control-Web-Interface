@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130829074549) do
+ActiveRecord::Schema.define(:version => 20130922064241) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -146,14 +146,14 @@ ActiveRecord::Schema.define(:version => 20130829074549) do
     t.string   "emergency_name"
     t.string   "emergency_phone"
     t.string   "emergency_email"
-    t.string   "member_level"
+    t.integer  "member_level",           :limit => 255
     t.string   "payment_method"
     t.string   "phone"
-    t.string   "current_skills"
-    t.string   "desired_skills"
+    t.text     "current_skills"
+    t.text     "desired_skills"
     t.boolean  "instructor"
     t.boolean  "hidden"
-    t.string   "marketing_source"
+    t.text     "marketing_source"
     t.string   "payee"
     t.boolean  "accountant"
     t.string   "exit_reason"
