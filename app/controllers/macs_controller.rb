@@ -26,7 +26,7 @@ def index
   elsif user_signed_in? then
     @active_macs = Mac.where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).includes(:user).order("users.name ASC").group("users.name")
   else
-    @active_macs = Mac.select("mac, note, user_id").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user).order("users.name ASC").group("users.name")
+    @active_macs = Mac.select("mac, note, user_id").where("macs.active = ? AND (macs.hidden IS NULL OR macs.hidden = ?)", true, false).joins(:user).order("users.name ASC").group("users.name, mac, note, user_id")
   end
 
   @hidden_macs = Mac.where("macs.active = ? AND macs.hidden = ?", true, true).order("note ASC")
