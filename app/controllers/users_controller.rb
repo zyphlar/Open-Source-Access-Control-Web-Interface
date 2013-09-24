@@ -2,14 +2,24 @@ class UsersController < ApplicationController
   load_and_authorize_resource
   before_filter :authenticate_user!
 
+  def sort_by_cert(certs,id)
+    result = 0
+    certs.each do |c|
+      if c.id == id
+        result = 1
+      end
+    end
+    return result
+  end
+
   # GET /users
   # GET /users.json
   def index
     case params[:sort]
     when "name"
       @users = @users.sort_by(&:name)
-    when "certifications"
-      @users = @users.sort_by{ |u| [-u.certifications.count,u.name] }
+    when "cert"
+      @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
     when "orientation"
       @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
     when "waiver"

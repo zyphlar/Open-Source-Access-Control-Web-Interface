@@ -10,30 +10,37 @@
   | <%= link_to 'Inactive Users', users_inactive_path %>
   | <%= link_to 'Recent Activity', users_activity_path %>
 <% end %>
+<% @certifications = Certification.all.sort_by(&:id) %>
 <table>
   <col />
   <col />
   <% if current_user.admin? then %><col /><% end %>
-  <col />
+  <col class="col_highlight" />
   <% if current_user.admin? %><col />
   <col class="col_highlight" /><% end %>
   <col />
   <col class="col_highlight" />
   <col />
-  <col class="col_highlight" />
+  <% col_count = 0 %>
+  <% @certifications.each do |c| %>
+    <col <% if col_count.even? %>class="col_highlight"<% end %> />
+    <% col_count = col_count + 1 %>
+  <% end %>
   <tr>
     <th></th>
     <th><a href="?sort=name">Name</a></th>
+    <th><a href="?sort=member">Member?</a></th>
     <% if current_user.admin? then %><th><a href="?sort=email">Email</a></th><% end %>
-    <th><a href="?sort=certifications">Certifications</a></th>
     <% if current_user.admin? then %>
     <th><a href="?sort=orientation">Orientation?</a></th>
     <% end %>
     <th><a href="?sort=waiver">Waiver?</a></th>
-    <th><a href="?sort=member">Member?</a></th>
     <th><a href="?sort=card">Card?</a></th>
     <th><a href="?sort=instructor">Instructor?</a></th>
     <% if current_user.admin? then %><th><a href="?sort=admin">Admin?</a></th><% end %>
+    <% @certifications.each do |c| %>
+      <th><a href="?sort=cert&cert=<%= c.id %>"><%= c.name %></a></th>
+    <% end %>
     <th></th>
     <th></th>
   </tr>
@@ -43,18 +50,24 @@
   <tr<%= " class='hidden'" if user.hidden? %>>
     <td><%= image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png"), :class => :avatar %></td>
     <td><%= link_to user.name, user %></td>
+    <td><%= raw(user.member_status_symbol) %></td>
     <% if current_user.admin? then %><td><%= user.email %></td><% end %>
-    <td><% user.certifications.each do |c| %>
-      <%= link_to c.name, c %><%= "," unless c.id == user.certifications.last.id %>
-    <% end %></td>
     <% if current_user.admin? then %><td>
       <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
     </td><% end %>
     <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
-    <td><%= raw(user.member_status_symbol) %></td>
     <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
     <td><%= if user.instructor? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
     <% if current_user.admin? then %><td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td><% end %>
+    <% @certifications.each do |c| %>
+    <td>
+      <% user.user_certifications.each do |u| %>
+        <% if u.certification_id == c.id %>
+          <%= link_to raw("<span class='iconinfo'>&#x2713;</span>"), u %>
+        <% end %>
+      <% end %>
+    </td>
+    <% end %>
     <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
   </tr>
