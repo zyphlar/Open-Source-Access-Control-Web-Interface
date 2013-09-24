@@ -1,6 +1,10 @@
-<h1>Recent User Activity</h1>
+<h1>Member Onboarding/Activity</h1>
+<a href="#new_users">New Users</a> | 
+<a href="#members_without_cards">Members Without Cards</a> | 
+<a href="#logins">Logins</a>
 
-<h2>New Users</h2>
+
+<h2><a name="new_users"></a>New Users</h2>
 <table>
   <tr>
     <th>Name</th>
@@ -42,7 +46,47 @@
 <% end %>
 </table>
 
-<h2>Logins</h2>
+<h2><a name="members_without_cards"></a>Basic+ Members Without Cards</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Account Created</th>
+    <th>Member Level</th>
+    <th>Payment</th>
+    <th>Card</th>
+    <th></th>
+  </tr>
+
+<% if !@cardless_users.blank? %>
+  <% @cardless_users.sort_by(&:created_at).reverse!.each do |user| %>
+  <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= link_to user.name, user %></td>
+    <td><%= distance_of_time_in_words DateTime.now, user.created_at %> ago</td>
+    <td><%= user.member_level_string %></td>
+    <td><% if user.payments.present? %> 
+      <% last_payment = user.payments.maximum(:date) %>
+      <% if Date.today-last_payment > 60 %>
+        <span class="alert">
+      <% else %>
+        <span class="notice">
+      <% end %>
+      <%= distance_of_time_in_words(Date.today, user.payments.maximum(:date))+" ago" %>
+      </span>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+    <td><% if user.cards.present? %>
+      <span class="notice">&check;</span>
+    <% else %>
+      <span class="alert">&times;</span>
+    <% end %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+
+<h2><a name="logins"></a>Logins</h2>
 <table>
   <tr>
     <th>Name</th>

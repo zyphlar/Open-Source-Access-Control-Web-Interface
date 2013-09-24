@@ -42,6 +42,7 @@ class UsersController < ApplicationController
   def activity
     @user_logins = User.where(:last_sign_in_at => 1.month.ago..Date.today)
     @new_users = User.where(:created_at => 3.months.ago..Date.today)
+    @cardless_users = User.includes('cards').where(['users.member_level >= ?','50']).where('cards.id IS NULL')
   end
  
   # GET /users/1

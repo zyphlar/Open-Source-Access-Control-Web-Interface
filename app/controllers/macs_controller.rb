@@ -9,7 +9,7 @@ rescue_from CanCan::AccessDenied do |exception|
     redirect_to main_app.root_url, :alert => "Nothing to see here!"
   end
 end
-load_and_authorize_resource :mac
+load_and_authorize_resource :mac, :except => :create
 load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
 #require "active_record"
@@ -80,26 +80,34 @@ end
   end
 
   # POST /macs
-  # POST /user
   def create
     @mac = Mac.new(params[:mac])
-    authorize! :update, @mac
-
-    if can? :manage, Mac then
-      @users = User.accessible_by(current_ability).sort_by(&:name)
-    else 
-      @users = [current_user]
-    end
-
-    respond_to do |format|
-      if @mac.save
-        format.html { redirect_to macs_path, :notice => 'Mac was successfully created.' }
-        format.json { render :json => @mac, :status => :created, :location => @mac }
+    @existing_mac = Mac.find_by_mac(@mac.mac)
+        if can? :manage, Mac then
+          @users = User.accessible_by(current_ability).sort_by(&:name)
+        else 
+          @users = [current_user]
+        end
+ 
+      if @existing_mac.present?
+        if @existing_mac.user_id.nil?
+          redirect_to edit_mac_path(@existing_mac), :notice => 'This MAC already exists, edit it here:'
+        else
+@mac.errors.add(:user,"for this MAC is already set to #{@existing_mac.user.name} -- please contact them or an admin if this is incorrect.")
+          render :action => "new"
+        end
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @mac.errors, :status => :unprocessable_entity }
+ 
+        respond_to do |format|
+          if @mac.save
+            format.html { redirect_to macs_path, :notice => 'MAC was successfully created.' }
+            format.json { render :json => @mac, :status => :created, :location => @mac }
+          else
+            format.html { render :action => "new" }
+            format.json { render :json => @mac.errors, :status => :unprocessable_entity }
+          end
+        end
       end
-    end
   end
 
   # PUT /macs/1
@@ -119,7 +127,7 @@ end
 
     respond_to do |format|
       if @mac.save
-        format.html { redirect_to macs_path, :notice => 'Mac was successfully updated.' }
+        format.html { redirect_to macs_path, :notice => 'MAC was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

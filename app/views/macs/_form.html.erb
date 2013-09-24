@@ -1,7 +1,7 @@
 <%= form_for(@mac) do |f| %>
   <% if @mac.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@mac.errors.count, "error") %> prohibited this Mac from being saved:</h2>
+      <h2><%= pluralize(@mac.errors.count, "error") %> prohibited this MAC from being saved:</h2>
 
       <ul>
       <% @mac.errors.full_messages.each do |msg| %>

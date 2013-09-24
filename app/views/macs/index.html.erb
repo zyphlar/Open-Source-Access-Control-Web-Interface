@@ -29,7 +29,7 @@ Rails.logger.info mac.inspect %>
 <% end %>
 
 <% if can? :manage, Mac %>
-<h3>All Macs</h3>
+<h3>All MACs</h3>
 <table>
 <% @all_macs.each do |mac| %>
 <tr <%= raw('class="hidden"') if mac.hidden? %>>
