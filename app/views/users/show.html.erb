@@ -93,6 +93,14 @@
   <% end %>
 </p>
 
+<b>Computers: </b><%= link_to "+ Add", new_mac_path, :class => 'btn' if can? :create, Mac %>
+<ul>
+  <% @user.macs.each do |mac| %>
+    <li><%= link_to mac.mac, mac %></li>
+  <% end %>
+  <% if @user.macs.blank? %><li>n/a</li><% end %>
+</ul>
+
 <p>
   <% if current_user.admin? then %>
     <b>Payments:</b>

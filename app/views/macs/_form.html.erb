@@ -17,7 +17,8 @@
   </div>
   <div class="field">
     <%= f.label :mac %><br />
-    <%= f.text_field :mac %>
+    <%= f.text_field :mac, :value => (@mac.mac || @arp || nil) %>
+    <% if @arp.present? %><br/><em>Autodetected from your IP of <%= @ip %></em><% end %>
   </div>
   <div class="field">
     <%= f.label :note %><br />

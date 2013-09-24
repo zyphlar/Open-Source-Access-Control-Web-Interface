@@ -12,6 +12,8 @@ end
 load_and_authorize_resource :mac, :except => :create
 load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
+before_filter :arp_lookup, :only => :new
+
 #require "active_record"
 require "optparse"
 #require "rubygems"
@@ -136,7 +138,10 @@ end
     end
   end
 
-
+def arp_lookup
+  @ip = request.env['REMOTE_ADDR']
+  @arp = %x(/usr/sbin/arp -a | grep #{@ip})
+end
 
 def scan
 Rails.logger.info "starting scan..."
