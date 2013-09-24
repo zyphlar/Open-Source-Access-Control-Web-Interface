@@ -16,22 +16,22 @@
 
 <% if resource.payment_method == "Dwolla" %>
 <h3>Dwolla Payment Link</h3>
-  <% if resource.member_level == "25" %>
+  <% if resource.member_level == 25 %>
     <strong>Associate Membership ($25/mo):</strong>
-    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Associate Membership" data-desc="$25/month membership" data-amount="25" data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
-  <% elsif resource.member_level == "50" %>
+    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Associate Membership" data-desc="$25/month membership" data-amount=25 data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
+  <% elsif resource.member_level == 50 %>
     <strong>Basic Membership ($50/mo):</strong>
-    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Basic Membership" data-desc="$50/month membership" data-amount="50" data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
-  <% elsif resource.member_level == "100" %>
+    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Basic Membership" data-desc="$50/month membership" data-amount=50 data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
+  <% elsif resource.member_level == 100 %>
     <strong>Plus Membership ($100/mo):</strong>
-    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Plus Membership" data-desc="$100/month membership" data-amount="100" data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
+    <a href="http://members.heatsynclabs.org/users/edit" class="dwolla_button" data-name="Plus Membership" data-desc="$100/month membership" data-amount=100 data-shipping="0" data-tax="0" data-key="8nMi2WmI7F8uXVlSNNDmX2o2Cgh9Af8dfJGIrd7ZrgyjNfLIxj">Subscribe</a>
   <% else %>
     Hmm, your membership level doesn't appear to be at $25/50/100...
   <% end %>
 <script type="text/javascript" src="https://www.dwolla.com/scripts/button.min.js"> </script>
 <% elsif resource.payment_method == "PayPal" %>
 <h3>PayPal Payment Link</h3>
-  <% if resource.member_level == "25" %>
+  <% if resource.member_level == 25 %>
     <strong>Associate Membership ($25/mo):</strong>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
     <input type="hidden" name="cmd" value="_s-xclick">
@@ -39,7 +39,7 @@
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
     </form>
-  <% elsif resource.member_level == "50" %>
+  <% elsif resource.member_level == 50 %>
     <strong>Basic Membership ($50/mo):</strong>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
     <input type="hidden" name="cmd" value="_s-xclick">
@@ -47,7 +47,7 @@
     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
     </form>
-  <% elsif resource.member_level == "100" %>
+  <% elsif resource.member_level == 100 %>
     <strong>Plus Membership ($100/mo):</strong>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
     <input type="hidden" name="cmd" value="_s-xclick">
