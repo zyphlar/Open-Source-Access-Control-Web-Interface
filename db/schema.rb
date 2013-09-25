@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130922064241) do
+ActiveRecord::Schema.define(:version => 20130925015417) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -127,26 +127,26 @@ ActiveRecord::Schema.define(:version => 20130922064241) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",                    :default => "", :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.boolean  "admin"
-    t.integer  "member",                 :limit => 255
+    t.integer  "member"
     t.datetime "waiver"
     t.datetime "orientation"
     t.string   "emergency_name"
     t.string   "emergency_phone"
     t.string   "emergency_email"
-    t.integer  "member_level",           :limit => 255
+    t.integer  "member_level"
     t.string   "payment_method"
     t.string   "phone"
     t.text     "current_skills"
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(:version => 20130922064241) do
     t.text     "marketing_source"
     t.string   "payee"
     t.boolean  "accountant"
-    t.string   "exit_reason"
+    t.text     "exit_reason"
     t.string   "twitter_url"
     t.string   "facebook_url"
     t.string   "github_url"
