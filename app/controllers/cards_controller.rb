@@ -10,20 +10,17 @@ class CardsController < ApplicationController
     @cards = @cards.sort_by{|e| e[:id]}
 
     if can? :read, DoorLog then
-     Rails.logger.info "CARD STATS:"
       most_active_count = 0
+      runner_up_count = 0
       @most_active_card = nil
+      @runner_up_card = nil
       @cards.each do |card|
         card_num_R = card.card_number.to_i(16)%32767
-        Rails.logger.info card_num_R
-        card[:accesses_this_week] = DoorLog.where("key = ? AND data = ? AND created_at > ?", 'G', card_num_R, DateTime.now - 7.days).order("created_at DESC").count
-        Rails.logger.info card[:accesses_this_week]
-        if(card[:accesses_this_week] > most_active_count) then 
-          Rails.logger.info "ACTIVE"
-          most_active_count = card[:accesses_this_week]
-          @most_active_card = card
-        end
+        card[:accesses_this_week] = DoorLog.where("key = ? AND data = ? AND created_at > ?", 'G', card_num_R, DateTime.now - 1.month).order("created_at DESC").group_by { |d| d.created_at.beginning_of_day }.count
       end
+      @most_active_cards = @cards.sort{|a,b| b[:accesses_this_week] <=> a[:accesses_this_week]}
+      @most_active_card = @most_active_cards[0]
+      @runner_up_card = @most_active_cards[1]
     end
 
     respond_to do |format|
