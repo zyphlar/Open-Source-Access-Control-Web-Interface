@@ -40,7 +40,21 @@ $(function() {
       }],
       tooltip: {
           shared: true,
-          xDateFormat: '%B %Y'
+          xDateFormat: '%B %Y',
+          formatter: function() {
+            console.log(this);
+            output = '<b>'+ Highcharts.dateFormat(this.points[0].series.tooltipOptions.xDateFormat,this.x) +'</b><br/>';
+            total = 0;
+            this.points.forEach(function(e,i,a){
+              console.log(e);
+              output += '<span style="color:'+e.series.color+'">'+e.series.name +'</span>: '+ (e.series.tooltipOptions.valuePrefix||"") + Highcharts.numberFormat(e.y,0,".",",") +'<br/>';
+              if(i < 2){
+                total += e.y;
+              }
+            });
+            output += '<b>Total:</b> '+(this.points[0].series.tooltipOptions.valuePrefix||"")+ Highcharts.numberFormat(total,0,".",",");
+            return output;
+          }
       },
       plotOptions: {
           area: {
