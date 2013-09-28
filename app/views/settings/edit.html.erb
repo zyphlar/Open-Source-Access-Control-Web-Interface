@@ -1,0 +1,18 @@
+<script type="text/javascript" src="/wymeditor/wymeditor/jquery.wymeditor.min.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('.wysiwyg').wymeditor();
+});
+</script>
+<%= form_tag(setting_path(@setting[:var]), :method => :put) do %>
+  <h3>Editing <%= @setting[:var].titleize %></h3>
+  <div class="field">
+    <%= text_area_tag :value, @setting[:value], :cols => 50, :class => "wysiwyg" %><br/>
+    <em>Use %{provider_name} or %{client_name} to include names in messages.</em>
+  </div>
+
+  <div class="field">
+    <%= submit_tag "Save", {:class => "wymupdate"} %><br/>
+    <%= link_to "Back", settings_path %>
+  </div>
+<% end %>

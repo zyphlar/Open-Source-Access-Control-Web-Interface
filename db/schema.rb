@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925015417) do
+ActiveRecord::Schema.define(:version => 20130928112252) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -116,6 +116,17 @@ ActiveRecord::Schema.define(:version => 20130925015417) do
     t.datetime "updated_at",           :null => false
   end
 
+  create_table "settings", :force => true do |t|
+    t.string   "var",                      :null => false
+    t.text     "value"
+    t.integer  "thing_id"
+    t.string   "thing_type", :limit => 30
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "settings", ["thing_type", "thing_id", "var"], :name => "index_settings_on_thing_type_and_thing_id_and_var", :unique => true
+
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"
     t.integer  "certification_id"
@@ -127,26 +138,26 @@ ActiveRecord::Schema.define(:version => 20130925015417) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",                    :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.boolean  "admin"
-    t.integer  "member"
+    t.integer  "member",                 :limit => 255
     t.datetime "waiver"
     t.datetime "orientation"
     t.string   "emergency_name"
     t.string   "emergency_phone"
     t.string   "emergency_email"
-    t.integer  "member_level"
+    t.integer  "member_level",           :limit => 255
     t.string   "payment_method"
     t.string   "phone"
     t.text     "current_skills"

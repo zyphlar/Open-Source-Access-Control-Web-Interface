@@ -44,9 +44,11 @@ Dooraccess::Application.routes.draw do
   match 'macs/scan' => 'macs#scan'
   match 'macs/import' => 'macs#import'
   resources :macs
-
   resources :mac_logs
 
+  resources :settings, :only => [:index, :edit, :update]
+
+  match 'more_info' => 'home#more_info'
   root :to => "home#index"
 
   # The priority is based upon order of creation:

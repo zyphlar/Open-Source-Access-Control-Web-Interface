@@ -20,55 +20,57 @@ require "optparse"
 
 def index
   recent_mac_logs_ungrouped = MacLog.last(1000)
-  @mac_time_start_date = recent_mac_logs_ungrouped.first.created_at
-  recent_mac_logs = recent_mac_logs_ungrouped.group_by(&:mac)
-  @mac_times = {}
-  # Go thru each mac
-  recent_mac_logs.each do |mac_log|
-    last_active = nil
-    # And the entries for each mac (mac_log.first is the string, mac_log.last is the array)
-    mac_log.last.each do |entry|
-      # Find an activate followed immediately by a deactivate
-      if entry.action == "activate"
-        last_active = entry 
-      else
-        if last_active && entry.action == "deactivate"
-          # Calculate the time difference between the two and append to this mac's total time
-          this_entry = @mac_times[entry.mac]
-          if this_entry
-            this_time = this_entry[:time]
-          else
-            this_time = 0
-          end
-          @mac_times[entry.mac] = {:mac => entry, :time => (entry.created_at - last_active.created_at) + this_time}
+  if recent_mac_logs_ungrouped.present?
+    @mac_time_start_date = recent_mac_logs_ungrouped.first.created_at
+    recent_mac_logs = recent_mac_logs_ungrouped.group_by(&:mac)
+    @mac_times = {}
+    # Go thru each mac
+    recent_mac_logs.each do |mac_log|
+      last_active = nil
+      # And the entries for each mac (mac_log.first is the string, mac_log.last is the array)
+      mac_log.last.each do |entry|
+        # Find an activate followed immediately by a deactivate
+        if entry.action == "activate"
+          last_active = entry 
         else
-          # No pair found; discard.
-          last_active = nil
+          if last_active && entry.action == "deactivate"
+            # Calculate the time difference between the two and append to this mac's total time
+            this_entry = @mac_times[entry.mac]
+            if this_entry
+              this_time = this_entry[:time]
+            else
+              this_time = 0
+            end
+            @mac_times[entry.mac] = {:mac => entry, :time => (entry.created_at - last_active.created_at) + this_time}
+          else
+            # No pair found; discard.
+            last_active = nil
+          end
         end
       end
     end
-  end
-  @mac_times_sorted = @mac_times.sort{|a,b| b.last[:time] <=> a.last[:time] }
-  @most_active_mac = nil
-  @runner_up_mac = nil
-  @mac_times_sorted.each do |mac_time|
-    unless @most_active_mac
-      this_mac = Mac.find_by_mac(mac_time.first)
-      unless this_mac.hidden
-        @most_active_mac = this_mac
-        @most_active = mac_time
-      end
-    else
-      unless @runner_up_mac
+    @mac_times_sorted = @mac_times.sort{|a,b| b.last[:time] <=> a.last[:time] }
+    @most_active_mac = nil
+    @runner_up_mac = nil
+    @mac_times_sorted.each do |mac_time|
+      unless @most_active_mac
         this_mac = Mac.find_by_mac(mac_time.first)
         unless this_mac.hidden
-          @runner_up_mac = this_mac
-          @runner_up = mac_time
+          @most_active_mac = this_mac
+          @most_active = mac_time
+        end
+      else
+        unless @runner_up_mac
+          this_mac = Mac.find_by_mac(mac_time.first)
+          unless this_mac.hidden
+            @runner_up_mac = this_mac
+            @runner_up = mac_time
+          end
         end
       end
     end
   end
-
+  
   #@active_macs = Mac.where(:active => true, :hidden => false)
   #@active_macs += Mac.where(:active => true, :hidden => nil)
   

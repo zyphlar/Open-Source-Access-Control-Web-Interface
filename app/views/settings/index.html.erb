@@ -1,0 +1,16 @@
+<h2>Site-Wide Settings</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Value</th>
+  </tr>
+  <% @settings.each do |setting| %>
+  <tr>
+    <td><%= setting.first.titleize %></td>
+    <td>"<%= setting.last %>"</td>
+    <% if can? :update, setting %>
+    <td><%= link_to 'Edit', edit_setting_path(setting.first) %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>

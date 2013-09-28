@@ -25,4 +25,10 @@ def index
     end
 end
 
+def more_info
+  respond_to do |format|
+    format.html # more_info.html.erb
+  end
+end
+
 end

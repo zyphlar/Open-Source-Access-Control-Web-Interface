@@ -1,3 +1,4 @@
+<% if @mac_time_start_date.present? %>
 <b>Most Active Machine Last <%= distance_of_time_in_words DateTime.now, @mac_time_start_date %>:</b>
   <span title="<%= @most_active_mac.mac %><%= "  -  "+@most_active_mac.ip.to_s if can? :read_details, @most_active_mac %>">
     <%= @most_active_mac.user.name unless @most_active_mac.user.blank? %>
@@ -11,6 +12,7 @@
     <%= "("+@runner_up_mac.note+")" unless @runner_up_mac.note.blank? %>
     - <%= (@runner_up.last[:time] / 1.hour).round %> hrs
   </span>
+<% end %>
 
 <h2>What machines are on our network?</h2>
 <%= link_to "New MAC registration", new_mac_path if can? :create, Mac %>

@@ -1,6 +1,6 @@
-<h1>Welcome to the HeatSync Labs Members App.</h1>
+<h1><%= Setting.welcome_title %></h1>
 <% if !user_signed_in? then %>
-<p>You can sign up to become a member here!</p>
+<%= simple_format Setting.welcome_body %>
 <% end %>
 
 
@@ -45,27 +45,7 @@
 <td>
 
 <h2>Member Resources</h2>
-<ul>
-  <li><%= link_to "Wiki", "http://wiki.heatsynclabs.org" %></li>
-  <li><%= link_to "Discussion Group", "http://groups.google.com/group/heatsynclabs" %></li>
-  <li><%= link_to "IRC", "irc://irc.freenode.net#heatsynclabs" %></li>
-  <li><%= link_to "Live Webcams", "http://live.heatsynclabs.org/" %></li>
-  <li>Lab Phone: (480) 751-1929</li>
-  <li>
-    <style type="text/css">
-     form input {font-family: 'Lucida Console', Monaco, monospace; }
-    </style>
-    
-    <b>Send a Message!</b>
-    <form method="post" action="http://tweet.zyphon.com/signage.php">
-      <em>Type here and your message will show up on the LED sign in the front window!</em><br/>
-      <em>(Please be nice!)</em><br/>
-      <input type="text" name="msg" id="msg" value="  Hello" size="9" /> (max 9 chars per line)<br/>
-      <input type="text" name="msg2" id="msg2" value="  World" size="9" /><br/>
-      <input type="submit" name="submitbutton" id="submitbutton" value="Go!" />
-    </form>
-  </li>
-</ul>
+<%= simple_format Setting.member_resources_inset %>
 
 </td>
 </tr>
