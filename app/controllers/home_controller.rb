@@ -13,8 +13,10 @@ def index
   @num_door_opens = DoorLog.where("key = 'G'").count
   @today_door_opens = DoorLog.where("key = 'G' AND created_at > ?", DateTime.now - 1.day).count
   @recent_door_opens = DoorLog.where("key = 'G' AND created_at > ?", DateTime.now - 7.days).count
-  @num_door_denieds = DoorLog.where("key = 'f'").count
-  @recent_door_denieds = DoorLog.where("key = 'f' AND created_at > ?", DateTime.now - 7.days).count
+  @num_door_denieds = DoorLog.where("key = 'D'").count
+  @recent_door_denieds = DoorLog.where("key = 'D' AND created_at > ?", DateTime.now - 7.days).count
+  @num_logins = User.sum('sign_in_count')
+  @recent_logins = User.where('current_sign_in_at > ?',Date.today - 7.days).count
   @num_macs = Mac.count
   @recent_macs = Mac.where("since > ?", DateTime.now - 1.day).count
 

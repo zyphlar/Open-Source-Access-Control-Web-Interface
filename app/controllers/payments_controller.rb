@@ -16,6 +16,28 @@ class PaymentsController < ApplicationController
   # GET /payments.json
   def index
     @payments = @payments.order("date DESC")
+    payment_months = @payments.group_by{ |p| p.date.beginning_of_month }
+    @payments_by_month = []
+    payment_months.each do |month|
+      # Only grab the last year from today
+      if month.first > (Date.today - 1.year) && month.first < Date.today
+        # Calculate sum of amounts for each month and store at end of month array
+        @payments_by_month << {:month => month.first, :sum => month.last.sum{|p| 
+          if p.amount
+            p.amount.to_i
+          else
+            if p.user
+              Rails.logger.info p.user.member_level
+              p.user.member_level.to_i
+            else
+              Rails.logger.info p.inspect
+              Rails.logger.info p.user.inspect
+              0
+            end
+          end
+        }}
+      end
+    end
 
     respond_to do |format|
       format.html # index.html.erb
