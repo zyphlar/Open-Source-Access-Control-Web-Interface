@@ -50,3 +50,5 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'gravtastic'
 
 gem 'passenger'
+
+gem "rails-settings-cached", "0.2.4"
