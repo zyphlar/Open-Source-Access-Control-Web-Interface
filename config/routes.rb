@@ -7,6 +7,7 @@ Dooraccess::Application.routes.draw do
   resources :paypal_csvs
   match 'paypal_csvs/:id/link' => 'paypal_csvs#link', :as => :link_paypal_csv
 
+  match 'payments/chart' => 'payments#chart', :as => :chart_payments
   resources :payments
 
   resources :user_certifications

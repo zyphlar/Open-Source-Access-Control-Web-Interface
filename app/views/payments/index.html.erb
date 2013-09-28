@@ -1,4 +1,85 @@
-<h1>Listing payments</h1>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="highstock/js/highstock.js"></script>
+<script type="text/javascript">
+$(function() {
+
+  $( "#graph" ).dialog({
+    autoOpen: false,
+    height: 325,
+    width: 525,
+    modal: true,
+  });
+  $( "#graph-button" ).click(function() {
+    $( "#graph" ).dialog( "open" );
+  });
+
+  var seriesOptions = [],
+    yAxisOptions = [],
+    seriesCounter = 0,
+    names = ['Members', 'Associate', 'Basic', 'Total'],
+    colors = Highcharts.getOptions().colors;
+
+  $.each(names, function(i, name) {
+
+    $.getJSON('/payments/chart.json?name='+ name.toLowerCase(), function(data) {
+
+      seriesOptions[i] = {
+        name: name,
+        data: data
+      };
+
+      // As we're loading the data asynchronously, we don't know what order it will arrive. So
+      // we keep a counter and create the chart when all the data is loaded.
+      seriesCounter++;
+
+      if (seriesCounter == names.length) {
+        createChart();
+      }
+    });
+  });
+
+
+
+  // create the chart when all data is loaded
+  function createChart() {
+    $('#graph').highcharts('StockChart', {
+        chart: {
+        },
+
+        rangeSelector: {
+            selected: 1
+        },
+
+        yAxis: {
+          labels: {
+            formatter: function() {
+              return '$' + this.value;
+            }
+          },
+          plotLines: [{
+            value: 0,
+            width: 2,
+            color: 'silver'
+          }]
+        },
+        
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+          valueDecimals: 0
+        },
+        
+        series: seriesOptions
+    });
+  }
+
+});
+</script>
+
+<div id="graph" title="Payments by Month" style="height: 250px; width: 500px; float: right;"></div>
+
+
+<h1>Listing payments <button id="graph-button">View Graph</button></h1>
 
 <p>
 <b>Create Payments:</b>
@@ -7,14 +88,6 @@
 <%= link_to 'IPN', ipns_path %>
 </p>
 
-<p>
-<h3>Payments by Month</h3>
-<dl>
-<% @payments_by_month.each do |month| %>
-  <dt><%= month[:month] %></dt>
-  <dd><%= month[:sum] %></dd>
-<% end %>
-</dl>
 
 <table>
   <tr>
