@@ -16,6 +16,10 @@ class PaymentsController < ApplicationController
   # GET /payments.json
   def index
     @payments = @payments.order("date DESC")
+    @graph = { :members => chart("members"), 
+      :total => chart("total"), 
+      :basic => chart("basic"), 
+      :associate => chart("associate")}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -23,8 +27,9 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def chart
-    chart_name = params[:name] || "total"
+  # Private method for index charts
+  def chart name
+    chart_name = name || "total"
     if chart_name == "total"
       chart_type = [25, 50, 100]
     elsif chart_name == "members"
@@ -58,10 +63,7 @@ class PaymentsController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render :json => @payments_by_month }
-    end
+    return @payments_by_month
   end
 
   def amount_or_level p
