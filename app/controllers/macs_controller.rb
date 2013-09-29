@@ -10,7 +10,7 @@ rescue_from CanCan::AccessDenied do |exception|
   end
 end
 load_and_authorize_resource :mac, :except => :create
-load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
+#load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
 before_filter :arp_lookup, :only => :new
 
