@@ -9,7 +9,7 @@ $(function(){
   <div class="field">
     <%= text_area_tag :value, @setting[:value], :cols => 50, :class => "wysiwyg" %><br/>
   </div>
-
+  <em>Note: there is a /more_info page you can link to for wysiwyg purposes.</em>
   <div class="field">
     <%= submit_tag "Save", {:class => "wymupdate"} %><br/>
     <%= link_to "Back", settings_path %>

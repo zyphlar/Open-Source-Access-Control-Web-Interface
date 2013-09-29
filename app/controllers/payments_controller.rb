@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   load_and_authorize_resource :payment
-  load_and_authorize_resource :user, :through => :payment
+  #load_and_authorize_resource :user, :through => :payment
   before_filter :authenticate_user!
 
   # Load users and certs based on current ability
