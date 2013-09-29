@@ -1,6 +1,6 @@
 class CertificationsController < ApplicationController
   load_and_authorize_resource :certification
-  load_and_authorize_resource :user, :through => :certification
+  #load_and_authorize_resource :user, :through => :certification
   before_filter :authenticate_user!
 
   # GET /certifications

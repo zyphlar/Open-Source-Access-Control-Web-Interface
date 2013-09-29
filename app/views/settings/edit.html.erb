@@ -8,7 +8,6 @@ $(function(){
   <h3>Editing <%= @setting[:var].titleize %></h3>
   <div class="field">
     <%= text_area_tag :value, @setting[:value], :cols => 50, :class => "wysiwyg" %><br/>
-    <em>Use %{provider_name} or %{client_name} to include names in messages.</em>
   </div>
 
   <div class="field">

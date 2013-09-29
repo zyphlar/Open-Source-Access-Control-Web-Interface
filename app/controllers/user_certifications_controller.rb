@@ -1,7 +1,7 @@
 class UserCertificationsController < ApplicationController
   load_and_authorize_resource :user_certification
-  load_and_authorize_resource :user, :through => :user_certification
-  load_and_authorize_resource :certification, :through => :user_certification
+  #load_and_authorize_resource :user, :through => :user_certification
+  #load_and_authorize_resource :certification, :through => :user_certification
   before_filter :authenticate_user!
 
   # Load users and certs based on current ability

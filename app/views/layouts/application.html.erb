@@ -19,6 +19,7 @@
     <% end %>
     <%= link_to 'Payments', payments_path if can? :read, Payment %>
     <%= link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
+    <%= link_to 'Settings', settings_path if can? :read, Setting %>
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
     <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
     <%= link_to 'Login', new_user_session_path unless user_signed_in? %>

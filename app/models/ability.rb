@@ -2,21 +2,15 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Anonymous can read mac
-    today = Date.today
-    event = Date.new(2013,9,1)
-    
-    unless today == event
-      can :read, Mac
-      can :scan, Mac # Need anonymous so CRON can scan
-    end
+    can :read, Mac # Anonymous can read mac
+    can :scan, Mac # Need anonymous so CRON can scan
 
     if !user.nil?
 
       # By default, users can only see their own stuff
       can :read, Card, :user_id => user.id
       can :read, Certification
-      can :read_details, Mac unless today == event
+      can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
       can :read, User, :id => user.id #TODO: why can users update themselves?
@@ -44,6 +38,8 @@ class Ability
 
       # Admins can manage all
       if user.admin?
+Rails.logger.info user.inspect
+Rails.logger.info "IS ADMIN"
         can :manage, :all
       end
 
