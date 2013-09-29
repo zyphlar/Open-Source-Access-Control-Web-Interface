@@ -30,12 +30,12 @@
   <dt># of People Certified:</dt>
   <dd><%= @num_certs %> (<%= @recent_certs %> new in the last 7 days)</dd>
   <dt># of Current Paying Members:</dt>
-  <dd><%= @num_paid_users %> (<%= @num_delinquent_users %> not-current)</dd>
+  <dd><%= @num_paid_users %> (<%= @num_plus_users %> plus, <%= @num_basic_users %> basic, <%= @num_associate_users %> associate. <%= @num_delinquent_users %> not-current)</dd>
   <dt># of Door Accesses Granted:</dt>
   <dd><%= @num_door_opens %> (<%= @today_door_opens %> today, <%= @recent_door_opens %> in the last 7 days)</dd>
   <dt># of Door Accesses Denied:</dt>
-  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last 7 days)</dd>
-  <dt># of Logins:</dt>
+  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last month)</dd>
+  <dt># of Members DB Logins:</dt>
   <dd><%= @num_logins %> (<%= @recent_logins %> users last 7 days)</dd>
   <dt># of Computers in this DB:</dt>
   <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
