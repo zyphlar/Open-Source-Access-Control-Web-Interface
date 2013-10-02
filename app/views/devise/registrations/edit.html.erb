@@ -4,6 +4,7 @@
 
 <div class="payment_links <%= "payment-highlighted" if params[:flash] == "welcome_msg" %>">
 
+  <%= render '/statistics/index' %>
   <% if can? :read, resource.payments then %>
   <h3>Recorded Payments:</h3>
   <ul>

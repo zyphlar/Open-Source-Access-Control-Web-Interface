@@ -1,14 +1,4 @@
 class MacsController < ApplicationController
-rescue_from CanCan::AccessDenied do |exception|
-  today = Date.today
-  event = Date.new(2013,9,1)
-
-  if today == event
-    redirect_to main_app.root_url, :alert => "CryptoParty today; no MAC scanning. Sorry, NSA!"
-  else
-    redirect_to main_app.root_url, :alert => "Nothing to see here!"
-  end
-end
 load_and_authorize_resource :mac, :except => :create
 #load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 

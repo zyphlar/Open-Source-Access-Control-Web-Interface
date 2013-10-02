@@ -9,6 +9,10 @@ Dooraccess::Application.routes.draw do
 
   resources :payments
 
+  match 'statistics' => 'statistics#index', :as => :statistics
+  match 'statistics/mac_log' => 'statistics#mac_log', :as => :mac_statistics
+  match 'statistics/door_log' => 'statistics#door_log', :as => :door_statistics
+
   resources :user_certifications
 
   resources :certifications

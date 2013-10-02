@@ -41,4 +41,8 @@ class DoorLog < ActiveRecord::Base
     end
   end
 
+  def self.key_legend
+    {'G' => "Granted", "R" => "Read", "D" => "Denied",
+    'g' => "granted", "r" => "read", "d" => "denied"}
+  end
 end
