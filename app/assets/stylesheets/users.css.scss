@@ -6,7 +6,7 @@
 .hoverinfo { cursor: progress; }
 
 .payment_links { background-color: #ddd; padding: 1em; border-radius: 1em;
-  display: inline-block; float: right; }
+  display: inline-block; float: right; max-width: 30%; min-width: 10em;}
 
 .payment-highlighted {
   background-color: orange !important;

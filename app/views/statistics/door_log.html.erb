@@ -4,16 +4,6 @@
 <script type="text/javascript">
 $(function() {
 
-  $( "#graph" ).dialog({
-    autoOpen: false,
-    height: 325,
-    width: 525,
-    modal: true,
-  });
-  $( "#graph-button" ).click(function() {
-    $( "#graph" ).dialog( "open" );
-  });
-
   $('#graph').highcharts({
       chart: {
         type: 'column',
@@ -21,7 +11,7 @@ $(function() {
       },
       title: { 
         style : { fontSize: '10px' },
-        text: "Click and Drag to Zoom, Click the Legend to Turn Off Items" 
+        text: "Click and Drag to Zoom." 
       },
       xAxis: {
         title : { text : "Days" },
@@ -42,11 +32,10 @@ $(function() {
 });
 </script>
 
-<div id="graph" title="MAC Presence by Day" style="height: 250px; width: 500px; float: right;"></div>
 
 <h2>Your Card Access Data</h2>
-<button id="graph-button" class="btn">View Graph</button>
 <%= link_to 'Download JSON', door_statistics_path+".json", :class => 'btn' %>
+<div id="graph" title="MAC Presence by Day" style="height: 250px; width: 500px; float: right;"></div>
 <table>
   <tr>
     <th>Date</th>
