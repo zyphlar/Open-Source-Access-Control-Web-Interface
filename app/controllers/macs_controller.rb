@@ -90,6 +90,7 @@ end
   # GET /macs/1.json
   def show
     @mac = Mac.find(params[:id])
+    @mac_logs = MacLog.where(:mac => @mac.mac)
 
     respond_to do |format|
       format.html # show.html.erb

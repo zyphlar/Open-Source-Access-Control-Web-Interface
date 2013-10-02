@@ -17,7 +17,7 @@ class StatisticsController < ApplicationController
     }
 
     @door_log_graph = []
-    @door_logs.group_by{|l| l.created_at.beginning_of_day}.each{|l| @door_log_graph << [l.first.to_time.to_i*1000,l.last.size]}
+    @door_logs.where("key = 'G'").group_by{|l| l.created_at.beginning_of_day}.each{|l| @door_log_graph << [l.first.to_time.to_i*1000,l.last.size]}
 
     respond_to do |format|
       format.html 
