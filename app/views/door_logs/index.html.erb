@@ -72,7 +72,7 @@ Guide to log keys and data:
               end %>
         <% @cardnum = (door_log.data.to_i+(@divided_tmp*32767)).to_s(16) %>
         <%= "Card: "+@cardnum %>
-	<% @card = Card.find(:first,:conditions=>['card_number LIKE ?', @cardnum]) %>
+	<% @card = Card.find(:first,:conditions=>['lower(card_number) = ?', @cardnum.downcase]) %>
 	<%= "("+@card.user.name+")" unless @card.nil? %>
       </td>
    <% else 

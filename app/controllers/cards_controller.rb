@@ -34,7 +34,7 @@ class CardsController < ApplicationController
   def show
     if can? :read, DoorLog then
       card_num_R = @card.card_number.to_i(16)%32767
-      @door_logs = DoorLog.where('key = ? AND data = ?', "R", card_num_R).order("created_at DESC")
+      @door_logs = DoorLog.where('key = ? AND data = ?', "G", card_num_R).order("created_at DESC")
     end
     respond_to do |format|
       format.html # show.html.erb

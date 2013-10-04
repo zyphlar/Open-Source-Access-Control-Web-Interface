@@ -30,5 +30,6 @@
     <p class="alert"><%= raw(alert) %></p>
 <%= yield %>
   </div>
+<%= raw Setting.analytics_code if Setting.present? %>
 </body>
 </html>
