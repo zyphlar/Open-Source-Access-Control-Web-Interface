@@ -54,6 +54,11 @@ class UsersController < ApplicationController
     @new_users = User.where(:created_at => 3.months.ago..Date.today)
     @cardless_users = User.includes('cards').where(['users.member_level >= ?','50']).where('cards.id IS NULL')
   end
+
+  # New members (for emailing out)
+  def new_member_report
+    @new_users = User.where(:created_at => 3.months.ago..Date.today).where(:hidden => false).where(['member_level >= ?','1'])
+  end
  
   # GET /users/1
   # GET /users/1.json

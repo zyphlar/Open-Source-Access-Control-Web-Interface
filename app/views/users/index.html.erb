@@ -1,15 +1,17 @@
 <h1>HeatSync People</h1>
 
 <% if can? :create, User %>
-  <%= link_to 'New User', new_user_path %>
+  <%= link_to 'New User', new_user_path %> |
 <% end %>
 <% if can? :manage, User %>
-  | <%= link_to 'Merge Users', users_merge_path %>
+  <%= link_to 'Merge Users', users_merge_path %> |
 <% end %>
 <% if current_user.admin? %>
-  | <%= link_to 'Inactive Users', users_inactive_path %>
-  | <%= link_to 'Recent Activity', users_activity_path %>
+  <%= link_to 'Inactive Users', users_inactive_path %> |
+  <%= link_to 'Recent Activity', users_activity_path %> |
 <% end %>
+<%= link_to 'New Members Report', users_new_member_report_path %>
+
 <% @certifications = Certification.all.sort_by(&:id) %>
 <table>
   <col />

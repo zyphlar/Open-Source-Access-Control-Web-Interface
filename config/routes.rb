@@ -31,6 +31,7 @@ Dooraccess::Application.routes.draw do
 
   match 'user_summary/:id' => 'users#user_summary' # User summary view
   match 'users/activity' => 'users#activity' # User activity
+  match 'users/new_member_report' => 'users#new_member_report' # New member report (For emailing)
   match 'users/merge' => 'users#merge_view', :via => :get # Merge view
   match 'users/merge' => 'users#merge_action', :via => :post # Merge action
   match 'users/inactive' => 'users#inactive' # Inactive users report
