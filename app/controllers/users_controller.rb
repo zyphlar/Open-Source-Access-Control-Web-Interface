@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
   # Recent user activity
   def activity
-    @user_logins = User.where(:last_sign_in_at => 1.month.ago..Date.today)
+    @user_logins = User.where(:last_sign_in_at => 1.month.ago..Time.now)
     @new_users = User.where(:created_at => 3.months.ago..Date.today)
     @cardless_users = User.includes('cards').where(['users.member_level >= ?','50']).where('cards.id IS NULL')
   end
@@ -67,6 +67,24 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @user }
+    end
+  end
+
+  def compose_email
+    @user = User.find(params[:user_id])
+    authorize! :read, @user
+  end
+
+  def send_email
+    @user = User.find(params[:user_id])
+    authorize! :read, @user
+    @subject = params[:subject]
+    @body = params[:body]
+    if @user.send_email(current_user,@subject,@body)
+      redirect_to user_path(@user), :notice => "Email sent successfully."
+    else
+      flash[:alert] = "Error sending email."
+      render :compose_email
     end
   end
 

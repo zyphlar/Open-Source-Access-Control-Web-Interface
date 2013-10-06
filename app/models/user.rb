@@ -121,7 +121,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def send_email(from_user,subject,body)
+    Rails.logger.info UserMailer.email(self,from_user,subject,body).deliver
+  end
+
   private
+
+  def send_new_user_email
+    Rails.logger.info UserMailer.new_user_email(self).deliver
+  end
 
   def member_status_calculation
     # Begin output buffer
@@ -192,11 +200,6 @@ class User < ActiveRecord::Base
       end
     end
     return {:message => message, :paid => paid, :flair => flair}
-  end
-
-
-  def send_new_user_email
-    Rails.logger.info UserMailer.new_user_email(self).deliver
   end
 
 end

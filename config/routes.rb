@@ -35,7 +35,10 @@ Dooraccess::Application.routes.draw do
   match 'users/merge' => 'users#merge_view', :via => :get # Merge view
   match 'users/merge' => 'users#merge_action', :via => :post # Merge action
   match 'users/inactive' => 'users#inactive' # Inactive users report
-  resources :users
+  resources :users do 
+    get 'email' => 'users#compose_email'
+    post 'email' => 'users#send_email'
+  end
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 
   match 'cards/upload_all' => 'cards#upload_all', :as => :upload_all
