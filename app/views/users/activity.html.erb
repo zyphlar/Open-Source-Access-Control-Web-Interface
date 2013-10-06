@@ -1,7 +1,8 @@
 <h1>Member Onboarding/Activity</h1>
 <a href="#new_users">New Users</a> | 
 <a href="#members_without_cards">Members Without Cards</a> | 
-<a href="#logins">Logins</a>
+<a href="#logins">Logins</a> |
+<a href="#zombies">Never-Logged-In Members</a>
 
 
 <h2><a name="new_users"></a>New Users</h2>
@@ -108,6 +109,28 @@
       <% end %>
     </td>
     <td><%= user.sign_in_count  %> times</td>
+    <td><%= distance_of_time_in_words DateTime.now, user.created_at %> ago</td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+
+<h2><a name="zombies"></a>Never-Logged-In Members</h2>
+<em>Excluding non-members</em>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Member Level</th>
+    <th>Account Created</th>
+    <th></th>
+  </tr>
+  
+<% if !@zombie_members.blank? %>
+  <% @zombie_members.sort_by(&:created_at).reverse!.each do |user| %>
+  <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= link_to user.name, user %></td>
+    <td><%= user.member_level_string  %></td>
     <td><%= distance_of_time_in_words DateTime.now, user.created_at %> ago</td>
   </tr>
   <% end %>

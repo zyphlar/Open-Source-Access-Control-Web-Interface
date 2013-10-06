@@ -50,7 +50,8 @@ class UsersController < ApplicationController
 
   # Recent user activity
   def activity
-    @user_logins = User.where(:last_sign_in_at => 1.month.ago..Time.now)
+    @zombie_members = User.where('sign_in_count = 0').where('member_level > 1')
+    @user_logins = User.where(:current_sign_in_at => 2.months.ago..Time.now).where('sign_in_count > 1')
     @new_users = User.where(:created_at => 3.months.ago..Date.today)
     @cardless_users = User.includes('cards').where(['users.member_level >= ?','50']).where('cards.id IS NULL')
   end
