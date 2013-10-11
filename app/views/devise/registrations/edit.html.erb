@@ -5,7 +5,7 @@
 <div class="payment_links <%= "payment-highlighted" if params[:flash] == "welcome_msg" %>">
 
   <%= render '/statistics/index' %>
-  <% if can? :read, resource.payments then %>
+  <% if can? :read, resource.payments.first then %>
   <h3>Recorded Payments:</h3>
   <ul>
     <% resource.payments.sort_by(&:date).reverse!.each do |payment| %>

@@ -7,7 +7,9 @@
 <% if user_signed_in? && current_user.orientation.blank? then %>
 <p class="alert">There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer.</p>
 <% end %>
-<% if user_signed_in? && current_user.member.to_i < current_user.member_level.to_i then %>
+<% if user_signed_in? && current_user.member_status.between?(2,100) then %>
+<%= current_user.member.inspect %>
+<%= current_user.member_level.inspect %>
 <p class="alert">Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, or this app just got started, but if in doubt please see your profile for payment instructions, or consider updating your membership level to something accurate.<br/>Thanks for supporting HeatSync!</p>
 <% end %>
 <table>

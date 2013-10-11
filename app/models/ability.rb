@@ -13,6 +13,7 @@ class Ability
       can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
+      can :read, Payment, :user_id => user.id
       can [:read,:new_member_report], User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :read, UserCertification, :user_id => user.id
 
