@@ -51,6 +51,7 @@ Dooraccess::Application.routes.draw do
 
   match 'macs/scan' => 'macs#scan'
   match 'macs/import' => 'macs#import'
+  match 'macs/history' => 'macs#history'
   resources :macs
   resources :mac_logs
 

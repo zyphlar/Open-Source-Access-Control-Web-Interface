@@ -1,5 +1,5 @@
 class MacsController < ApplicationController
-load_and_authorize_resource :mac, :except => :create
+load_and_authorize_resource :mac, :except => [:create, :history]
 #load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
 before_filter :arp_lookup, :only => :new
@@ -85,6 +85,47 @@ def index
     }
   end
 end
+
+  def history
+    authorize! :read_details, Mac
+    begin
+      @start_date = DateTime.parse(params[:start])
+      @end_date = DateTime.parse(params[:end])
+    rescue
+      @start_date = DateTime.now - 2.weeks
+      @end_date = DateTime.now
+    end
+
+    @mac_logs_by_hour = MacLog.where("created_at > ? AND created_at < ?", @start_date, @end_date).group_by{|m| m.created_at.beginning_of_hour}
+    @mac_log_graph = []
+    mac_running_balance = 0
+    lowest_balance = 0
+    @mac_logs_by_hour.each do |time, mac_log|
+      mac_log.each do |entry|
+        # Add one computer for activate, subtract one for deactivate
+        if entry.action == "activate"
+          mac_running_balance += 1
+        elsif entry.action == "deactivate"
+          mac_running_balance -= 1
+        end
+        # Keep track of the lowest number in the graph
+        if mac_running_balance < lowest_balance
+          lowest_balance = mac_running_balance
+        end
+      end
+      @mac_log_graph << [time.to_time.to_i*1000,mac_running_balance]
+    end
+
+    if lowest_balance != 0
+      # Subtract a negative balance to raise everything
+      @mac_log_graph = @mac_log_graph.map{ |time,balance| [time, balance - lowest_balance] }
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @mac_log_graph }
+    end
+  end
 
   # GET /macs/1
   # GET /macs/1.json

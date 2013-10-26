@@ -1,0 +1,112 @@
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+graph_data = <%= raw @mac_log_graph.to_json %>;
+plot_band_start_hour = 16;
+plot_band_end_hour = 22;
+
+$(function() {
+
+  $('#graph').highcharts({
+      chart: {
+        type: 'column',
+        zoomType : 'x'   
+      },
+      colors: [
+        '#2980B9'
+      ],
+      title: { 
+        style : { fontSize: '10px' },
+        text: "Click and Drag to Zoom." 
+      },
+      xAxis: {
+        title : { text : "Days" },
+        type : 'datetime',
+        plotBands: generatePlotBands(graph_data[0][0], graph_data[graph_data.length-1][0]),
+        labels : { align : "left" }
+      },
+      yAxis : {
+        title : {
+          text : "# of Computers"
+        }
+      },
+      series: [
+      {
+        name: "Computers",
+        data: graph_data
+      },
+      ],
+      plotOptions: {
+        spline: {
+          lineWidth: 4,
+          marker: {
+            enabled: false
+          },
+          pointInterval: 3600000, // one hour
+        }
+     }
+  });
+    
+   Highcharts.setOptions({
+     global : {
+       useUTC : false
+     }
+   });
+});
+
+function generatePlotBands(start,end){
+  plotBands = new Array();
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    // weekends
+    if(d.getDay()%6==0){
+      // highlight the whole day
+      plotBands.push({
+        color: '#eee',
+        from: d.setHours(0),
+        to: d.setHours(23)
+      });
+      // weekend hours
+      plotBands.push({
+        color: '#94C9EC',
+        from: d.setHours(12),
+        to: d.setHours(18)
+      });
+    }
+    else if(d.getDay()==3){
+      // special wednesday hours
+      plotBands.push({
+        color: '#94C9EC',
+        from: d.setHours(12),
+        to: d.setHours(plot_band_end_hour)
+      });
+    }
+    else {
+      // open hours
+      plotBands.push({
+        color: '#82DAC9',
+        from: d.setHours(plot_band_start_hour),
+        to: d.setHours(plot_band_end_hour)
+      });
+    }
+  }
+  return plotBands;
+}
+</script>
+
+
+<h2>Daily Computer Graph</h2>
+<p><em>Note: these numbers are not absolute. They are calculated and adjusted on-the-fly and thus may vary depending on the query parameters.</em></p>
+<%= link_to 'Back to Computers', macs_path, :class => 'btn' %>
+<%= link_to 'Download JSON', macs_history_path+".json", :class => 'btn' %>
+<div id="graph" title="MAC Presence by Day" style="height: 400px; width: 100%;"></div>
+
+<%= form_tag(nil, :method => :get) do %>
+  <label>Start Date
+    <input id="start" name="start" type="date" value="<%= @start_date.to_date.to_s %>" />
+  </label>
+  <label>End Date
+    <input id="end" name="end" type="date" value="<%= @end_date.to_date.to_s %>" />
+  </label>
+  <%= submit_tag("Change Date", :name => nil, :class => 'btn') %>
+<% end %>

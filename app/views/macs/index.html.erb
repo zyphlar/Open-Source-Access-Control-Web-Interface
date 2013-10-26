@@ -17,7 +17,8 @@
 <% end %>
 
 <h2>What machines are on our network?</h2>
-<%= link_to "New MAC registration", new_mac_path if can? :create, Mac %>
+<%= link_to "New MAC registration", new_mac_path, :class => 'btn' if can? :create, Mac %>
+<%= link_to 'Activity Graph', macs_history_path, :class => 'btn' if can? :read_details, Mac %>
 
 <ul class="mac_list">
 <%
