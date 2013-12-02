@@ -45,6 +45,8 @@ Dooraccess::Application.routes.draw do
   resources :cards
   match 'cards/:id/upload' => 'cards#upload', :as => :upload
 
+  match 'space_api' => 'space_api#index', :as => :space_api
+
   match 'door_logs' => 'door_logs#index', :as => :door_logs
   match 'door_logs/download' => 'door_logs#download', :as => :download
   match 'door_logs/auto_download' => 'door_logs#auto_download', :as => :auto_download

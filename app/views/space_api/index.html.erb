@@ -1,0 +1,11 @@
+<h2>Space Status API
+<%= link_to 'JSON', space_api_path( :format => :json ), :class => 'btn' %> 
+</h2>
+
+<dl>
+<% @json.each do |key,value| %>
+  <dt><%= key.humanize.capitalize %>:</dt>
+  <dd><%= value %></dd>
+<% end %>
+</dl>
+
