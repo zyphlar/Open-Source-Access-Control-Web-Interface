@@ -1,13 +1,20 @@
 <h1>Access Cards</h1>
 
-<%= link_to 'New Card', new_card_path if can? :create, Card %>
-<%= link_to 'Upload all cards', upload_all_path if can? :upload_all, Card %>
-<%= link_to 'Door Logs', door_logs_path if can? :read, DoorLog %>
+<%= link_to 'New Card', new_card_path, :class => "btn" if can? :create, Card %>
+<%= link_to 'Upload all cards', upload_all_path, :class => "btn" if can? :upload_all, Card %>
+<%= link_to 'Door Logs', door_logs_path, :class => "btn" if can? :read, DoorLog %>
+<%= link_to 'Space API', space_api_path, :class => "btn" %>
+<%= link_to 'Remote Door Access', space_api_access_path, :class => "btn" if can? :access_doors_remotely, :door_access %>
 <p>
-<b>Most Active Card Last 7 Days:</b> <%= @most_active_card.name unless @most_active_card.blank? %> (<%= @most_active_card.accesses_this_week unless @most_active_card.blank? %> times)
+<b>Most Active Card Last Month:</b> <%= @most_active_card.name unless @most_active_card.blank? %> (<%= @most_active_card.accesses_this_week unless @most_active_card.blank? %> days)
+</p>
+<p>
+<% unless @runner_up_card.blank? %>
+<b>Runner Up:</b> <%= @runner_up_card.name %> (<%= @runner_up_card.accesses_this_week %> days)
+<% end %>
 </p>
 
-<table>
+<table class="lined-table">
   <col />
   <col />
   <col class="col_highlight" />
@@ -19,7 +26,7 @@
     <th>DB ID</th>
     <th>Card #</th>
     <th>Access?</th>
-    <th>Accesses Last 7 Days</th>
+    <th>Days Accessed Last Month</th>
     <th></th>
     <th></th>
     <th></th>
@@ -28,7 +35,14 @@
 <% if !@cards.blank? %>
   <% @cards.each do |card| %>
   <tr>
-    <td><%= link_to card.user.name, card %></td>
+    <td>
+      <% if card.user.nil? %>
+        n/a
+      <% else %>
+        <%= raw(card.user.member_status_symbol) %>
+        <%= link_to card.user.name , card %>
+      <% end %>
+    </td>
     <td><%= card.name %></td>
     <td><%= card.id %></td>
     <td><%= card.card_number %></td>

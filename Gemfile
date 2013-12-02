@@ -1,11 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+ruby '1.9.3'
+
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'pg'
+gem 'taps'
 
 gem 'json'
 
@@ -40,7 +44,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug'
+#gem 'debugger'
 
 #gem "paperclip", "~> 3.0"
 gem 'gravtastic'
+
+gem 'passenger'
+
+gem "rails-settings-cached", "0.2.4"

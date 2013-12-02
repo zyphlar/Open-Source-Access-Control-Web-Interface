@@ -8,6 +8,17 @@ Guide to Card Number storage:
 cardnum = (R+(r*32767)), convert to hex
 
 Guide to log keys and data:
+
+Commands:
+ * rem_ = remote command issues via web UI (#=user id)
+Statuses:
+ * armed = current status of alarm arming
+ * activated = current status of alarm ringing
+ * alarm_2 = current status of alarm sensor 2
+ * alarm_3 = current status of alarm sensor 3
+ * door_1_locked = status of door 1
+ * door_2_locked = status of door 2
+Log Entries:
  * A=alarm armed (# level)
  * a=added user (# usernum)
  * C=keypad command (# command)
@@ -72,7 +83,7 @@ Guide to log keys and data:
               end %>
         <% @cardnum = (door_log.data.to_i+(@divided_tmp*32767)).to_s(16) %>
         <%= "Card: "+@cardnum %>
-	<% @card = Card.find(:first,:conditions=>['card_number LIKE ?', @cardnum]) %>
+	<% @card = Card.find(:first,:conditions=>['lower(card_number) = ?', @cardnum.downcase]) %>
 	<%= "("+@card.user.name+")" unless @card.nil? %>
       </td>
    <% else 

@@ -1,5 +1,7 @@
 Scanning...
-<% @log.each do |log| %>
+<% if can? :read_details, Mac
+ @log.each do |log| %>
   <%= log.mac %> = 
   <%= log.ip %><br/>
-<% end %>
+<% end 
+end %>

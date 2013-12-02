@@ -8,17 +8,18 @@
 </head>
 <body>
   <div id="header">
-    <a href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
+    <a id="home_nav_link" href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
-    <% if can? :manage, UserCertification %>
+    <% if can? :create, UserCertification %>
       <%= link_to 'Cert Classes', certifications_path if can? :read, Certification %>
       <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
     <% else %>
       <%= link_to 'Certifications', certifications_path if can? :read, Certification %>
     <% end %>
     <%= link_to 'Payments', payments_path if can? :read, Payment %>
-    <%= link_to 'Computers', macs_path if user_signed_in? && (can? :read, Mac) %>
+    <%= link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
+    <%= link_to 'Settings', settings_path if can? :read, Setting %>
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
     <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
     <%= link_to 'Login', new_user_session_path unless user_signed_in? %>
@@ -29,5 +30,6 @@
     <p class="alert"><%= raw(alert) %></p>
 <%= yield %>
   </div>
+<%= raw Setting.analytics_code if Setting.present? %>
 </body>
 </html>

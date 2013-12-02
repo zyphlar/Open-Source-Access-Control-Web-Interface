@@ -26,6 +26,7 @@ class DoorLogsController < ApplicationController
   # GET /door_logs/auto_download
   def auto_download
     @results = DoorLog.download_from_door
+    @status = DoorLog.download_status # for space_api
 
     respond_to do |format|
       format.html # show.html.erb

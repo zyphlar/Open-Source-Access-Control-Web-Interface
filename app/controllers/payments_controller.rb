@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   load_and_authorize_resource :payment
-  load_and_authorize_resource :user, :through => :payment
+  #load_and_authorize_resource :user, :through => :payment
   before_filter :authenticate_user!
 
   # Load users and certs based on current ability
@@ -16,11 +16,69 @@ class PaymentsController < ApplicationController
   # GET /payments.json
   def index
     @payments = @payments.order("date DESC")
+    @graph = { :members => chart("members"), 
+      :total => chart("total"), 
+      :basic => chart("basic"), 
+      :associate => chart("associate")}
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @payments }
     end
+  end
+
+  # Private method for index charts
+  def chart name
+    chart_name = name || "total"
+    if chart_name == "total"
+      chart_type = [25, 50, 100]
+    elsif chart_name == "members"
+      chart_type = [25, 50, 100]
+    elsif chart_name == "basic"
+      chart_type = [50]
+    elsif chart_name == "associate"
+      chart_type = [25]
+    else
+      chart_type = [] 
+    end
+
+    payment_months = @payments.sort_by(&:date).group_by{ |p| p.date.beginning_of_month }
+    @payments_by_month = []
+    payment_months.each do |month|
+      # Only grab the last year from today
+      if month.first > (Date.today - 1.year) && month.first < Date.today
+        # Calculate sum of amounts for each month and store at end of month array
+        @payments_by_month << [month.first.to_time.to_i*1000, month.last.sum{|p| 
+          amount = amount_or_level(p)
+          if chart_type.include?(amount)
+            if chart_name == "members"
+              1 # Output 1 to count members
+            else
+              amount # Output dollars to count amount
+            end
+          else
+            0
+          end
+        }]
+      end
+    end
+
+    return @payments_by_month
+  end
+
+  def amount_or_level p
+    if p.amount
+      return p.amount.to_i
+    else
+      if p.user
+        Rails.logger.info p.user.member_level
+        return p.user.member_level.to_i
+      else
+        Rails.logger.info p.inspect
+        Rails.logger.info p.user.inspect
+        return 0
+      end
+    end 
   end
 
   # GET /payments/1

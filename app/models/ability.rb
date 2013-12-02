@@ -2,8 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Anonymous can read mac
-    can :read, Mac
+    can :read, Mac # Anonymous can read mac
+    can :scan, Mac # Need anonymous so CRON can scan
 
     if !user.nil?
 
@@ -13,8 +13,13 @@ class Ability
       can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
-      can :read, User, :id => user.id #TODO: why can users update themselves?
+      can :read, Payment, :user_id => user.id
+      can [:read,:new_member_report], User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :read, UserCertification, :user_id => user.id
+
+      if user.card_access_enabled
+        can :access_doors_remotely, :door_access
+      end
 
       # Instructors can manage certs and see users
       if user.instructor? 
@@ -29,9 +34,11 @@ class Ability
         can :read, UserCertification
       end 
 
-      # Accountants can manage all
+      # Accountants can manage payments
       if user.accountant?
         can :manage, Payment
+        can :manage, Ipn
+        can :manage, PaypalCsv
       end
 
       # Admins can manage all
@@ -40,8 +47,8 @@ class Ability
       end
 
       # Prevent all destruction for now
-      cannot :destroy, User
-      cannot :destroy, Card
+      #cannot :destroy, User
+      #cannot :destroy, Card
       cannot :destroy, Certification
       cannot :destroy, Mac
       cannot :destroy, MacLog

@@ -23,6 +23,8 @@
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email %>
+    <%= f.check_box :email_visible %>
+    <%= f.label :email_visible, "Show Email to All Members?" %>
   </div>
   <% if @user.id.blank? || !params[:password].nil? %>
   <div class="field">
@@ -38,6 +40,22 @@
     <a href="?password=edit">Change Password</a>
   </div>
 <% end %>
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+    <%= f.check_box :phone_visible %>
+    <%= f.label :phone_visible, "Show Phone to All Members?" %>
+  </div>
+  <div class="field">
+    <%= f.label :twitter_url %>
+    <%= f.text_field :twitter_url, :placeholder => "https://twitter.com/heatsynclabs" %><br/>
+    <%= f.label :facebook_url %>
+    <%= f.text_field :facebook_url, :placeholder => "https://www.facebook.com/HeatSyncLabs" %><br/>
+    <%= f.label :github_url %>
+    <%= f.text_field :github_url, :placeholder => "https://github.com/heatsynclabs" %><br/>
+    <%= f.label :website_url %>
+    <%= f.text_field :website_url, :placeholder => "http://www.heatsynclabs.org" %>
+  </div>
   <div class="field">
     <%= f.label :waiver %><br />
     <%= f.date_select :waiver, :include_blank => 'true', :default => 'nil' %>
@@ -70,10 +88,6 @@
     <%= f.text_field :payee%>
   </div>
   <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
-  </div>
-  <div class="field">
     <%= f.label :current_skills, "What skills, knowledge and experience do you bring to the community?" %><br />
     <%= f.text_area :current_skills %>
   </div>
@@ -84,6 +98,10 @@
   <div class="field">
     <%= f.label :marketing_source, "How'd you find out about HeatSync?" %><br />
     <%= f.text_area :marketing_source %>
+  </div>
+  <div class="field">
+    <%= f.label :exit_reason, "Reason for Leaving" %><br />
+    <%= f.text_area :exit_reason %>
   </div>
   <div class="field">
     <%= f.label :instructor, "Instructor?" %><br />

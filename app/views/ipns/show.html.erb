@@ -1,0 +1,18 @@
+<h2>IPN Details</h2>
+
+<% @ipn.attributes.except("data","payment_id").each do |attr| %>
+<p>
+  <b><%= attr.first.to_s %>:</b>
+  <%= @ipn.attributes[attr.first] %>
+</p>
+<% end %>
+<p>
+  <% if @ipn.payment.present? %>
+    <%= link_to "Linked Payment", @ipn.payment %>
+  <% else %>
+    <span class="alert">Couldn't link automatically. Please create payment manually or adjust the user account and try again to <%= link_to "link email '#{@ipn.payer_email}' at membership level '#{@ipn.payment_gross.to_i}'", link_ipn_path(@ipn) %>.</span>
+  <% end %>
+
+</p>
+
+<%= link_to "Back", ipns_path %>

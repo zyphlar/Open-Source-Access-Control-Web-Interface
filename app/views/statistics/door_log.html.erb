@@ -1,0 +1,52 @@
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+$(function() {
+
+  $('#graph').highcharts({
+      chart: {
+        type: 'column',
+        zoomType : 'x'   
+      },
+      title: { 
+        style : { fontSize: '10px' },
+        text: "Click and Drag to Zoom." 
+      },
+      xAxis: {
+        title : { text : "Days" },
+        type : 'datetime'
+      },
+      yAxis : { 
+        title : {
+          text : "Accesses"
+        }
+      },
+      series: [{
+        name: "Accesses",
+        data: <%= raw @door_log_graph.to_json %>
+      }]
+  });
+    
+
+});
+</script>
+
+
+<h2>Your Card Access Data</h2>
+<%= link_to 'Download JSON', door_statistics_path+".json", :class => 'btn' %>
+<div id="graph" title="MAC Presence by Day" style="height: 250px; width: 500px; float: right;"></div>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Action</th>
+    <th>Card # (hex)</th>
+  </tr>
+  <% @door_logs.each do |log| %>
+  <tr>
+    <td><%= log.created_at %></td>
+    <td><%= log.key %></td>
+    <td><%= log.data.to_s(16) %></td>
+  </tr>
+  <% end %>
+</table>

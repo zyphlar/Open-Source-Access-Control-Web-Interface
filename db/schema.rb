@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212083412) do
+ActiveRecord::Schema.define(:version => 20130928112252) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -33,6 +34,27 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.integer  "data"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "ipns", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "txn_id"
+    t.string   "txn_type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "payer_business_name"
+    t.string   "payer_email"
+    t.string   "payer_id"
+    t.string   "auth_amount"
+    t.string   "payment_date"
+    t.string   "payment_fee"
+    t.string   "payment_gross"
+    t.string   "payment_status"
+    t.string   "item_name"
+    t.string   "payment_type"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "mac_logs", :force => true do |t|
@@ -64,9 +86,46 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "created_by"
+    t.decimal  "amount"
   end
 
   add_index "payments", ["user_id"], :name => "index_payments_on_user_id"
+
+  create_table "paypal_csvs", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "data"
+    t.string   "date"
+    t.string   "_time"
+    t.string   "_time_zone"
+    t.string   "_name"
+    t.string   "_type"
+    t.string   "_status"
+    t.string   "_currency"
+    t.string   "_gross"
+    t.string   "_fee"
+    t.string   "_net"
+    t.string   "_from_email_address"
+    t.string   "_to_email_address"
+    t.string   "_transaction_id"
+    t.string   "_counterparty_status"
+    t.string   "_address_status"
+    t.string   "_item_title"
+    t.string   "_item_id"
+    t.string   "string"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "settings", :force => true do |t|
+    t.string   "var",                      :null => false
+    t.text     "value"
+    t.integer  "thing_id"
+    t.string   "thing_type", :limit => 30
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "settings", ["thing_type", "thing_id", "var"], :name => "index_settings_on_thing_type_and_thing_id_and_var", :unique => true
 
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"
@@ -79,35 +138,42 @@ ActiveRecord::Schema.define(:version => 20130212083412) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",                    :default => "", :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.boolean  "admin"
-    t.integer  "member",                 :limit => 255
+    t.integer  "member"
     t.datetime "waiver"
     t.datetime "orientation"
     t.string   "emergency_name"
     t.string   "emergency_phone"
     t.string   "emergency_email"
-    t.string   "member_level"
+    t.integer  "member_level"
     t.string   "payment_method"
     t.string   "phone"
-    t.string   "current_skills"
-    t.string   "desired_skills"
+    t.text     "current_skills"
+    t.text     "desired_skills"
     t.boolean  "instructor"
     t.boolean  "hidden"
-    t.string   "marketing_source"
+    t.text     "marketing_source"
     t.string   "payee"
     t.boolean  "accountant"
+    t.text     "exit_reason"
+    t.string   "twitter_url"
+    t.string   "facebook_url"
+    t.string   "github_url"
+    t.string   "website_url"
+    t.boolean  "email_visible"
+    t.boolean  "phone_visible"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

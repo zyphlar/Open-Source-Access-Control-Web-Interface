@@ -1,0 +1,14 @@
+<h3>Send Email to <%= @user.name %></h3>
+<%= form_tag do %>
+  <div class="field">
+  	<%= label_tag :subject %><br/>
+    <%= text_field_tag :subject, @subject, :size => 52 %>
+  </div>
+  <div class="field">
+  	<%= label_tag :body %><br/>
+    <%= text_area_tag :body, @body, :cols => 40  %>
+  </div>
+  <div class="field">
+    <%= submit_tag "Send", :class => "btn" %>
+  </div>
+<% end %>

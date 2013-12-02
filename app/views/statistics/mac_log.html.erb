@@ -1,0 +1,60 @@
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+$(function() {
+
+  $('#graph').highcharts({
+      chart: {
+        type: 'column',
+        zoomType : 'x'   
+      },
+      title: { 
+        style : { fontSize: '10px' },
+        text: "Click and Drag to Zoom, Click the Legend to Turn Off Items." 
+      },
+      xAxis: {
+        title : { text : "Days" },
+        type : 'datetime'
+      },
+      yAxis : {
+        title : {
+          text : "Hours"
+        }
+      },
+      series: [
+<% @mac_log_graph.each do |mac, graph, element| %>
+      {
+        name: "<%= raw mac %>",
+        data: <%= raw graph.to_json %>
+      },
+<% end %>
+      ],
+      tooltip : { valueSuffix : " hrs" }
+  });
+    
+
+});
+</script>
+
+
+
+<h2>Your Mac Address Data</h2>
+<%= link_to 'Download JSON', mac_statistics_path+".json", :class => 'btn' %>
+<div id="graph" title="MAC Presence by Day" style="height: 250px; width: 500px; float: right;"></div>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Action</th>
+    <th>MAC</th>
+    <th>IP</th>
+  </tr>
+  <% @mac_logs.each do |log| %>
+  <tr>
+    <td><%= log.created_at %></td>
+    <td><%= log.action %></td>
+    <td><%= log.mac %></td>
+    <td><%= log.ip %></td>
+  </tr>
+  <% end %>
+</table>

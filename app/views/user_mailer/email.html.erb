@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p><b>From:</b> <%= link_to @from_user.name, user_url(@from_user) %></p>
+    <p>
+      <%= simple_format @body %>
+    </p>
+    <p>
+      <i>To reply, visit <%= link_to @url, @url %></i> .
+    </p>
+  </body>
+</html>

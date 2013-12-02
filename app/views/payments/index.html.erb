@@ -1,11 +1,121 @@
-<h1>Listing payments</h1>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+$(function() {
 
-<%= link_to 'New Payment', new_payment_path %>
-<br />
+  $( "#graph" ).dialog({
+    autoOpen: false,
+    height: 325,
+    width: 525,
+    modal: true,
+  });
+  $( "#graph-button" ).click(function() {
+    $( "#graph" ).dialog( "open" );
+  });
+
+  $('#graph').highcharts({
+      chart: {
+          type: 'area'
+      },
+      title: { 
+        style : { fontSize: '10px' },
+        text: "Numbers for Most Recent Month Greater Than They Appear" 
+      },
+      xAxis: {
+          type: 'datetime'
+      },
+      yAxis : [{ // Primary yAxis
+        title : {
+          text: "Income"
+        },
+        labels: {
+          format: '${value}'
+        }
+      }, { // Secondary yAxis
+        title : {
+          text: "Members",
+          style: { color: '#8bbc21' }
+        },
+        labels: {
+          format: '{value}',
+          style: { color: '#8bbc21' }
+        },
+        opposite: true
+      }],
+      tooltip: {
+          shared: true,
+          xDateFormat: '%B %Y',
+          formatter: function() {
+            console.log(this);
+            output = '<b>'+ Highcharts.dateFormat(this.points[0].series.tooltipOptions.xDateFormat,this.x) +'</b><br/>';
+            total = 0;
+            this.points.forEach(function(e,i,a){
+              console.log(e);
+              output += '<span style="color:'+e.series.color+'">'+e.series.name +'</span>: '+ (e.series.tooltipOptions.valuePrefix||"") + Highcharts.numberFormat(e.y,0,".",",") +'<br/>';
+              if(i < 2){
+                total += e.y;
+              }
+            });
+            output += '<b>Total:</b> '+(this.points[0].series.tooltipOptions.valuePrefix||"")+ Highcharts.numberFormat(total,0,".",",");
+            return output;
+          }
+      },
+      plotOptions: {
+          area: {
+              stacking: 'normal',
+              lineColor: '#666666',
+              lineWidth: 1,
+              marker: {
+                  lineWidth: 1,
+                  lineColor: '#666666'
+              }
+          }
+      },
+      series: [{
+        name: 'Basic',
+        data: <%= @graph[:basic].to_json %>,
+        tooltip: {
+          valuePrefix: '$'
+        }
+      }, {
+        name: 'Associate',
+        data: <%= @graph[:associate].to_json %>,
+        tooltip: {
+          valuePrefix: '$'
+        }
+      }, {
+        yAxis: 1,
+        type: 'spline',
+        name: 'Members',
+        data: <%= @graph[:members].to_json %>
+      }]
+  });
+    
+
+});
+</script>
+
+<div id="graph" title="Payments by Month" style="height: 250px; width: 500px; float: right;"></div>
+
+
+<h1>Listing payments <button id="graph-button" class="btn">View Graph</button></h1>
+
+<p>
+<b>Create Payments:</b>
+<%= link_to 'Manually', new_payment_path %> |
+<%= link_to 'Batched CSV', paypal_csvs_path %> |
+<%= link_to 'IPN', ipns_path %>
+</p>
+
+
 <table>
   <tr>
+    <th>Payee</th>
     <th>User</th>
-    <th>Paid for month <br/>beginning</th>
+    <th>Member level</th>
+    <th>Last Payment</th>
+    <th>Amount</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,8 +123,11 @@
 
 <% @payments.each do |payment| %>
   <tr>
-    <td><%= link_to payment.user.name_with_payee_and_member_level, payment.user unless payment.user.blank? %></td>
-    <td><%= payment.human_date %></td>
+    <td><%= payment.user.payee unless payment.user.blank? %></td>
+    <td><%= link_to payment.user.name, payment.user unless payment.user.blank? %></td>
+    <td><%= payment.user.member_level_string unless payment.user.blank? %></td>
+    <td><%= payment.date %></td>
+    <td><%= payment.amount %></td>
     <td><%= link_to 'Details', payment %></td>
     <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
   </tr>

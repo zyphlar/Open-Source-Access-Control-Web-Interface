@@ -1,6 +1,17 @@
 Dooraccess::Application.routes.draw do
+  match 'ipns/import' => 'ipns#import', :as => :import_ipn
+  resources :ipns
+  match 'ipns/:id/link' => 'ipns#link', :as => :link_ipn
+  match 'ipns/:id/validate' => 'ipns#validate', :as => :validate_ipn
+
+  resources :paypal_csvs
+  match 'paypal_csvs/:id/link' => 'paypal_csvs#link', :as => :link_paypal_csv
 
   resources :payments
+
+  match 'statistics' => 'statistics#index', :as => :statistics
+  match 'statistics/mac_log' => 'statistics#mac_log', :as => :mac_statistics
+  match 'statistics/door_log' => 'statistics#door_log', :as => :door_statistics
 
   resources :user_certifications
 
@@ -18,12 +29,25 @@ Dooraccess::Application.routes.draw do
       end
   end
 
-  resources :users
+  match 'user_summary/:id' => 'users#user_summary' # User summary view
+  match 'users/activity' => 'users#activity' # User activity
+  match 'users/new_member_report' => 'users#new_member_report' # New member report (For emailing)
+  match 'users/merge' => 'users#merge_view', :via => :get # Merge view
+  match 'users/merge' => 'users#merge_action', :via => :post # Merge action
+  match 'users/inactive' => 'users#inactive' # Inactive users report
+  resources :users do 
+    get 'email' => 'users#compose_email', :as => "compose_email"
+    post 'email' => 'users#send_email'
+  end
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 
   match 'cards/upload_all' => 'cards#upload_all', :as => :upload_all
   resources :cards
   match 'cards/:id/upload' => 'cards#upload', :as => :upload
+
+  match 'space_api' => 'space_api#index', :as => :space_api
+  match 'space_api/access' => 'space_api#access', :via => :get, :as => :space_api_access
+  match 'space_api/access' => 'space_api#access_post', :via => :post
 
   match 'door_logs' => 'door_logs#index', :as => :door_logs
   match 'door_logs/download' => 'door_logs#download', :as => :download
@@ -31,10 +55,13 @@ Dooraccess::Application.routes.draw do
 
   match 'macs/scan' => 'macs#scan'
   match 'macs/import' => 'macs#import'
+  match 'macs/history' => 'macs#history'
   resources :macs
-
   resources :mac_logs
 
+  resources :settings, :only => [:index, :edit, :update]
+
+  match 'more_info' => 'home#more_info'
   root :to => "home#index"
 
   # The priority is based upon order of creation:

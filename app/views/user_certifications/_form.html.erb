@@ -11,13 +11,14 @@
     </div>
   <% end %>
 
+  <% @user_certification.user_id = params[:user] if params[:user].present? %>
   <div class="field">
     <%= f.label :user_id, "User" %><br />
-    <%= collection_select(:user_certification, :user_id, @users, :id, :name) %>
+    <%= collection_select(:user_certification, :user_id, @users, :id, :name, :include_blank => true) %>
   </div>
   <div class="field">
     <%= f.label :certification_id, "Certification" %><br />
-    <%= collection_select(:user_certification, :certification_id, @certifications, :id, :name) %>
+    <%= collection_select(:user_certification, :certification_id, @certifications, :id, :name, :include_blank => true) %>
   </div>
   <div class="actions">
     <%= f.submit %>

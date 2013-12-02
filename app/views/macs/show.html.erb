@@ -4,7 +4,7 @@
 </p>
 
 <p>
-  <b>Mac:</b>
+  <b>MAC:</b>
   <%= @mac.mac %>
 </p>
 
@@ -22,6 +22,17 @@
   <b>IP:</b>
   <%= @mac.ip %>
 </p>
+
+<% if can? :read, MacLog %>
+<p>
+  <b>Recent Log Entries:</b>
+<ul>
+<% @mac_logs.each do |log| %>
+  <li><%= log.created_at %></li>
+<% end %>
+</ul>
+</p>
+<% end %>
 
 <%= link_to 'Edit', edit_mac_path(@mac) %> |
 <%= link_to 'Back', macs_path %>

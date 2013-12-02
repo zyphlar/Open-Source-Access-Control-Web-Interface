@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date: MyString
+  _time: MyString
+  _time_zone: MyString
+  _name: MyString
+  _type: MyString
+  _status: MyString
+  _currency: MyString
+  _gross: MyString
+  _fee: MyString
+  _net: MyString
+  _from_email_address: MyString
+  _to_email_address: MyString
+  _transaction_id: MyString
+  _counterparty_status: MyString
+  _address_status: MyString
+  _item_title: MyString
+  _item_id: MyString
+  string: MyString
+
+two:
+  date: MyString
+  _time: MyString
+  _time_zone: MyString
+  _name: MyString
+  _type: MyString
+  _status: MyString
+  _currency: MyString
+  _gross: MyString
+  _fee: MyString
+  _net: MyString
+  _from_email_address: MyString
+  _to_email_address: MyString
+  _transaction_id: MyString
+  _counterparty_status: MyString
+  _address_status: MyString
+  _item_title: MyString
+  _item_id: MyString
+  string: MyString

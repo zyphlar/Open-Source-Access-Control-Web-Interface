@@ -1,23 +1,27 @@
-<h1>Welcome to the HeatSync Labs Members App.</h1>
+<h1><%= Setting.welcome_title %></h1>
 <% if !user_signed_in? then %>
-<p>You can sign up to become a member here!</p>
+<%= simple_format Setting.welcome_body %>
 <% end %>
 
 
 <% if user_signed_in? && current_user.orientation.blank? then %>
 <p class="alert">There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer.</p>
 <% end %>
-<% if user_signed_in? && current_user.member.to_i < current_user.member_level.to_i then %>
+<% if user_signed_in? && current_user.member_status.between?(2,100) then %>
+<%= current_user.member.inspect %>
+<%= current_user.member_level.inspect %>
 <p class="alert">Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, or this app just got started, but if in doubt please see your profile for payment instructions, or consider updating your membership level to something accurate.<br/>Thanks for supporting HeatSync!</p>
 <% end %>
 <table>
 <tr>
 <td>
-<% if ((can? :read, @recent_user_names) && (@recent_user_names.count > 1)) then %>
+<% if ((can? :read, User) && (@recent_user_names.count > 1)) then %>
 <h2>New People: <em>(say hi!)</em></h2>
 <ul>
 <% @recent_user_names.each do |user| %>
-  <li><%= link_to user.name, user %> <%= raw(user.member_status_symbol) %> <em>(Signed up <%= user.created_at.strftime("%b %d") %>)</em></li>
+  <% if can? :read, user %>
+    <li><%= link_to user.name, user %> <%= raw(user.member_status_symbol) %> <em>(Signed up <%= user.created_at.strftime("%b %d") %>)</em></li>
+  <% end %>
 <% end %>
 </ul>
 <% end %>
@@ -27,10 +31,14 @@
   <dd><%= @num_users %> (<%= @recent_users %> new in the last 7 days)</dd>
   <dt># of People Certified:</dt>
   <dd><%= @num_certs %> (<%= @recent_certs %> new in the last 7 days)</dd>
+  <dt># of Current Paying Members:</dt>
+  <dd><%= @num_paid_users %> (<%= @num_plus_users %> plus, <%= @num_basic_users %> basic, <%= @num_associate_users %> associate. <%= @num_delinquent_users %> not-current)</dd>
   <dt># of Door Accesses Granted:</dt>
   <dd><%= @num_door_opens %> (<%= @today_door_opens %> today, <%= @recent_door_opens %> in the last 7 days)</dd>
   <dt># of Door Accesses Denied:</dt>
-  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last 7 days)</dd>
+  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last month)</dd>
+  <dt># of Members DB Logins:</dt>
+  <dd><%= @num_logins %> (<%= @recent_logins %> users last 7 days)</dd>
   <dt># of Computers in this DB:</dt>
   <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
 </dl>
@@ -39,27 +47,10 @@
 <td>
 
 <h2>Member Resources</h2>
-<ul>
-  <li><%= link_to "Wiki", "http://wiki.heatsynclabs.org" %></li>
-  <li><%= link_to "Discussion Group", "http://groups.google.com/group/heatsynclabs" %></li>
-  <li><%= link_to "IRC", "irc://irc.freenode.net#heatsynclabs" %></li>
-  <li><%= link_to "Live Webcams", "http://live.heatsynclabs.org/" %></li>
-  <li>Lab Phone: (480) 751-1929</li>
-  <li>
-    <style type="text/css">
-     form input {font-family: 'Lucida Console', Monaco, monospace; }
-    </style>
-    
-    <b>Send a Message!</b>
-    <form method="post" action="http://tweet.zyphon.com/signage.php">
-      <em>Type here and your message will show up on the LED sign in the front window!</em><br/>
-      <em>(Please be nice!)</em><br/>
-      <input type="text" name="msg" id="msg" value="  Hello" size="9" /> (max 9 chars per line)<br/>
-      <input type="text" name="msg2" id="msg2" value="  World" size="9" /><br/>
-      <input type="submit" name="submitbutton" id="submitbutton" value="Go!" />
-    </form>
-  </li>
-</ul>
+<% if can? :access_doors_remotely, :door_access %>
+<ul><li><%= link_to "Remote Door Access", space_api_access_path %></li></ul>
+<% end %>
+<%= simple_format Setting.member_resources_inset %>
 
 </td>
 </tr>

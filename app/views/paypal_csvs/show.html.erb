@@ -1,0 +1,17 @@
+<h2>PayPal CSV Item Details</h2>
+<% @paypal_csv.attributes.except("data","payment_id").each do |attr| %>
+<p>
+  <b><%= attr.first.to_s %>:</b>
+  <%= @paypal_csv.attributes[attr.first] %>
+</p>
+<% end %>
+
+<p>
+  <% if @paypal_csv.payment.present? %>
+    <%= link_to "Linked Payment", @paypal_csv.payment %>
+  <% else %>
+    <span class="alert">Couldn't link automatically. Please create payment manually or adjust the user account and try again to <%= link_to "link email '#{@paypal_csv._from_email_address}' at membership level '#{@paypal_csv._gross.to_i}'", link_paypal_csv_path(@paypal_csv) %>.</span>
+  <% end %>
+
+</p>
+<%= link_to "Back", paypal_csvs_path %>

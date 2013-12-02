@@ -1,0 +1,65 @@
+<h1>Inactive Users</h1>
+
+<table>
+  <col />
+  <col />
+  <% if current_user.admin? then %><col /><% end %>
+  <col />
+  <% if current_user.admin? %><col />
+  <col class="col_highlight" /><% end %>
+  <col />
+  <col class="col_highlight" />
+  <col />
+  <col class="col_highlight" />
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <% if current_user.admin? then %><th>Email</th><% end %>
+    <th>Certifications</th>
+    <% if current_user.admin? then %>
+    <th>Orientation?</th>
+    <% end %>
+    <th>Card?</th>
+    <th>Pmt Method</th>
+    <th>Desired Level</th>
+    <th>Last Payment</th>
+    <th>Joined</th>
+    <th></th>
+    <th></th>
+  </tr>
+  
+<% if !@users.blank? %>
+  <% @users.each do |user| %>
+  <tr<%= " class='hidden'" if user.hidden? %>>
+    <td><%= image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/assets/nil.png"), :class => :avatar %></td>
+    <td><%= link_to user.name, user %></td>
+    <% if current_user.admin? then %><td><%= user.email %></td><% end %>
+    <td><% user.certifications.each do |c| %>
+      <%= link_to c.name, c %><%= "," unless c.id == user.certifications.last.id %>
+    <% end %></td>
+    <% if current_user.admin? then %><td>
+      <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
+    </td><% end %>
+    <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
+    <td><%= user.payment_method %></td>
+    <td><%= user.member_level %></td>
+    <td><% delinquency = user.delinquency %>
+      <% if delinquency == 9999 %>
+        No Payments
+      <% else %>
+        <%= (delinquency/30).to_s+" mo. ago" %>
+      <% end %>
+    </td>
+    <td><%= user.created_at.to_date %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) if can? :update, user %></td>
+    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, user %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<% if current_user.orientation.blank? then %>
+<p class="alert">There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer.</p>
+<% end %>
+
+<br />

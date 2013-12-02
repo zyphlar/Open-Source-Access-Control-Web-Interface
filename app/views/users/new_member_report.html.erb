@@ -1,0 +1,24 @@
+<h1>New Members</h1>
+<% if !@new_users.blank? %>
+  <% @new_users.sort_by(&:created_at).reverse!.group_by{|u| u.created_at.beginning_of_month}.each do |g| %>
+    <h2><%= g.first.to_formatted_s(:month_and_year) %></h2>
+    <% g.last.each do |user| %>
+      <p><b><%= user.name %> - <%= user.member_level_string %></b></p>
+      <p><b>What skills, knowledge and experience do you bring to the community?</b><br/>
+        <%= user.current_skills %>
+      </p>
+      <p><b>
+        What skills, knowledge and experiences are you looking for in HeatSync?
+      </b><br/>
+        <%= user.desired_skills %>
+      </p>
+      <p><b>
+        How'd you find out about HeatSync?
+      </b><br/>
+        <%= user.marketing_source %>
+      </p>
+      <p>&nbsp;</p>
+    <% end %>
+  <% end %>
+<% end %>
+

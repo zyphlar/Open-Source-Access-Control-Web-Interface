@@ -2,14 +2,24 @@ class UsersController < ApplicationController
   load_and_authorize_resource
   before_filter :authenticate_user!
 
+  def sort_by_cert(certs,id)
+    result = 0
+    certs.each do |c|
+      if c.id == id
+        result = 1
+      end
+    end
+    return result
+  end
+
   # GET /users
   # GET /users.json
   def index
     case params[:sort]
     when "name"
       @users = @users.sort_by(&:name)
-    when "certifications"
-      @users = @users.sort_by{ |u| [-u.certifications.count,u.name] }
+    when "cert"
+      @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
     when "orientation"
       @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
     when "waiver"
@@ -33,6 +43,24 @@ class UsersController < ApplicationController
     end
   end
 
+  # 'Active' users who haven't paid recently
+  def inactive
+    @users = @users.all.select{|u| u if u.payment_status == false }.sort_by{ |u| -u.delinquency }
+  end
+
+  # Recent user activity
+  def activity
+    @zombie_members = User.where('sign_in_count = 0').where('member_level > 1')
+    @user_logins = User.where(:current_sign_in_at => 2.months.ago..Time.now).where('sign_in_count > 1')
+    @new_users = User.where(:created_at => 3.months.ago..Date.today)
+    @cardless_users = User.includes('cards').where(['users.member_level >= ?','50']).where('cards.id IS NULL')
+  end
+
+  # New members (for emailing out)
+  def new_member_report
+    @new_users = User.where(:created_at => 3.months.ago..Date.today).where(:hidden => false).where(['member_level >= ?','1'])
+  end
+ 
   # GET /users/1
   # GET /users/1.json
   def show
@@ -41,6 +69,32 @@ class UsersController < ApplicationController
       format.html # show.html.erb
       format.json { render :json => @user }
     end
+  end
+
+  def compose_email
+    @user = User.find(params[:user_id])
+    authorize! :read, @user
+  end
+
+  def send_email
+    @user = User.find(params[:user_id])
+    authorize! :read, @user
+    @subject = params[:subject]
+    @body = params[:body]
+    if @user.send_email(current_user,@subject,@body)
+      redirect_to user_path(@user), :notice => "Email sent successfully."
+    else
+      flash[:alert] = "Error sending email."
+      render :compose_email
+    end
+  end
+
+  # GET /user_summary/1
+  def user_summary
+    respond_to do |format|
+      format.html { render :partial => "user_summary" } # show.html.erb
+      format.json { render :json => @user }
+    end 
   end
 
   # GET /users/new
@@ -61,7 +115,7 @@ class UsersController < ApplicationController
   def create
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_url, :notice => 'User was successfully created.' }
+        format.html { redirect_to @user, :notice => 'User was successfully created.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -75,12 +129,43 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to users_url, :notice => 'User was successfully updated.' }
+        format.html { redirect_to @user, :notice => 'User was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+
+  # GET /users/merge
+  def merge_view
+    @users = @users.sort_by(&:name)
+
+    respond_to do |format|
+      format.html # merge_view.html.erb
+    end
+  end
+
+  # POST /users/merge
+  def merge_action
+    @user_to_keep = User.find(params[:user][:to_keep])
+    Rails.logger.info "USER TO KEEP:"
+    Rails.logger.info @user_to_keep.inspect
+    @user_to_merge = User.find(params[:user][:to_merge])
+    Rails.logger.info "USER TO MERGE:"
+    Rails.logger.info @user_to_merge.inspect
+
+    @user_to_keep.absorb_user(@user_to_merge)
+
+    Rails.logger.info "RESULT:"
+    Rails.logger.info @user_to_keep.inspect
+    Rails.logger.info @user_to_keep.cards.inspect
+    Rails.logger.info @user_to_keep.user_certifications.inspect
+    Rails.logger.info @user_to_keep.payments.inspect
+
+    respond_to do |format|
+      format.html { redirect_to @user_to_keep, :notice => 'Users successfully merged.' }
     end
   end
 
