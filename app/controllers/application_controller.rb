@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
     else
       flash[:alert] = "Nothing to see here!"
     end
+    Rails.logger.warn "----------\r\nWARNING: AccessDenied Exception: #{exception.inspect} User: #{current_user.inspect}\r\n----------"
     redirect_to root_url
   end
 

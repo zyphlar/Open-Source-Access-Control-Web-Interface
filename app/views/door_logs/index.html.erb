@@ -8,6 +8,17 @@ Guide to Card Number storage:
 cardnum = (R+(r*32767)), convert to hex
 
 Guide to log keys and data:
+
+Commands:
+ * rem_ = remote command issues via web UI (#=user id)
+Statuses:
+ * armed = current status of alarm arming
+ * activated = current status of alarm ringing
+ * alarm_2 = current status of alarm sensor 2
+ * alarm_3 = current status of alarm sensor 3
+ * door_1_locked = status of door 1
+ * door_2_locked = status of door 2
+Log Entries:
  * A=alarm armed (# level)
  * a=added user (# usernum)
  * C=keypad command (# command)

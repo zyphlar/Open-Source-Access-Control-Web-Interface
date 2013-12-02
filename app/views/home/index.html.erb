@@ -47,6 +47,9 @@
 <td>
 
 <h2>Member Resources</h2>
+<% if can? :access_doors_remotely, :door_access %>
+<ul><li><%= link_to "Remote Door Access", space_api_access_path %></li></ul>
+<% end %>
 <%= simple_format Setting.member_resources_inset %>
 
 </td>

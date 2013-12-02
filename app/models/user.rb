@@ -56,6 +56,11 @@ class User < ActiveRecord::Base
     user_to_absorb.destroy
   end
 
+  def card_access_enabled
+    # If the user has at least one card with permission level 1, they have access
+    self.cards.where(:card_permissions => 1).count > 0
+  end
+
   def name_with_email_and_visibility
     if hidden then
       "#{name} (#{email}) HIDDEN"

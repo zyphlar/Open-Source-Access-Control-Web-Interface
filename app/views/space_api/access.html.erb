@@ -1,0 +1,114 @@
+<h2 id="title">Door Control System</h2>
+<% if @output %>
+  <p class="notice">
+    <%= raw @output %>
+  </p>
+  <hr/>
+<% end %>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  #status, #status span { display: inline-block; text-align: center; font-weight: bold; border-radius: 5px; }
+  #status { width: 400px;}
+  #status span { border: 1px solid black; width: 180px; padding: 5px; }
+  #status span input { width: 100%; margin: 0.2em 0;}
+  @media only screen and (max-width: 480px){
+    #header a:not(#home_nav_link) { display: none; }
+    #title {
+      position: absolute;
+      top: 0;
+      left: 45px;
+    }
+    #status { width: 100%; }
+    #status span { width: 45%; border: none; padding: 1%; margin: 1em 0; }
+    #status span input { font-size: 1.8em; height: 2em;}
+  }
+  .open { background-color: green; }
+  .closed { background-color: red; }
+  .open input.unlock, .closed input.lock  { background: #bbb; }
+</style>
+<script type="text/javascript">
+  function updateDoorStatus(){
+    // grab status from space api
+    $.get( "<%= space_api_path(:format => :json) %>", function( data ) {
+      switch(data.status){
+        case "doors_open=both":
+          $( "#status" ).attr("class","open");
+          $( "#door_1_status" ).attr("class","open");
+          $( "#door_2_status" ).attr("class","open");
+          break;
+        case "doors_open=door1":
+          $( "#status" ).attr("class","open");
+          $( "#door_1_status" ).attr("class","open");
+          $( "#door_2_status" ).attr("class","closed");
+          break;
+        case "doors_open=door2":
+          $( "#status" ).attr("class","open");
+          $( "#door_1_status" ).attr("class","closed");
+          $( "#door_2_status" ).attr("class","open");
+          break;
+        case "doors_open=none":
+          $( "#status" ).attr("class","closed");
+          $( "#door_1_status" ).attr("class","closed");
+          $( "#door_2_status" ).attr("class","closed");
+          break;
+      }
+    });
+  }
+  function updateMacStatus(){
+    $.get( "/macs.json", function( data ) {
+      $("#mac_status").text(data.map(function(item){
+        return item.name;
+      }).join(", "));
+    });
+  }
+  // run once
+  updateDoorStatus();
+  updateMacStatus();
+  // and again every few seconds
+  setInterval(updateDoorStatus, 10000);
+  setInterval(updateDoorStatus, 60000);
+</script>
+<%= form_tag do %>
+  <% unless user_signed_in? %>
+  <p>
+    <%= label_tag :user, "Email Address" %><br/>
+    <%= text_field_tag :user %>
+  </p>
+  <p>
+    <%= label_tag :pass, "Password" %><br/>
+    <%= password_field_tag :pass %>
+  </p>
+  <% end %>
+  <span id="status">
+    <div>
+      <span id="overall_status">
+        Both<br/>
+        <input type="submit" name="cmd" value="unlock" class="btn unlock">
+        <input type="submit" name="cmd" value="lock" class="btn lock">
+      </span>
+    </div>
+    <span id="door_1_status">
+      Door 1<br/>
+      <input type="submit" name="cmd" value="open-front" class="btn unlock">
+      <input type="submit" name="cmd" value="unlock-front" class="btn unlock">
+      <input type="submit" name="cmd" value="lock-front" class="btn lock">
+    </span>
+    <span id="door_2_status">
+      Door 2<br/>
+      <input type="submit" name="cmd" value="open-rear" class="btn unlock">
+      <input type="submit" name="cmd" value="unlock-rear" class="btn unlock">
+      <input type="submit" name="cmd" value="lock-rear" class="btn lock">
+    </span>
+  </span>
+<!--
+  <h3>Alarm</h3>
+  <p>
+      <input type="submit" name="cmd" value="arm" class="btn">
+      <input type="submit" name="cmd" value="disarm" class="btn">
+  </p>
+-->
+<% end %>
+
+<h3>Who's here?</h3>
+<p id="mac_status">
+</p>

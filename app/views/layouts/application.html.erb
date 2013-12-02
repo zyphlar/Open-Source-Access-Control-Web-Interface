@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="header">
-    <a href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
+    <a id="home_nav_link" href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
     <% if can? :create, UserCertification %>

@@ -2,6 +2,90 @@ class DoorLog < ActiveRecord::Base
   attr_accessible :data, :key
   require 'open-uri'
 
+  def self.execute_command(command)
+    output = ""
+    # load config values
+    door_access_url = APP_CONFIG['door_access_url']
+    door_access_password = APP_CONFIG['door_access_password']
+
+    #login
+    source = open("#{door_access_url}?e=#{door_access_password}").read
+    results = source.scan(/ok/)
+
+    #only continue if we've got an OK login
+    if(results.size > 0) then
+      # Parse the command and result
+      parsing = parse_command(command)
+      output += parsing[:output]
+      url_param = parsing[:url_param]
+
+      # Execute the command
+      open("#{door_access_url}?#{url_param}")
+
+      self.download_status # Update the status cache
+    else
+      output +=  'Failed to connect to door system.'
+    end
+
+    #logout
+    open("#{door_access_url}?e=0000")
+
+    return output
+  end
+
+  def self.parse_command(command)
+    output = ""
+    url_param = ""
+      # @commands = [
+      #   ["Unlock all doors","unlock"],
+      #   ["Unlock Front door","unlock-front"],
+      #   ["Unlock Rear door","unlock-rear"],
+      #   ["Lock all doors","lock"],
+      #   ["Lock Front door","lock-front"],
+      #   ["Lock Rear door","lock-rear"],
+      #   ["Open Front door","open-front"],
+      #   ["Open Rear door","open-rear"],
+      #   ["Arm alarm","arm"],
+      #   ["Disarm alarm","disarm"]
+      # ]
+    case command
+      when "open-front"
+        output +=  "Front door opened."
+        url_param = "o1"
+      when "open-rear"
+        output +=  "Rear door opened."
+        url_param = "o2"
+      when "u", "unlock"
+        output +=  "Doors unlocked, remember to re-lock them."
+        url_param = "u"
+      when "u1", "unlock-front"
+        output +=  "Front Door unlocked, remember to re-lock it."
+        url_param = "u=1"
+      when "u2", "unlock-rear"
+        output +=  "Rear Door unlocked, remember to re-lock it."
+        url_param = "u=2"
+      when "lock", "l"
+        output +=  "Doors locked."
+        url_param = "l"
+      when "lock-front", "l1"
+        output +=  "Front Door locked."
+        url_param = "l=1"
+      when "lock-rear", "l2"
+        output +=  "Rear Door locked."
+        url_param = "l=2"
+      when "arm"
+        output +=  "Armed."
+        url_param = "2"
+      when "disarm"
+        output +=  "Disarmed."
+        url_param = "1"
+      else
+        output +=  "Fail. Don't be a naughty user!"
+        url_param = "9" # Using 9 because it's just status, no harm done
+    end
+    return {:output => output, :url_param => url_param}
+  end
+
   def self.show_status
     door_logs = DoorLog.where(key: ["door_1_locked","door_2_locked"]).order('created_at DESC').take(2)
     door_1_locked = parse_locked_status(door_logs, "door_1_locked")

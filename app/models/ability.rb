@@ -17,6 +17,10 @@ class Ability
       can [:read,:new_member_report], User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :read, UserCertification, :user_id => user.id
 
+      if user.card_access_enabled
+        can :access_doors_remotely, :door_access
+      end
+
       # Instructors can manage certs and see users
       if user.instructor? 
         can :manage, Certification
@@ -39,8 +43,6 @@ class Ability
 
       # Admins can manage all
       if user.admin?
-Rails.logger.info user.inspect
-Rails.logger.info "IS ADMIN"
         can :manage, :all
       end
 
