@@ -73,12 +73,10 @@ class UsersController < ApplicationController
 
   def compose_email
     @user = User.find(params[:user_id])
-    authorize! :read, @user
   end
 
   def send_email
     @user = User.find(params[:user_id])
-    authorize! :read, @user
     @subject = params[:subject]
     @body = params[:body]
     if @user.send_email(current_user,@subject,@body)
