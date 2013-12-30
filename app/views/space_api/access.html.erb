@@ -1,17 +1,21 @@
-<h2 id="title">Door Control System</h2>
+<% content_for :header do %>
+  <h3>Door Control System</h3>
+<% end %>
 <% if @output %>
   <p class="notice">
     <%= raw @output %>
   </p>
   <hr/>
 <% end %>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 <style type="text/css">
   #status, #status span { display: inline-block; text-align: center; font-weight: bold; border-radius: 5px; }
   #status { width: 400px;}
-  #status span { border: 1px solid black; width: 180px; padding: 5px; }
-  #status span input { width: 100%; margin: 0.2em 0;}
-  @media only screen and (max-width: 480px){
+  #status span { border: 1px solid black; width: 180px; padding: 5px; margin: 1em 0;}
+  #status span button { width: 100%; margin: 0.2em 0;}
+  #webcams-button { margin: 1em 0 0; }
+  #cam { width: 100%; }
+  @media only screen and (max-width: 769px){
     #header a:not(#home_nav_link) { display: none; }
     #title {
       position: absolute;
@@ -19,35 +23,41 @@
       left: 45px;
     }
     #status { width: 100%; }
-    #status span { width: 45%; border: none; padding: 1%; margin: 1em 0; }
-    #status span input { font-size: 1.8em; height: 2em;}
+    #status span { width: 45%; border: none; padding: 1%; margin: 0; }
+    #status span button { font-size: 1.8em; height: 2em;}
+    #webcams-button { margin: 5px 0 0; }
   }
   .open { background-color: green; }
   .closed { background-color: red; }
-  .open input.unlock, .closed input.lock  { background: #bbb; }
+  .open>button.unlock, .closed>button.lock  { background: #bbb; }
 </style>
 <script type="text/javascript">
+  function refreshCam(){
+    $('#cam').attr("src", 'http://live.heatsynclabs.org/snapshot.php?camera=1&'+Math.round(Math.random()*1000000));
+    return false;
+  }
+
   function updateDoorStatus(){
     // grab status from space api
     $.get( "<%= space_api_path(:format => :json) %>", function( data ) {
       switch(data.status){
         case "doors_open=both":
-          $( "#status" ).attr("class","open");
+          $( "#status, #overall_status" ).attr("class","open");
           $( "#door_1_status" ).attr("class","open");
           $( "#door_2_status" ).attr("class","open");
           break;
         case "doors_open=door1":
-          $( "#status" ).attr("class","open");
+          $( "#status" ).attr("class","open"); // don't apply overall_status style because it's both
           $( "#door_1_status" ).attr("class","open");
           $( "#door_2_status" ).attr("class","closed");
           break;
         case "doors_open=door2":
-          $( "#status" ).attr("class","open");
+          $( "#status" ).attr("class","open"); // don't apply overall_status style because it's both
           $( "#door_1_status" ).attr("class","closed");
           $( "#door_2_status" ).attr("class","open");
           break;
         case "doors_open=none":
-          $( "#status" ).attr("class","closed");
+          $( "#status, #overall_status" ).attr("class","closed");
           $( "#door_1_status" ).attr("class","closed");
           $( "#door_2_status" ).attr("class","closed");
           break;
@@ -56,17 +66,17 @@
   }
   function updateMacStatus(){
     $.get( "/macs.json", function( data ) {
-      $("#mac_status").text(data.map(function(item){
+      $("#mac_status").text($.unique(data.map(function(item){
         return item.name;
-      }).join(", "));
+      })).sort().join(", "));
     });
   }
   // run once
   updateDoorStatus();
   updateMacStatus();
   // and again every few seconds
-  setInterval(updateDoorStatus, 10000);
   setInterval(updateDoorStatus, 60000);
+  setInterval(updateMacStatus, 60000);
 </script>
 <%= form_tag do %>
   <% unless user_signed_in? %>
@@ -83,22 +93,23 @@
     <div>
       <span id="overall_status">
         Both<br/>
-        <input type="submit" name="cmd" value="unlock" class="btn unlock">
-        <input type="submit" name="cmd" value="lock" class="btn lock">
+      <%= button_tag "Unlock", {name: "cmd", value: "unlock", class: "btn unlock"} %>
+      <%= button_tag "Lock", {name: "cmd", value: "lock", class: "btn lock"} %>
       </span>
     </div>
     <span id="door_1_status">
-      Door 1<br/>
-      <input type="submit" name="cmd" value="open-front" class="btn unlock">
-      <input type="submit" name="cmd" value="unlock-front" class="btn unlock">
-      <input type="submit" name="cmd" value="lock-front" class="btn lock">
+      Front Door<br/>
+      <%= button_tag "Open", {name: "cmd", value: "open-front", class: "btn unlock"} %>
+      <%= button_tag "Unlock", {name: "cmd", value: "unlock-front", class: "btn unlock"} %>
+      <%= button_tag "Lock", {name: "cmd", value: "lock-front", class: "btn lock"} %>
     </span>
     <span id="door_2_status">
-      Door 2<br/>
-      <input type="submit" name="cmd" value="open-rear" class="btn unlock">
-      <input type="submit" name="cmd" value="unlock-rear" class="btn unlock">
-      <input type="submit" name="cmd" value="lock-rear" class="btn lock">
+      Rear Door<br/>
+      <%= button_tag "Open", {name: "cmd", value: "open-rear", class: "btn unlock"} %>
+      <%= button_tag "Unlock", {name: "cmd", value: "unlock-rear", class: "btn unlock"} %>
+      <%= button_tag "Lock", {name: "cmd", value: "lock-rear", class: "btn lock"} %>
     </span>
+    <p>Green = open, Red = locked.</p>
   </span>
 <!--
   <h3>Alarm</h3>
@@ -107,8 +118,25 @@
       <input type="submit" name="cmd" value="disarm" class="btn">
   </p>
 -->
+
 <% end %>
 
-<h3>Who's here?</h3>
-<p id="mac_status">
-</p>
+<button id="webcams-button" class="btn" data-toggle="modal" data-target="#webcams">Who's Here?</button>
+
+<div class="modal fade" id="webcams" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Webcam</h4>
+        <em>(click to refresh)</em>
+      </div>
+      <div class="modal-body">
+        <a href="#" onclick="refreshCam()">
+          <img id="cam" src="http://live.heatsynclabs.org/snapshot.php?camera=1">
+        </a>
+        <p id="mac_status"></p>
+      </div>
+    </div>
+  </div>
+</div>
