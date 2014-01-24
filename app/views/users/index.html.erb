@@ -8,9 +8,13 @@
 <% end %>
 <% if current_user.admin? %>
   <%= link_to 'Inactive Users', users_inactive_path %> |
+<% end %>
+<% if can? :activity, User %>
   <%= link_to 'Recent Activity', users_activity_path %> |
 <% end %>
-<%= link_to 'New Members Report', users_new_member_report_path %>
+<% if can? :new_member_report, User %>
+  <%= link_to 'New Members Report', users_new_member_report_path %>
+<% end %>
 
 <% @certifications = Certification.all.sort_by(&:id) %>
 <table>

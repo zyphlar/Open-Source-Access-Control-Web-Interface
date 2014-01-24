@@ -14,8 +14,8 @@ class Ability
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
       can :read, Payment, :user_id => user.id
-      can [:read,:new_member_report], User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :read, UserCertification, :user_id => user.id
+      can :read, User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :compose_email, User
       can :send_email, User
 
@@ -32,7 +32,7 @@ class Ability
       end
       # Users can see others' stuff if they've been oriented
       unless user.orientation.blank?
-        can :read, User, :hidden => [nil,false]
+        can [:read,:new_member_report,:activity], User, :hidden => [nil,false]
         can :read, UserCertification
       end 
 
