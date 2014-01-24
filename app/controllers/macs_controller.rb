@@ -224,7 +224,7 @@ end
 
 def arp_lookup
   @ip = request.env['REMOTE_ADDR']
-  @arp = %x(/usr/sbin/arp -a | grep #{@ip})
+  @arp = /([0-9A-F]{2}[:-]){5}([0-9A-F]{2})/i.match(%x(arp -a | grep #{@ip}))
 end
 
 def scan
