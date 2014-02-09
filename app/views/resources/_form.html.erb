@@ -40,13 +40,11 @@
     <%= f.date_select :disposed_at, include_blank: true %>
   </p>
 
- <% if can? :assign_user, @resource %>
     <p>
       <%= f.label :user_id, "Owner" %>
       <br />
       <%= select(:resource, :user_id, options_from_collection_for_select(@users, :id, :name, @resource.user_id), include_blank: true) %>
     </p>
-  <% end %>
 
   <p>
     <%= f.label :donatable %><br />

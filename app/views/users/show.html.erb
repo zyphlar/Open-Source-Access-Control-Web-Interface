@@ -120,7 +120,54 @@
     <% end %>
   <% end %>
 </p>
- 
+
+<p> 
+  <style>
+.row {
+margin-left: -15px;
+margin-right: -15px;
+}
+.col-sm-2 {
+width: 16.666666666666664%;
+float: left;
+position: relative;
+min-height: 1px;
+padding-left: 15px;
+padding-right: 15px;
+}
+    .thumbnail {
+display: block;
+padding: 4px;
+margin-bottom: 20px;
+line-height: 1.428571429;
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 4px;
+-webkit-transition: all .2s ease-in-out;
+transition: all .2s ease-in-out;
+}
+.thumbnail a>img {
+display: block;
+max-width: 100%;
+height: auto;
+margin-left: auto;
+margin-right: auto;
+}
+.thumbnail a:hover { color: black; }
+
+  .thumbnail { height: 150px; position: relative; }
+  .thumbnail .ownership,
+  .thumbnail .disposed
+  { display: none; }
+  .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
+
+  .clearfix { clear: both }
+  </style>
+  <b>Resources: </b><%= link_to "+ Add", new_resource_path, :class => 'btn' if can? :create, Resource %>
+  <div class="row"><%= render @user.resources if @user.resources %></div>
+  <div class="clearfix"></div>
+</p>
+
 <p>
   <b>Waiver?</b>
   <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>

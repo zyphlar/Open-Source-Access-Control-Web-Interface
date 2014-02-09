@@ -1,9 +1,14 @@
 class ResourcesController < ApplicationController
   load_and_authorize_resource
-  before_filter :authenticate_user!, :load_users
+  before_filter :load_users
 
   def index
     @featured_resource = @resources.where("picture_file_name IS NOT NULL").sample
+  end
+
+  def new
+    # don't get too excited... for some reason this gets set to the current_user
+    @resource.user_id = nil 
   end
 
   def create

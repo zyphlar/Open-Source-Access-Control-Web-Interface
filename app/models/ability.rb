@@ -4,6 +4,7 @@ class Ability
   def initialize(user)
     can :read, Mac # Anonymous can read mac
     can :scan, Mac # Need anonymous so CRON can scan
+    can :read, Resource
 
     if !user.nil?
 
@@ -14,7 +15,7 @@ class Ability
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
       can :read, Payment, :user_id => user.id
-      can :read, Resource
+      can [:create,:update], Resource, :user_id => user.id
       can :read, UserCertification, :user_id => user.id
       can :read, User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :compose_email, User

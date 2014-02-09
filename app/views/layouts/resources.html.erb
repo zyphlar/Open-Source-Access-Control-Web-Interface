@@ -47,7 +47,7 @@
       <%= link_to 'People', users_path if can? :read, User %>
           </li>
           <li class="active">
-      <%= link_to 'Tools', resources_path if can? :read, Resource %>
+      <%= link_to 'Tools & Resources', resources_path if can? :read, Resource %>
           </li>
           <li>
       <%= link_to 'Access Cards', cards_path if can? :manage, Card %>

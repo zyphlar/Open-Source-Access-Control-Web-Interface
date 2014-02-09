@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :certifications, :through => :user_certifications
   has_many :payments
   has_many :macs
+  has_many :resources
 
   validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https)), :allow_blank => true
 
