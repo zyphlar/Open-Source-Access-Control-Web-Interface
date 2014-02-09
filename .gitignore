@@ -21,5 +21,6 @@ tmp/
 
 # Ignore config and database files (passwords)
 /config/config.yml
+/config/s3.yml
 /config/database.yml
 /config/initializers/secret_token.rb

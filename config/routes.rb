@@ -8,6 +8,7 @@ Dooraccess::Application.routes.draw do
   match 'paypal_csvs/:id/link' => 'paypal_csvs#link', :as => :link_paypal_csv
 
   resources :payments
+  resources :resources
 
   match 'statistics' => 'statistics#index', :as => :statistics
   match 'statistics/mac_log' => 'statistics#mac_log', :as => :mac_statistics

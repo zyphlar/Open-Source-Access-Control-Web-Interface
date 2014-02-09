@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140209025344) do
+ActiveRecord::Schema.define(:version => 20140209072532) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -116,6 +116,32 @@ ActiveRecord::Schema.define(:version => 20140209025344) do
     t.datetime "updated_at",           :null => false
   end
 
+  create_table "resource_categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "parent"
+  end
+
+  create_table "resources", :force => true do |t|
+    t.string   "supercategory"
+    t.integer  "owner_id"
+    t.integer  "category_id"
+    t.string   "name"
+    t.string   "serial"
+    t.string   "specs"
+    t.string   "status"
+    t.boolean  "donatable"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "estimated_value"
+  end
+
   create_table "settings", :force => true do |t|
     t.string   "var",                      :null => false
     t.text     "value"
@@ -126,6 +152,26 @@ ActiveRecord::Schema.define(:version => 20140209025344) do
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], :name => "index_settings_on_thing_type_and_thing_id_and_var", :unique => true
+
+  create_table "toolshare_users", :force => true do |t|
+    t.string   "email",                               :default => "", :null => false
+    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+    t.string   "password_salt",                       :default => "", :null => false
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "reset_password_token"
+    t.string   "remember_token"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                       :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
 
   create_table "user_certifications", :force => true do |t|
     t.integer  "user_id"

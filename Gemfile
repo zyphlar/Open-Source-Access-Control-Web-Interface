@@ -46,7 +46,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use debugger
 #gem 'debugger'
 
-#gem "paperclip", "~> 3.0"
+gem "paperclip", "~> 3.0"
+gem "aws-sdk"
 gem 'gravtastic'
 
 gem 'passenger'
