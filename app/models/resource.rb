@@ -1,5 +1,5 @@
 class Resource < ActiveRecord::Base
-  attr_accessible :supercategory, :user_id, :category_id, :name, :serial, :specs, :status, :donatable, :picture, :picture_file_name, :picture_content_type, :picture_file_size, :picture_updated_at, :notes, :estimated_value, :disposed_at
+  attr_accessible :supercategory, :user_id, :category_id, :name, :serial, :specs, :status, :donatable, :picture, :picture_file_name, :picture_content_type, :picture_file_size, :picture_updated_at, :notes, :estimated_value, :disposed_at, :modified_by
 
   belongs_to :owner, :class_name => "ToolshareUser" #TODO: remove owner
   belongs_to :user

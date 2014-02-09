@@ -12,6 +12,7 @@ class ResourcesController < ApplicationController
   end
 
   def create
+    @resource.modified_by = current_user.id # log who modified this last
     authorize! :create, @resource
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class ResourcesController < ApplicationController
   end
 
   def update
+    @resource.modified_by = current_user.id # log who modified this last
     @resource.assign_attributes(params[:resource])
     authorize! :update, @resource
 
@@ -50,7 +52,7 @@ class ResourcesController < ApplicationController
   end
 
   def load_users
-    if can? :manage, Resource then
+    if can? :assign_user, Resource then
       @users = User.accessible_by(current_ability).sort_by(&:name)
     else
       @users = [current_user]

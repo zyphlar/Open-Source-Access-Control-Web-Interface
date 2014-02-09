@@ -2,7 +2,7 @@
 
 <h2><%=h @resource.name %>
 <%= link_to 'Back', resources_path, class: "btn btn-default" %>
-<%= link_to 'Edit', edit_resource_path(@resource), class: "btn btn-primary" %>
+<%= link_to 'Edit', edit_resource_path(@resource), class: "btn btn-primary" if can? :edit, @resource %>
 </h2>
 <% if @resource.user || @resource.owner %>
 <p>

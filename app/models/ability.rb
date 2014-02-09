@@ -14,8 +14,8 @@ class Ability
       can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
+      can [:create,:update,:destroy], Resource, :user_id => user.id
       can :read, Payment, :user_id => user.id
-      can [:create,:update], Resource, :user_id => user.id
       can :read, UserCertification, :user_id => user.id
       can :read, User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :compose_email, User
@@ -36,6 +36,7 @@ class Ability
       unless user.orientation.blank?
         can [:read,:new_member_report,:activity], User, :hidden => [nil,false]
         can :read, UserCertification
+        can [:create,:update,:destroy], Resource, :user_id => [nil,user.id]
       end 
 
       # Accountants can manage payments
