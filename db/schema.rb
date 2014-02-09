@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140209080523) do
+ActiveRecord::Schema.define(:version => 20140209104356) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20140209080523) do
     t.datetime "updated_at"
     t.string   "estimated_value"
     t.integer  "user_id"
+    t.datetime "disposed_at"
   end
 
   create_table "settings", :force => true do |t|

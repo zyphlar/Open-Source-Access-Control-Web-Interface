@@ -3,6 +3,9 @@
     <% if resource.user %>
       <span class="ownership">Owned by:<br/><%= resource.user.name %></span>
     <% end %>
+    <% if resource.disposed_at %>
+      <span class="disposed">Disposed:<br/><%= resource.disposed_at.to_date %></span>
+    <% end %>
     <%= link_to(resource) do %>
       <%= image_tag(resource.picture.url(:thumb)) if resource.picture? %>
       <h4><%=h resource.name %></h4>

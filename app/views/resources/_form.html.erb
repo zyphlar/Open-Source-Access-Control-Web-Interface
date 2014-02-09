@@ -34,7 +34,13 @@
     <br/>
     <%= f.text_field :status %>
   </p>
-  <% if can? :assign_user, @resource %>
+ 
+  <p>
+    <%= f.label :disposed_at, "Disposed?" %><br />
+    <%= f.date_select :disposed_at, include_blank: true %>
+  </p>
+
+ <% if can? :assign_user, @resource %>
     <p>
       <%= f.label :user_id, "Owner" %>
       <br />

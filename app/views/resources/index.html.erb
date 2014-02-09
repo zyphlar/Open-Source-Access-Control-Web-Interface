@@ -1,6 +1,3 @@
-<h1>Lab Resources
-  <%= link_to 'Add Resource', new_resource_path, :class => "btn btn-success" if can? :create, Resource %>
-</h1>
 
 
 <link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" />
@@ -9,10 +6,28 @@
 
 <style>
   #accordion .thumbnail { height: 150px; position: relative; }
-  #accordion .thumbnail .ownership { position: absolute; top: 1px; text-shadow: 0.1em 0.1em 0.2em white; font-weight: bold; left: 10px; }
+  #accordion .thumbnail .ownership,
+  #accordion .thumbnail .disposed
+  { position: absolute; top: 1px; 
+    text-shadow: 
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+    font-weight: bold; left: 10px; }
+  #accordion .thumbnail .disposed { color: red; }
   #accordion .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
 </style>
 
+
+<h1 class="col-sm-4">Lab Resources
+  <%= link_to 'Add Resource', new_resource_path, :class => "btn btn-success" if can? :create, Resource %>
+</h1>
+
+<h3 class="col-sm-2">Featured item:</h3>
+<%= render @featured_resource %>
+
+<div class="row">
 <% unless @resources.blank? %>
   <div class="panel-group col-sm-8" id="accordion">
     <% @resources.sort_by{|r| [r.category_name,r.name] }.group_by(&:category).each do |category,resources| %>
@@ -31,6 +46,7 @@
     <% end %>
   </div>
 <% end %>
+</div>
 
 <br />
 

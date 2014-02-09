@@ -3,9 +3,13 @@
 <h2><%=h @resource.name %>
 <%= link_to 'Back', resources_path, class: "btn btn-default" %>
 <%= link_to 'Edit', edit_resource_path(@resource), class: "btn btn-primary" %>
-<%= link_to 'Delete', resource_path(@resource), {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, @resource %>
 </h2>
-
+<% if @resource.user || @resource.owner %>
+<p>
+  <b>Owner:</b>
+  <%=h (@resource.user || @resource.owner).name %>
+</p>
+<% end %>
 <p>
   <b>Category:</b>
   <%=h @resource.category.name if !@resource.category.blank? %>
@@ -24,6 +28,11 @@
 <p>
   <b>Status/Location:</b>
   <%=h @resource.status %>
+
+  <% if @resource.disposed_at %>
+    <b>Disposed:</b>
+    <%=h @resource.disposed_at.to_date %>
+  <% end %>
 </p>
 
 <p>
@@ -43,3 +52,4 @@
 
 
 
+<%= link_to 'Delete', resource_path(@resource), {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, @resource %>
