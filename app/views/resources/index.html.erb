@@ -1,38 +1,31 @@
 <h1>Resources</h1>
 
-<%= link_to 'New Resource', new_resource_path, :class => "btn" if can? :create, Resource %>
+<%= link_to 'Add Equipment', new_resource_path, :class => "btn" if can? :create, Resource %>
 
-<table class="lined-table">
-  <tr>
-    <th></th>
-    <th> <%= sort_link 'Owner', :owner_id %></th>
-    <th> <%= sort_link 'Category', :category_id %></th>
-    <th> <%= sort_link 'Name', :name %></th>
-    <th> <%= sort_link 'Serial', :serial %></th>
-    <th> <%= sort_link 'Status/Location', :status %></th>
-  </tr>
-  
+<style>
+  .collapsible .thumbnail { height: 150px; }
+</style>
+
 <% unless @resources.blank? %>
-  <% @resources.group_by(&:supercategory).each do |supercategory,resources| %>
-    <tr><th><%= supercategory %></th></tr>
-    <% resources.each do |resource| %>
-    <tr>
-      <td>
-        <%= link_to image_tag(resource.picture.url(:tiny)), resource.picture.url, :popup => ['index_image_preview', 'height=300,width=400'] if resource.picture? %>
-      </td>
-      <td>
-        <%=h resource.owner.name if resource.owner %>
-      <td><%=h resource.category.name unless resource.category.nil? %></td>
-      <td><%=h resource.name %></td>
-      <td><%=h resource.serial %></td>
-      <td><%=h resource.status %></td>
-      <td><%= link_to 'Edit', edit_resource_path(resource) if can? :update, resource %></td>
-      <td><%= link_to 'Destroy', resource, :confirm => 'Are you sure you want to delete this?', :method => :delete if can? :destroy, resource %></td>
-    </tr>
+  <div class="panel-group" id="accordion">
+    <% @resources.sort_by{|r| [r.category_name,r.name] }.group_by(&:category).each do |category,resources| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            <%= category.name %>
+          </a>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+        <%= render resources %>
+        </div>
+      </div>
+    </div>
     <% end %>
-  <% end %>
+  </div>
 <% end %>
-</table>
 
 <br />
 

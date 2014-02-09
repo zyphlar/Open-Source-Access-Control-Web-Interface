@@ -1,0 +1,9 @@
+<div class="col-sm-2">
+  <div class="thumbnail">
+    <%= link_to(resource) do %>
+      <%= image_tag(resource.picture.url(:thumb)) if resource.picture? %>
+      <strong><%=h resource.name %></strong>
+    <% end %>
+    <%= "Owned by "+resource.user.name if resource.user %>
+  </div>
+</div>
