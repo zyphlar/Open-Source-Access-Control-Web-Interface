@@ -1,9 +1,9 @@
 class ChangeMemberLevelToInteger < ActiveRecord::Migration
   def up
-    change_column :users, :member_level, :integer
+    execute 'ALTER TABLE users ALTER COLUMN member_level TYPE integer USING (member_level::integer)'
   end
 
   def down
-    change_column :users, :member_level, :string
+    execute 'ALTER TABLE users ALTER COLUMN member_level TYPE text USING (member_level::text)'
   end
 end

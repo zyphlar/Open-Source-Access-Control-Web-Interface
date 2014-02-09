@@ -13,9 +13,5 @@ To use:
 * Copy config/config.yml.example to config/config.yml and edit appropriately
 * Copy config/database.yml.example to config/database.yml and edit appropriately
 * Copy config/initializers/secret_token.rb.example to config/config/initializers/secret_token.rb and edit appropriately
-* Run bundle install, rake db:migrate, etc.
-* Use the Rails console to create a new User with admin rights
-  * user = User.new
-  * user.password = "foobar"
-  * user.admin = true
-  * user.save
+* See/edit db/seeds.rb for the initial admin account info.
+* Run bundle install, rake db:migrate, rake db:seed, etc.
