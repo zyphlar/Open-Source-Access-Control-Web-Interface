@@ -9,9 +9,11 @@ Copyright Will Bradley, 2012-2013
 Distributed under a Creative Commons Attribution 3.0 license http://creativecommons.org/licenses/by/3.0/
 
 To use:
+* Install Imagemagick (for Paperclip / image uploads)
 * Load into a Rails 3 environment
 * Copy config/config.yml.example to config/config.yml and edit appropriately
 * Copy config/database.yml.example to config/database.yml and edit appropriately
+* Copy config/s3.yml.example to config/s3.yml and edit appropriately OR adjust the resource.rb model settings to use different storage for picture attachments (via Paperclip)
 * Copy config/initializers/secret_token.rb.example to config/config/initializers/secret_token.rb and edit appropriately
 * See/edit db/seeds.rb for the initial admin account info.
 * Run bundle install, rake db:migrate, rake db:seed, etc.

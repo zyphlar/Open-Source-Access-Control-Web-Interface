@@ -1,23 +1,28 @@
-<h1>Resources</h1>
+<h1>Lab Resources
+  <%= link_to 'Add Resource', new_resource_path, :class => "btn btn-success" if can? :create, Resource %>
+</h1>
 
-<%= link_to 'Add Equipment', new_resource_path, :class => "btn" if can? :create, Resource %>
+
+<link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" />
+<link href="/bootstrap/css/bootstrap.min.css" type="text/css" />
+<script src="/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
 
 <style>
-  .collapsible .thumbnail { height: 150px; }
+  #accordion .thumbnail { height: 150px; position: relative; }
+  #accordion .thumbnail .ownership { position: absolute; top: 1px; text-shadow: 0.1em 0.1em 0.2em white; font-weight: bold; left: 10px; }
+  #accordion .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
 </style>
 
 <% unless @resources.blank? %>
-  <div class="panel-group" id="accordion">
+  <div class="panel-group col-sm-8" id="accordion">
     <% @resources.sort_by{|r| [r.category_name,r.name] }.group_by(&:category).each do |category,resources| %>
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse_cat_<%= category.id %>">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
             <%= category.name %>
-          </a>
         </h4>
       </div>
-      <div id="collapseOne" class="panel-collapse collapse in">
+      <div id="collapse_cat_<%= category.id %>" class="panel-collapse collapse">
         <div class="panel-body">
         <%= render resources %>
         </div>

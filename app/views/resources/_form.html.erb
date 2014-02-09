@@ -1,0 +1,69 @@
+<%= form_for @resource, :html => { :multipart => true } do |f| %>
+  <% if @resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resource.errors.count, "error") %> prohibited this resource from being saved:</h2>
+
+      <ul>
+      <% @resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :category_id %><br />
+    <%= select(:resource, :category_id, options_from_collection_for_select(ResourceCategory.all.sort_by(&:name), :id, :name, @resource.category_id ) ) %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :serial, "Serial" %>
+    <br />
+    <%= f.text_field :serial %>
+  </p>
+  <p>
+    <%= f.label :specs, "Specs" %>
+    <br/>
+    <%= f.text_field :specs %>
+  </p>
+  <p>
+    <%= f.label :status, "Status/Location" %>
+    <br/>
+    <%= f.text_field :status %>
+  </p>
+  <% if can? :assign_user, @resource %>
+    <p>
+      <%= f.label :user_id, "Owner" %>
+      <br />
+      <%= select(:resource, :user_id, options_from_collection_for_select(@users, :id, :name, @resource.user_id), include_blank: true) %>
+    </p>
+  <% end %>
+
+  <p>
+    <%= f.label :donatable %><br />
+    <%= f.check_box :donatable %>
+  </p>
+
+  <p>
+    <%= f.label :estimated_value, "Estimated Value" %><br />
+    <%= f.text_field :estimated_value %>
+  </p>
+
+  <p>
+    <%= f.label :picture %><br />
+    <%= f.file_field :picture %>
+    <%= link_to image_tag(@resource.picture.url(:tiny)), @resource.picture.url, :popup => ['form_image_preview', 'height=300,width=400'] if @resource.picture? %>
+  </p>				      
+  <p>
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', resources_path %>

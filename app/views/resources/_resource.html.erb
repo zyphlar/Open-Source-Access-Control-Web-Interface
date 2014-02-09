@@ -1,9 +1,11 @@
 <div class="col-sm-2">
   <div class="thumbnail">
+    <% if resource.user %>
+      <span class="ownership">Owned by:<br/><%= resource.user.name %></span>
+    <% end %>
     <%= link_to(resource) do %>
       <%= image_tag(resource.picture.url(:thumb)) if resource.picture? %>
-      <strong><%=h resource.name %></strong>
+      <h4><%=h resource.name %></h4>
     <% end %>
-    <%= "Owned by "+resource.user.name if resource.user %>
   </div>
 </div>

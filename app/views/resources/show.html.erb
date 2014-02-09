@@ -1,0 +1,45 @@
+<%= link_to image_tag(@resource.picture.url(:medium)), @resource.picture.url, :popup => ['show_image_preview', 'height=300,width=400'] if @resource.picture? %>
+
+<h2><%=h @resource.name %>
+<%= link_to 'Back', resources_path, class: "btn btn-default" %>
+<%= link_to 'Edit', edit_resource_path(@resource), class: "btn btn-primary" %>
+<%= link_to 'Delete', resource_path(@resource), {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, @resource %>
+</h2>
+
+<p>
+  <b>Category:</b>
+  <%=h @resource.category.name if !@resource.category.blank? %>
+</p>
+
+<p>
+  <b>Serial:</b>
+  <%=h @resource.serial %>
+</p>
+
+<p>
+  <b>Specs:</b>
+  <%=h @resource.specs %>
+</p>
+
+<p>
+  <b>Status/Location:</b>
+  <%=h @resource.status %>
+</p>
+
+<p>
+  <b>Donatable:</b>
+  <%=h @resource.donatable %>
+</p>
+
+<p>
+  <b>Estimated Value:</b>
+  <%=h @resource.estimated_value %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%=h @resource.notes %>
+</p>
+
+
+
