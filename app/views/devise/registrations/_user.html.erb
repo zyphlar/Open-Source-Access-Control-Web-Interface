@@ -36,6 +36,11 @@ Thanks again, and happy hacking!</p>
   </div>
 
   <div class="field">
+    <%= f.label :postal_code, "Residential Postal Code" %><br />
+    <%= f.text_field :postal_code %> (we'd like to know where you're commuting from!)
+  </div>
+
+  <div class="field">
     <%= f.label :twitter_url %>
     <%= f.text_field :twitter_url, :placeholder => "https://twitter.com/heatsynclabs" %><br/>
     <%= f.label :facebook_url %>
@@ -71,13 +76,13 @@ Thanks again, and happy hacking!</p>
     <%= f.text_area :marketing_source %>
   </div>
 
-  <div><%= f.label :password %><% if params[:action]!='new' %> <em>(Only if you want to change your password)</em><% end %><br />
+  <div><%= f.label :password %><% unless ['new','create'].include?(params[:action]) %> <em>(Only if you want to change your password)</em><% end %><br />
   <%= f.password_field :password %></div>
 
   <div><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></div>
 
-  <% if params[:action]!='new' %>
+  <% unless ['new','create'].include?(params[:action]) %>
   <div><%= f.label :current_password, "Type Your Current Password" %> <em>(For your account's security)</em><br />
   <%= f.password_field :current_password %></div>
   <% end %>

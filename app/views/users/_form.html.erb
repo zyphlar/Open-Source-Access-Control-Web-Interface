@@ -47,6 +47,10 @@
     <%= f.label :phone_visible, "Show Phone to All Members?" %>
   </div>
   <div class="field">
+    <%= f.label :postal_code, "Residential Postal Code" %><br />
+    <%= f.text_field :postal_code %> (we'd like to know where you're commuting from!)
+  </div>
+  <div class="field">
     <%= f.label :twitter_url %>
     <%= f.text_field :twitter_url, :placeholder => "https://twitter.com/heatsynclabs" %><br/>
     <%= f.label :facebook_url %>

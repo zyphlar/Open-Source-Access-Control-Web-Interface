@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130928112252) do
+ActiveRecord::Schema.define(:version => 20140209025344) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(:version => 20130928112252) do
     t.string   "website_url"
     t.boolean  "email_visible"
     t.boolean  "phone_visible"
+    t.string   "postal_code"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
