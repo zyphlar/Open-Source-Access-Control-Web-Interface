@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https)), :allow_blank => true
 
-  validates_presence_of :postal_code
+  # disable # validates_presence_of :postal_code
 
   after_create :send_new_user_email
 
