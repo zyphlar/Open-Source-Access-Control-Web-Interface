@@ -10,6 +10,7 @@ Distributed under a Creative Commons Attribution 3.0 license http://creativecomm
 
 To use:
 * Install Imagemagick (for Paperclip / image uploads)
+* Install arp-scan (for LAN Mac address scanning)
 * Load into a Rails 3 environment
 * Copy config/config.yml.example to config/config.yml and edit appropriately
 * Copy config/database.yml.example to config/database.yml and edit appropriately
