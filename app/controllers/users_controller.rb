@@ -15,31 +15,43 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    case params[:sort]
-    when "name"
-      @users = @users.sort_by(&:name)
-    when "cert"
-      @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
-    when "orientation"
-      @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
-    when "waiver"
-      @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
-    when "member"
-      @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
-    when "card"
-      @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
-    when "instructor"
-      @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
-    when "admin"
-      @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
-    else
-      @users = @users.sort_by(&:name)
-    end
+    unless params[:full] # by default, show summary
+
+      @users = @users.joins(:payments).where("payments.date > ?", (DateTime.now - 60.days)).uniq
+
+      respond_to do |format|
+        format.html { render 'summary' }
+        format.json { render :json => @users }
+      end
+
+    else # show full
+
+      case params[:sort]
+      when "name"
+        @users = @users.sort_by(&:name)
+      when "cert"
+        @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
+      when "orientation"
+        @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
+      when "waiver"
+        @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
+      when "member"
+        @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
+      when "card"
+        @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
+      when "instructor"
+        @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
+      when "admin"
+        @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
+      else
+        @users = @users.sort_by(&:name)
+      end
 
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render :json => @users }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render :json => @users }
+      end
     end
   end
 
