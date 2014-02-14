@@ -1,8 +1,12 @@
 <div class="thumbnail col-lg-1 col-sm-2 col-xs-4">
-    <%= image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/pirate.png") %>
-    <span class="badges">
-<%= render partial: 'badges', locals: {user: user} %>
-</span>
+  <%= link_to (image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/pirate.png") ), user %>
+  <span class="badges">
+    <%= render partial: 'badges', locals: {user: user} %>
+  </span>
 
-    <h4><%= link_to user.name, user %></h4>
+  <div class="bio">
+    <small><%= strip_tags(user.current_skills).truncate(50) %></small>
+  </div>
+  <h4><%= link_to user.name, user %>
+  </h4>
 </div>
