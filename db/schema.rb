@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140214055051) do
+ActiveRecord::Schema.define(:version => 20140214070420) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -143,6 +143,18 @@ ActiveRecord::Schema.define(:version => 20140214055051) do
     t.integer  "user_id"
     t.datetime "disposed_at"
     t.integer  "modified_by"
+    t.string   "picture2_file_name"
+    t.string   "picture2_content_type"
+    t.integer  "picture2_file_size"
+    t.datetime "picture2_updated_at"
+    t.string   "picture3_file_name"
+    t.string   "picture3_content_type"
+    t.integer  "picture3_file_size"
+    t.datetime "picture3_updated_at"
+    t.string   "picture4_file_name"
+    t.string   "picture4_content_type"
+    t.integer  "picture4_file_size"
+    t.datetime "picture4_updated_at"
   end
 
   create_table "settings", :force => true do |t|
