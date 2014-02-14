@@ -1,6 +1,8 @@
 <div class="thumbnail col-lg-1 col-sm-2 col-xs-4">
     <%= image_tag user.gravatar_url(:default => "http://members.heatsynclabs.org/pirate.png") %>
-    <span class="badges"><%= raw(user.member_status_symbol) %></span>
+    <span class="badges">
+<%= render partial: 'badges', locals: {user: user} %>
+</span>
 
     <h4><%= link_to user.name, user %></h4>
 </div>

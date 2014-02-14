@@ -1,13 +1,15 @@
-<h1 class="col-sm-6">Lab Resources
-  <%= link_to 'Add Resource', new_resource_path, :class => "btn btn-success" if can? :create, Resource %>
-  <%= link_to 'Categories', resource_categories_path, :class => "btn btn-primary" if can? :read, ResourceCategory %>
-  <a class="btn btn-default" onclick="$('#accordion .collapse').collapse('toggle')" />Expand/Collapse All</a>
-</h1>
-
-<span class="col-sm-2">
-<h3>Featured item:</h3>
-<%= render @featured_resource %>
-</span>
+<div class="row">
+  <h1 class="col-md-8">Lab Resources
+    <%= link_to 'Add Resource', new_resource_path, :class => "btn btn-success" if can? :create, Resource %>
+    <%= link_to 'Categories', resource_categories_path, :class => "btn btn-primary" if can? :read, ResourceCategory %>
+    <a class="btn btn-default" onclick="$('#accordion .collapse').collapse('toggle')" />Expand/Collapse All</a>
+  </h1>
+  
+  <span class="col-md-2 col-xs-6">
+    <h3>Featured item:</h3>
+    <%= render @featured_resource %>
+  </span>
+</div>
 
 <div class="row">
 <% unless @resources.blank? %>
@@ -22,7 +24,7 @@
       <div id="collapse_cat_<%= resource_category.id %>" class="panel-collapse collapse">
         <div class="panel-body">
           <% resources.each do |resource| %>
-            <div class="col-sm-2">
+            <div class="col-xs-2">
               <%= render resource %>
             </div>
           <% end %>

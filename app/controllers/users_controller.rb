@@ -17,10 +17,11 @@ class UsersController < ApplicationController
   def index
     unless params[:full] # by default, show summary
 
-      @users = @users.joins(:payments).where("payments.date > ?", (DateTime.now - 60.days)).uniq
+      @users = @users.paying + @users.volunteer
+#.joins(:payments).where("payments.date > ? OR ", (DateTime.now - 60.days)).uniq
 
       respond_to do |format|
-        format.html { render 'summary' }
+        format.html { render 'summary', layout: 'resources' }
         format.json { render :json => @users }
       end
 

@@ -33,9 +33,14 @@
     <%= link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
   </div>
   <div id="content">
-    <p class="notice"><%= raw(notice) %></p>
-    <p class="alert"><%= raw(alert) %></p>
-<%= yield %>
+    <% if notice %>
+      <p class="notice"><%= raw(notice) %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert"><%= raw(alert) %></p>
+    <% end %>
+
+    <%= yield %>
   </div>
 <%= raw Setting.analytics_code if Setting.present? %>
 </body>

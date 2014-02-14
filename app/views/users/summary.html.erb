@@ -1,41 +1,33 @@
-  <link href="/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-  <link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
-  <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script> 
 
 <style type="text/css">
   .users .thumbnail {
     height: 200px;
     position: relative;
   }
-  .users .badges { position: absolute; top: 125px; }
+  .users .badges { position: absolute; bottom: 3em; }
+  .users .badges img { 
+    float: left; 
+    width: 24px; 
+    height: 24px; 
+    background-color: white; 
+    border-radius: 12px;
+  }
   .users .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
 
 </style>
 
+<% if user_signed_in? && current_user.current_sign_in_at < Date.parse("2014-03-01") %>
+  <div class="alert alert-info">Looking for the old table view? Find it in the menu under People, Full Table View.</div>
+<% end %>
+
 <h1>HeatSync People
-<%= link_to 'Full Table View', {:controller => "users", :full => "full"}, class: "btn btn-primary" %>
+<%= link_to 'New User', new_user_path, class: "btn btn-success" if can? :create, User %>
+<%= link_to 'Merge Users', users_merge_path, class: "btn btn-default" if can? :manage, User %>
 </h1>
-
-<% if can? :create, User %>
-  <%= link_to 'New User', new_user_path %> |
-<% end %>
-<% if can? :manage, User %>
-  <%= link_to 'Merge Users', users_merge_path %> |
-<% end %>
-<% if current_user.admin? %>
-  <%= link_to 'Inactive Users', users_inactive_path %> |
-<% end %>
-<% if can? :activity, User %>
-  <%= link_to 'Recent Activity', users_activity_path %> |
-<% end %>
-<% if can? :new_member_report, User %>
-  <%= link_to 'New Members Report', users_new_member_report_path %>
-<% end %>
-
 
 
 <div class="users">
-  <%= render @users.sort_by(&:member_status).reverse %>
+  <%= render @users.sort_by{|u| [-u.member_status, u.name] } %>
 </div>
 
 <% if current_user.orientation.blank? then %>

@@ -60,51 +60,42 @@
 
       <div class="collapse navbar-collapse" id="mainmenu-collapse">
         <ul class="nav navbar-nav">
-          <li>
-      <%= link_to 'People', users_path if can? :read, User %>
+          <% if can? :read, User %>
+          <li class="dropdown <%= "active" if current_page?(controller: :users) %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">People <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <%= li_link_to 'People', users_path if can? :read, User %>
+              <%= li_link_to 'People - Full Table View', {:controller => "users", :full => "full"} if can? :read, User %>
+              <%= li_link_to 'Inactive Users', users_inactive_path if can? :inactive_report, User %>
+              <%= li_link_to 'Recent Activity', users_activity_path if can? :activity, User %>
+              <%= li_link_to 'New Members Report', users_new_member_report_path if can? :new_member_report, User %>
+            </ul>
           </li>
-          <li class="active">
-      <%= link_to 'Tools & Resources', resources_path if can? :read, Resource %>
-          </li>
-          <li>
-      <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
-          </li>
-          <li class="dropdown">
-      <% if can? :create, UserCertification %>
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Certifications <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li>
-        <%= link_to 'Classes', certifications_path if can? :read, Certification %>
-          </li>
-          <li>
-        <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
-          </li>
-        </ul>
-      <% else %>
-        <%= link_to 'Certifications', certifications_path if can? :read, Certification %>
-      <% end %>
-          </li>
-          <li>
-      <%= link_to 'Payments', payments_path if can? :create, Payment %>
-          </li>
-          <li>
-      <%= link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
-          </li>
-          <li>
-      <%= link_to 'Settings', settings_path if can? :read, Setting %>
-          </li>
-          <li>
-      <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
-          </li>
-          <li>
-      <%= link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
-          </li>
-          <li>
-      <%= link_to 'Login', new_user_session_path unless user_signed_in? %>
-          </li>
-          <li>
-      <%= link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
-          </li>
+          <% end %>
+          <%= li_link_to 'Tools & Resources', resources_path if can? :read, Resource %>
+          <%= li_link_to 'Doors', cards_path if can? :manage, Card %>
+          <% if can? :create, UserCertification %>
+            <li class="dropdown <%= 'active' if current_page?(controller: :certifications) %>" >
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Certs <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to 'Classes', certifications_path if can? :read, Certification %>
+                </li>
+                <li>
+                  <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
+                </li>
+              </ul>
+            </li>
+          <% else %>
+            <%= li_link_to 'Certifications', certifications_path if can? :read, Certification %>
+          <% end %>
+          <%= li_link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
+          <%= li_link_to 'Payments', payments_path if can? :create, Payment %>
+          <%= li_link_to 'Settings', settings_path if can? :read, Setting %>
+          <%= li_link_to 'Profile', edit_user_registration_path if user_signed_in? %>
+          <%= li_link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
+          <%= li_link_to 'Login', new_user_session_path unless user_signed_in? %>
+          <%= li_link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
         </ul>
       </div>
     </div>
