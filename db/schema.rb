@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140209120648) do
+ActiveRecord::Schema.define(:version => 20140214055051) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(:version => 20140209120648) do
   create_table "resources", :force => true do |t|
     t.string   "supercategory"
     t.integer  "owner_id"
-    t.integer  "category_id"
+    t.integer  "resource_category_id"
     t.string   "name"
     t.string   "serial"
     t.string   "specs"

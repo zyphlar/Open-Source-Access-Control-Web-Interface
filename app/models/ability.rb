@@ -5,6 +5,7 @@ class Ability
     can :read, Mac # Anonymous can read mac
     can :scan, Mac # Need anonymous so CRON can scan
     can :read, Resource
+    can :read, ResourceCategory
 
     if !user.nil?
 
@@ -36,7 +37,8 @@ class Ability
       unless user.orientation.blank?
         can [:read,:new_member_report,:activity], User, :hidden => [nil,false]
         can :read, UserCertification
-        can [:create,:update,:destroy], Resource, :user_id => [nil,user.id]
+        can [:create,:update], Resource, :user_id => [nil,user.id]
+        can [:create,:update,:destroy], ResourceCategory
       end 
 
       # Accountants can manage payments

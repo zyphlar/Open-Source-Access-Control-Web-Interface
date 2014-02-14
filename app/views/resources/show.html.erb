@@ -12,7 +12,7 @@
 <% end %>
 <p>
   <b>Category:</b>
-  <%=h @resource.category.name if !@resource.category.blank? %>
+  <%=h @resource.resource_category.name if @resource.resource_category %>
 </p>
 
 <p>

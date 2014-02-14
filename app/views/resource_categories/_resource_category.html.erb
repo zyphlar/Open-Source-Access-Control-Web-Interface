@@ -1,0 +1,10 @@
+<li class="list-group-item row">
+  <h4 class="col-xs-6">
+    <%= resource_category.name %>
+    <small>(<%= resource_category.resources.count %> associated)</small>
+  </h4>
+  <span class="col-xs-6 text-right">
+    <%= link_to "Edit", [:edit, resource_category], class: "btn btn-primary" if can? :edit, resource_category %>
+    <%= link_to 'Delete', resource_category, {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, resource_category %>
+  </span>
+</li>

@@ -1,6 +1,7 @@
 class ResourcesController < ApplicationController
   load_and_authorize_resource
   before_filter :load_users
+  layout 'resources'
 
   def index
     @featured_resource = @resources.where("picture_file_name IS NOT NULL").sample
@@ -58,4 +59,5 @@ class ResourcesController < ApplicationController
       @users = [current_user]
     end
   end
+
 end

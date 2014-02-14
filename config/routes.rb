@@ -9,6 +9,7 @@ Dooraccess::Application.routes.draw do
 
   resources :payments
   resources :resources
+  resources :resource_categories, except: :show
 
   match 'statistics' => 'statistics#index', :as => :statistics
   match 'statistics/mac_log' => 'statistics#mac_log', :as => :mac_statistics

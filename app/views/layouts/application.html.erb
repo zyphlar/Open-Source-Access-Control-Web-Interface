@@ -16,6 +16,7 @@
   <div id="header">
     <a id="home_nav_link" href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
+    <%= link_to 'Tools & Resources', resources_path if can? :read, Resource %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
     <% if can? :create, UserCertification %>
       <%= link_to 'Cert Classes', certifications_path if can? :read, Certification %>

@@ -12,8 +12,8 @@
   <% end %>
 
   <p>
-    <%= f.label :category_id %><br />
-    <%= select(:resource, :category_id, options_from_collection_for_select(ResourceCategory.all.sort_by(&:name), :id, :name, @resource.category_id ) ) %>
+    <%= f.label :resource_category_id, "Category" %><br />
+    <%= select(:resource, :resource_category_id, options_from_collection_for_select(ResourceCategory.all.sort_by(&:name), :id, :name, @resource.resource_category_id ) ) %>
   </p>
   <p>
     <%= f.label :name %><br />
