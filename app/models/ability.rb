@@ -24,6 +24,7 @@ class Ability
 
       if user.card_access_enabled
         can :access_doors_remotely, :door_access
+        can :authorize, Card # used for interlock card/certification auth
       end
 
       # Instructors can manage certs and see users

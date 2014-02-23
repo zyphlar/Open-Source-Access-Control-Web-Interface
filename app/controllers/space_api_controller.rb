@@ -102,15 +102,4 @@ class SpaceApiController < ApplicationController
 
   end
 
-  def check_auth(email,password)
-    resource = User.find_by_email(email)
-    if resource && resource.valid_password?(password)
-      resource.remember_me = true
-      sign_in :user, resource
-      return true
-    else
-      return false
-    end
-  end
-
 end

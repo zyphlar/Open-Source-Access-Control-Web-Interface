@@ -136,6 +136,14 @@ class User < ActiveRecord::Base
     Rails.logger.info UserMailer.email(self,from_user,subject,body).deliver
   end
 
+  def has_certification?(cert_slug)
+   if self.certifications.find_by_slug(cert_slug)
+     true
+   else
+     false
+   end
+  end
+
   private
 
   def send_new_user_email
