@@ -1,0 +1,36 @@
+<%= form_for(@contract, html: {class: "col-sm-6"}) do |f| %>
+  <% if @contract.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contract.errors.count, "error") %> prohibited this contract from being saved:</h2>
+
+      <ul>
+      <% @contract.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, class: "form-control" %>
+  </p>
+  <p>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, class: "form-control" %>
+  </p>
+
+  <p>
+    <%= f.label :signed_at %><br />
+    <%= f.date_select :signed_at, class: "form-control"  %>
+  </p>
+
+  <p>
+    <%= f.label :document %><br />
+    <%= f.file_field :document %>
+  </p>
+
+  <p>
+    <%= f.submit nil, class: "btn btn-primary" %>
+  </p>
+<% end %>

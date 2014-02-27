@@ -1,0 +1,21 @@
+<div class="row">
+  <h1 class="col-md-8">Contracts
+    <%= link_to 'Add Contract', new_contract_path, :class => "btn btn-success" if can? :create, Contract %>
+  </h1>
+</div>
+
+<div class="row">
+  <% @contracts.sort_by{|r| [r.last_name] }.each do |contract| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+            <%= contract.last_name %>
+            <%= contract.first_name %>
+        </h4>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<br />
+

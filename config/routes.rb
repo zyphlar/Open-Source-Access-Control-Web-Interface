@@ -19,6 +19,8 @@ Dooraccess::Application.routes.draw do
 
   resources :certifications
 
+  resources :contracts
+
   devise_for :users, :skip => :registrations
   devise_scope :user do
     resource :registration,
