@@ -13,7 +13,7 @@
     <th></th>
   </tr>
 
-  <% @contracts.sort_by{|r| [r.last_name] }.each do |contract| %>
+  <% @contracts.sort_by{|r| (r.last_name) || "" }.each do |contract| %>
     <tr>
       <td>
         <% unless contract.document.blank? %>
