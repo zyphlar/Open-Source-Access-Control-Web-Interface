@@ -6,6 +6,7 @@
 
 <table class="table">
   <tr>
+    <th>Scan?</th>
     <th>Name</th>
     <th>User</th>
     <th>Date</th>
@@ -14,6 +15,11 @@
 
   <% @contracts.sort_by{|r| [r.last_name] }.each do |contract| %>
     <tr>
+      <td>
+        <% unless contract.document.blank? %>
+          <span class="glyphicon glyphicon-ok"></span>
+        <% end %>
+      </td>
       <td>
         <%= contract.last_name %>, 
         <%= contract.first_name %>

@@ -8,7 +8,8 @@
 
 
 <h2>
-  <%= @contract.full_name %> 
+  <%= @contract.first_name %> 
+  <%= @contract.last_name %> 
   <%= link_to "(#{@contract.user.name})", @contract.user if @contract.user %>
   <small>
     signed
