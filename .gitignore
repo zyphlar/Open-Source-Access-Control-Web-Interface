@@ -24,3 +24,4 @@ tmp/
 /config/s3.yml
 /config/database.yml
 /config/initializers/secret_token.rb
+.env

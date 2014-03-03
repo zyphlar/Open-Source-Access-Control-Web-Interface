@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :cards
   has_many :user_certifications
   has_many :certifications, :through => :user_certifications
+  has_many :contracts
   has_many :payments
   has_many :macs
   has_many :resources

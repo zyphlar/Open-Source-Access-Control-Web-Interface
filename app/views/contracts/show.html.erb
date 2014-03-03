@@ -1,0 +1,28 @@
+<div class="row">
+  <h1 class="col-md-8">
+    Contract
+    <%= link_to 'Back', contracts_path, :class => "btn btn-default" %>
+    <%= link_to 'Delete', contract_path(@contract), {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, @contract %>
+  </h1>
+</div>
+
+
+<h2>
+  <%= @contract.full_name %> 
+  <%= link_to "(#{@contract.user.name})", @contract.user if @contract.user %>
+  <small>
+    signed
+    <%= @contract.signed_at.to_date.to_s(:long) %>
+  </small>
+</h2>
+
+
+<p><%= link_to "Download Contract", @contract.document.url %>
+  <div class="col-xs-12">
+    <iframe src="<%= @contract.document.url %>" width="100%" height="600"></iframe>
+  </div>
+</p>
+         
+
+<br />
+

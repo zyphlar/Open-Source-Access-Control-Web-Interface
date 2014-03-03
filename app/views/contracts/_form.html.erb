@@ -11,26 +11,31 @@
     </div>
   <% end %>
 
-  <p>
+  <div class="form-group">
     <%= f.label :first_name %><br />
     <%= f.text_field :first_name, class: "form-control" %>
-  </p>
-  <p>
+  </div>
+  <div class="form-group">
     <%= f.label :last_name %><br />
     <%= f.text_field :last_name, class: "form-control" %>
-  </p>
+  </div>
 
-  <p>
+  <div class="form-group">
+    <%= f.label :user_id, "User" %><br />
+    <%= collection_select(:contract, :user_id, @users, :id, :name, :include_blank => true) %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :signed_at %><br />
-    <%= f.date_select :signed_at, class: "form-control"  %>
-  </p>
+    <%= f.date_select :signed_at  %>
+  </div>
 
-  <p>
+  <div class="form-group">
     <%= f.label :document %><br />
     <%= f.file_field :document %>
-  </p>
+  </div>
 
-  <p>
+  <div class="form-group">
     <%= f.submit nil, class: "btn btn-primary" %>
-  </p>
+  </div>
 <% end %>

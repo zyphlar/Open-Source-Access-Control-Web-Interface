@@ -1,12 +1,13 @@
 class Contract < ActiveRecord::Base
   belongs_to :user
-  attr_accessible :user_id, :first_name, :last_name, :signed_at, :document_file_name, :document_content_type, :document_file_size, :document_updated_at
+  attr_accessible :user_id, :first_name, :last_name, :signed_at, :document, :document_file_name, :document_content_type, :document_file_size, :document_updated_at
 
   validates_presence_of :first_name, :last_name, :signed_at
 
   has_attached_file :document, { :styles => { :medium => "300x300>"},
                     :storage => :s3,
-                    :s3_credentials => Rails.root.join('config', 's3.yml'),
+                    :s3_credentials => { :access_key_id     => ENV['S3_KEY'], 
+                                       :secret_access_key => ENV['S3_SECRET'] },
                     :path => ":attachment/:id/:style.:extension",
-                    :bucket => 'Toolshare' }  #TODO: move to local storage
+                    :bucket => ENV['S3_BUCKET'] }
 end

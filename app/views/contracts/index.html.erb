@@ -4,18 +4,32 @@
   </h1>
 </div>
 
-<div class="row">
-  <% @contracts.sort_by{|r| [r.last_name] }.each do |contract| %>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-            <%= contract.last_name %>
-            <%= contract.first_name %>
-        </h4>
-      </div>
-    </div>
-  <% end %>
-</div>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>User</th>
+    <th>Date</th>
+    <th></th>
+  </tr>
 
+  <% @contracts.sort_by{|r| [r.last_name] }.each do |contract| %>
+    <tr>
+      <td>
+        <%= contract.last_name %>, 
+        <%= contract.first_name %>
+      </td>
+      <td>
+        <%= link_to contract.user.name, contract.user if contract.user %>
+      </td>
+      <td>
+        <%= contract.signed_at.to_date.to_s(:long) %>
+      </td>
+      <td>
+        <%= link_to "View", contract, class: "btn btn-primary" %>
+        <%= link_to "Edit", edit_contract_path(contract), class: "btn btn-default" %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 <br />
 

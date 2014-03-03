@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(:version => 20140227095847) do
 
   create_table "contracts", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "first_name"
-    t.datetime "last_name"
+    t.string   "first_name"
+    t.string   "last_name"
     t.datetime "signed_at"
     t.string   "document_file_name"
     t.string   "document_content_type"

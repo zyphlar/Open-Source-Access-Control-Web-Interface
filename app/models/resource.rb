@@ -14,11 +14,12 @@ class Resource < ActiveRecord::Base
                                    :thumb => "100x100>",
                                    :tiny => "50x50>"},
                       :storage => :s3,
-                      :s3_credentials => Rails.root.join('config', 's3.yml'),
+                      :s3_credentials => { :access_key_id     => ENV['S3_KEY'], 
+                                         :secret_access_key => ENV['S3_SECRET'] },
                       :path => ":attachment/:id/:style.:extension",
-                      :bucket => 'Toolshare' }
+                      :bucket => ENV['S3_BUCKET'] }
 
-  has_attached_file :picture, PICTURE_OPTIONS  #TODO: move to local storage
+  has_attached_file :picture, PICTURE_OPTIONS
   has_attached_file :picture2, PICTURE_OPTIONS  
   has_attached_file :picture3, PICTURE_OPTIONS  
   has_attached_file :picture4, PICTURE_OPTIONS  

@@ -1,6 +1,6 @@
 class ContractsController < ApplicationController
   load_and_authorize_resource :contract
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :load_users
   layout 'resources'
 
   def index
@@ -16,6 +16,8 @@ class ContractsController < ApplicationController
   end
 
   def create
+    Rails.logger.info "CONTRACT"
+    Rails.logger.info @contract.inspect
     respond_to do |format|
       if @contract.save
         format.html { redirect_to Contract, :notice => 'Contract was successfully created.' }
@@ -46,5 +48,9 @@ class ContractsController < ApplicationController
       format.html { redirect_to contracts_url }
       format.json { head :no_content }
     end
+  end
+
+  def load_users
+    @users = @users = User.accessible_by(current_ability).sort_by(&:name)
   end
 end

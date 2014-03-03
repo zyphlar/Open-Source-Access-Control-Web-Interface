@@ -7,7 +7,7 @@
   
   <span class="col-md-2 col-xs-6">
     <h3>Featured item:</h3>
-    <%= render @featured_resource %>
+    <%= render @featured_resource unless @featured_resource.blank? %>
   </span>
 </div>
 
