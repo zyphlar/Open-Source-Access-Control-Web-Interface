@@ -20,7 +20,7 @@ class ContractsController < ApplicationController
     Rails.logger.info @contract.inspect
     respond_to do |format|
       if @contract.save
-        format.html { redirect_to Contract, :notice => 'Contract was successfully created.' }
+        format.html { redirect_to @contract, :notice => 'Contract was successfully created.' }
         format.json { render :json => @contract, :status => :created, :location => @contract }
       else
         format.html { render :action => "new" }
@@ -32,7 +32,7 @@ class ContractsController < ApplicationController
   def update
     respond_to do |format|
       if @contract.update_attributes(params[:contract])
-        format.html { redirect_to Contract, :notice => 'Contract was successfully updated.' }
+        format.html { redirect_to @contract, :notice => 'Contract was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

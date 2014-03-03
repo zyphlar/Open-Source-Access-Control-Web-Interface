@@ -23,6 +23,7 @@
       <td>
         <%= contract.last_name %>, 
         <%= contract.first_name %>
+        <%= "and #{contract.cosigner}" unless contract.cosigner.blank? %>
       </td>
       <td>
         <%= link_to contract.user.name, contract.user if contract.user %>

@@ -12,7 +12,6 @@ class Ability
       # By default, users can only see their own stuff
       can :read, Card, :user_id => user.id
       can :read, Certification
-      can :read, Contract
       can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
