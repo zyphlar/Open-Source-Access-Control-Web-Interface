@@ -45,22 +45,19 @@ class PaymentsController < ApplicationController
     payment_months = @payments.sort_by(&:date).group_by{ |p| p.date.beginning_of_month }
     @payments_by_month = []
     payment_months.each do |month|
-      # Only grab the last year from today
-      if month.first > (Date.today - 1.year) && month.first < Date.today
-        # Calculate sum of amounts for each month and store at end of month array
-        @payments_by_month << [month.first.to_time.to_i*1000, month.last.sum{|p| 
-          amount = amount_or_level(p)
-          if chart_type.include?(amount)
-            if chart_name == "members"
-              1 # Output 1 to count members
-            else
-              amount # Output dollars to count amount
-            end
+      # Calculate sum of amounts for each month and store at end of month array
+      @payments_by_month << [month.first.to_time.to_i*1000, month.last.sum{|p| 
+        amount = amount_or_level(p)
+        if chart_type.include?(amount)
+          if chart_name == "members"
+            1 # Output 1 to count members
           else
-            0
+            amount # Output dollars to count amount
           end
-        }]
-      end
+        else
+          0
+        end
+      }]
     end
 
     return @payments_by_month
