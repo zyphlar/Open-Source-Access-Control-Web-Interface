@@ -1,6 +1,9 @@
 class Contract < ActiveRecord::Base
   belongs_to :user
-  attr_accessible :user_id, :first_name, :last_name, :cosigner, :signed_at, :document, :document_file_name, :document_content_type, :document_file_size, :document_updated_at
+  attr_accessible :user_id, :first_name, :last_name, :cosigner, 
+    :signed_at, :document, :document_file_name, :document_content_type, 
+    :document_file_size, :document_updated_at
+    # :created_by not accessible for security purposes
 
   validates_presence_of :first_name, :signed_at #, :last_name
 
