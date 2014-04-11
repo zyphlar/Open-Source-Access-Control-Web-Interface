@@ -124,6 +124,9 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    # update oriented_by only if orientation has been set
+    @user.oriented_by_id = current_user.id unless @user.orientation.blank?
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, :notice => 'User was successfully created.' }
@@ -138,6 +141,10 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
+    # update oriented_by only if it's blank but the (new) orientation isn't blank
+    # gotta test the params because they don't get applied til below.
+    @user.oriented_by_id = current_user.id if @user.oriented_by.blank? && (!params[:user]["orientation(1i)"].blank?)
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :notice => 'User was successfully updated.' }

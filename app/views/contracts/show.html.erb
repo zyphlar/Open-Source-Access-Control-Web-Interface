@@ -18,9 +18,14 @@
     <%= @contract.signed_at.to_date.to_s(:long) %>
   </small>
 </h2>
+<% unless @contract.created_by.blank? %>
+  <p>
+    <em>Created by <%= @contract.created_by.name %></em>
+  </p>
+<% end %>
 
 <% if @contract.document.blank? %>
-  No document uploaded
+  <p>No document uploaded</p>
 <% else %>
 <p><%= link_to "Download Contract", @contract.document.url %>
   <div class="col-xs-12">

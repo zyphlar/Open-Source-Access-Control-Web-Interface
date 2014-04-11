@@ -36,6 +36,9 @@
 <p>
   <b>Orientation?</b>
   <%= @user.orientation.strftime("%B %d %Y") unless @user.orientation.blank? %>
+  <% unless @user.oriented_by.blank? %>
+    <em>(recorded by <%= link_to @user.oriented_by.name, @user.oriented_by %>)</em>
+  <% end %>
 </p>
   <p>
     <b>Emergency Name:</b>

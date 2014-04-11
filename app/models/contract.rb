@@ -1,5 +1,6 @@
 class Contract < ActiveRecord::Base
   belongs_to :user
+  belongs_to :created_by, :foreign_key => "created_by_id", :class_name => "User"
   attr_accessible :user_id, :first_name, :last_name, :cosigner, 
     :signed_at, :document, :document_file_name, :document_content_type, 
     :document_file_size, :document_updated_at

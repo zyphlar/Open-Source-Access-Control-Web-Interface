@@ -18,7 +18,7 @@ class ContractsController < ApplicationController
   def create
     Rails.logger.info "CONTRACT"
     Rails.logger.info @contract.inspect
-    @contract.created_by = current_user.id
+    @contract.created_by = current_user
     respond_to do |format|
       if @contract.save
         format.html { redirect_to @contract, :notice => 'Contract was successfully created.' }
