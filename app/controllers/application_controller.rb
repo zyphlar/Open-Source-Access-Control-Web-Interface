@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  force_ssl if: :ssl_configured?
+
+  def ssl_configured?
+    !Rails.env.development? && !Rails.env.test?
+  end
+
   rescue_from CanCan::AccessDenied do |exception|  
     if !current_user.nil? && current_user.orientation.blank? then
       flash[:alert] = "Sorry, you probably need to complete New Member Orientation before having access to this page. <br/>Please check your email and schedule a New Member Orientation with a volunteer."
