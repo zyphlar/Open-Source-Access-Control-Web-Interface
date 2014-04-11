@@ -35,7 +35,7 @@ class UsersController < ApplicationController
       when "orientation"
         @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
       when "waiver"
-        @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
+        @users = @users.sort_by{ |u| [-u.contract_date.to_i,u.name] }
       when "member"
         @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
       when "card"

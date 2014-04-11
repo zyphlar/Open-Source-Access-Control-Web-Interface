@@ -173,9 +173,15 @@ margin-right: auto;
   <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %><br/>
   <b>Contracts:</b> <%= link_to "+ Add", new_contract_path, :class => 'btn' if can? :create, Contract %>
   <ul>
-  <% @user.contracts.each do |contract| %>
-  <li><%= link_to contract.signed_at.strftime("%B %d %Y"), contract %></li>
-  <% end %>
+    <% @user.contracts.each do |contract| %>
+      <li>
+        <% if can? :read, contract %>
+          <%= link_to contract.signed_at.strftime("%B %d %Y"), contract %>
+        <% else %>
+          <%= contract.signed_at.strftime("%B %d %Y") %>
+        <% end %>
+      </li>
+    <% end %>
   </ul>
 </p>
 

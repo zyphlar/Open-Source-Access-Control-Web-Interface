@@ -89,6 +89,7 @@
           <% else %>
             <%= li_link_to 'Certifications', certifications_path if can? :read, Certification %>
           <% end %>
+          <%= li_link_to 'Waivers', contracts_path if can? :read, Contract %>
           <%= li_link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
           <%= li_link_to 'Payments', payments_path if can? :create, Payment %>
           <%= li_link_to 'Settings', settings_path if can? :read, Setting %>

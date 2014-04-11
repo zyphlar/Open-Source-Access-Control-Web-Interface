@@ -145,7 +145,11 @@ class User < ActiveRecord::Base
    end
   end
 
-  private
+  def contract_date
+    self.contracts.first.signed_at unless self.contracts.blank?
+  end
+
+private
 
   def send_new_user_email
     Rails.logger.info UserMailer.new_user_email(self).deliver

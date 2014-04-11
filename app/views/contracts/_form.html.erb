@@ -19,6 +19,10 @@
     <%= f.label :last_name %><br />
     <%= f.text_field :last_name, class: "form-control" %>
   </div>
+  <div class="form-group">
+    <%= f.label :cosigner %><br />
+    <%= f.text_field :cosigner, class: "form-control" %>
+  </div>
 
   <div class="form-group">
     <%= f.label :user_id, "User" %><br />
@@ -32,7 +36,13 @@
 
   <div class="form-group">
     <%= f.label :document %><br />
-    <%= f.file_field :document %>
+    <%= link_to "View Existing Document", @contract.document.url, class: "btn btn-default" unless @contract.document.blank? %>
+    <p>
+    <%= link_to "Upload New Document", "#", class: "btn btn-default", onclick: "$('#document_upload').removeClass('hidden'); $(this).addClass('hidden')" unless @contract.document.blank? %>
+    <div id="document_upload" class="<%= "hidden" unless @contract.document.blank? %>">
+      <%= f.file_field :document %>
+    </div>
+    </p>
   </div>
 
   <div class="form-group">

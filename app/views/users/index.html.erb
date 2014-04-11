@@ -34,18 +34,18 @@
   <% end %>
   <tr>
     <th></th>
-    <th><a href="?sort=name">Name</a></th>
-    <th><a href="?sort=member">Member?</a></th>
+    <th><a href="?full=full&sort=name">Name</a></th>
+    <th><a href="?full=full&sort=member">Member?</a></th>
     <% if current_user.admin? then %><th><a href="?sort=email">Email</a></th><% end %>
     <% if current_user.admin? then %>
-    <th><a href="?sort=orientation">Orientation?</a></th>
+    <th><a href="?full=full&sort=orientation">Orientation?</a></th>
     <% end %>
-    <th><a href="?sort=waiver">Waiver?</a></th>
-    <th><a href="?sort=card">Card?</a></th>
-    <th><a href="?sort=instructor">Instructor?</a></th>
+    <th><a href="?full=full&sort=waiver">Waiver?</a></th>
+    <th><a href="?full=full&sort=card">Card?</a></th>
+    <th><a href="?full=full&sort=instructor">Instructor?</a></th>
     <% if current_user.admin? then %><th><a href="?sort=admin">Admin?</a></th><% end %>
     <% @certifications.each do |c| %>
-      <th><a href="?sort=cert&cert=<%= c.id %>"><%= c.name %></a></th>
+      <th><a href="?full=full&sort=cert&cert=<%= c.id %>"><%= c.name %></a></th>
     <% end %>
     <th></th>
     <th></th>
@@ -61,7 +61,7 @@
     <% if current_user.admin? then %><td>
       <%= unless user.orientation.blank? then raw("<span class='hoverinfo' title='"+user.orientation.strftime("%B %d %Y")+"'>&#x2713;</span>") end %>
     </td><% end %>
-    <td><%= unless user.waiver.blank? then raw("<span class='hoverinfo' title='"+user.waiver.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
+    <td><%= unless user.contracts.blank? then raw("<span class='hoverinfo' title='"+user.contracts.first.signed_at.strftime("%B %d %Y")+"'>&#x2713;</span>") end %></td>
     <td><%= unless user.cards.blank? then raw("<span class='iconinfo'>&#x2713;</span>") end %></td>
     <td><%= if user.instructor? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td>
     <% if current_user.admin? then %><td><%= if user.admin? then raw("<span class='iconinfo'>&#x2713;</a>") end %></td><% end %>
