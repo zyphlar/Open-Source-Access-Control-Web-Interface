@@ -14,6 +14,7 @@ class Resource < ActiveRecord::Base
                                    :thumb => "100x100>",
                                    :tiny => "50x50>"},
                       :storage => :s3,
+                      :s3_protocol => :https,
                       :s3_credentials => { :access_key_id     => ENV['S3_KEY'], 
                                          :secret_access_key => ENV['S3_SECRET'] },
                       :path => ":attachment/:id/:style.:extension",
