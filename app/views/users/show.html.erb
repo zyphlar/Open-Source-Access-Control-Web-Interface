@@ -6,9 +6,12 @@
   <%= link_to image_tag('/facebook.png', :class => 'social-icon', :title => "Facebook"), @user.facebook_url, :class => 'social-link' if @user.facebook_url.present? %>
   <%= link_to image_tag('/github.png', :class => 'social-icon', :title => "Github"), @user.github_url, :class => 'social-link' if @user.github_url.present? %>
   <%= link_to image_tag('/website.png', :class => 'social-icon', :title => "Website"), @user.website_url, :class => 'social-link' if @user.website_url.present? %>
-<%= link_to "Email User", user_compose_email_path(@user), :class => 'btn' %>
-</h2>
 
+  <%= link_to 'Back', :back, :class => 'btn btn-default' %>
+  <%= link_to 'Email User', user_compose_email_path(@user), :class => 'btn btn-default' %>
+  <%= link_to 'Edit', edit_user_path(@user), class: "btn btn-primary" if can? :update, @user %>
+  <%= link_to 'Destroy', @user, class: "btn btn-danger", :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, @user %>
+</h2>
 
 <% if current_user.admin? || @user.email_visible %>
   <p>
@@ -77,7 +80,7 @@
   </p>
 <% end %>
 
-<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, UserCertification %>
+<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn btn-default' if can? :create, UserCertification %>
 <ul>
   <% @user.certifications.each do |certification| %>
     <li><%= link_to certification.name, certification %></li>
@@ -85,7 +88,7 @@
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
 <p>
-  <b>Card:  </b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, Card %>
+  <b>Card:  </b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn btn-default' if can? :create, Card %>
   <% if current_user.admin? then %>
     <ul>
     <% @user.cards.each do |c| %>
@@ -97,7 +100,7 @@
   <% end %>
 </p>
 
-<b>Computers: </b><%= link_to "+ Add", new_mac_path, :class => 'btn' if can? :create, Mac %>
+<b>Computers: </b><%= link_to "+ Add", new_mac_path, :class => 'btn btn-default' if can? :create, Mac %>
 <ul>
   <% @user.macs.each do |mac| %>
     <li><%= link_to mac.mac, mac %></li>
@@ -166,7 +169,7 @@ margin-right: auto;
 
   .clearfix { clear: both }
   </style>
-  <b>Resources: </b><%= link_to "+ Add", new_resource_path, :class => 'btn' if can? :create, Resource %>
+  <b>Resources: </b><%= link_to "+ Add", new_resource_path, :class => 'btn btn-default' if can? :create, Resource %>
   <div class="row"><%= render @user.resources if @user.resources %></div>
   <div class="clearfix"></div>
 </p>
@@ -174,7 +177,7 @@ margin-right: auto;
 <p>
   <b>Waiver?</b>
   <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %><br/>
-  <b>Contracts:</b> <%= link_to "+ Add", new_contract_path, :class => 'btn' if can? :create, Contract %>
+  <b>Contracts:</b> <%= link_to "+ Add", new_contract_path, :class => 'btn btn-default' if can? :create, Contract %>
   <ul>
     <% @user.contracts.each do |contract| %>
       <li>
@@ -204,6 +207,3 @@ margin-right: auto;
   <%= @user.current_sign_in_at %>
 </p>
 <% end %>
-
-<% if can? :update, @user then %><%= link_to 'Edit', edit_user_path(@user) %> |<% end %>
-<%= link_to 'Back', users_path %>

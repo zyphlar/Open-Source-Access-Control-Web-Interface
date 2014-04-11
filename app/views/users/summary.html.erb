@@ -33,7 +33,7 @@
 
 <h1>HeatSync People
 <%= link_to 'New User', new_user_path, class: "btn btn-success" if can? :create, User %>
-<%= link_to 'Merge Users', users_merge_path, class: "btn btn-default" if can? :manage, User %>
+<%= link_to 'Merge Users', users_merge_path, class: "btn btn-primary" if can? :manage, User %>
 </h1>
 
 

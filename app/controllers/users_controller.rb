@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   before_filter :authenticate_user!
+  layout 'resources'
 
   def sort_by_cert(certs,id)
     result = 0
