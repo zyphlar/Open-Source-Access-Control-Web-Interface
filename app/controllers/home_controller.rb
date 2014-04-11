@@ -15,6 +15,7 @@ class HomeController < ApplicationController
     end
 
     # Fun Stats
+    @featured_resource = Resource.where("picture_file_name IS NOT NULL").sample
 
     @num_certs = UserCertification.count
     @recent_certs = UserCertification.where("created_at > ?", DateTime.now - 7.days).count

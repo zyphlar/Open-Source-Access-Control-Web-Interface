@@ -54,7 +54,7 @@
 <% if !@users.blank? %>
   <% @users.each do |user| %>
   <tr<%= ' class=hidden' if user.hidden? %>>
-    <td><%= image_tag user.gravatar_url(:size => 25,:default => "http://members.heatsynclabs.org/assets/nil.png"), :class => :avatar %></td>
+    <td><%= image_tag user.gravatar_url(:size => 25, :default => "http://members.heatsynclabs.org/assets/nil.png"), :class => :avatar %></td>
     <td><%= link_to user.name, user %></td>
     <td><%= raw(user.member_status_symbol) %></td>
     <% if current_user.admin? then %><td><%= user.email %></td><% end %>

@@ -3,8 +3,8 @@
 <%= simple_format Setting.welcome_body %>
 <% end %>
 
-<div class="col-sm-4">
-  <% if ((can? :read, User) && (@recent_user_names.count > 1)) then %>
+<% if ((can? :read, User) && (@recent_user_names.count > 1)) then %>
+  <div class="col-sm-4">
     <h2>New People: <em>(say hi!)</em></h2>
     <ul>
     <% @recent_user_names.each do |user| %>
@@ -13,8 +13,8 @@
       <% end %>
     <% end %>
     </ul>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <div class="col-sm-4">  
   <h2>Cool Stats:</h2>
@@ -43,3 +43,8 @@
   <% end %>
   <%= simple_format Setting.member_resources_inset %>
 </div>
+
+<span class="col-sm-4">
+  <h3>Featured item:</h3>
+  <%= render @featured_resource unless @featured_resource.blank? %>
+</span>
