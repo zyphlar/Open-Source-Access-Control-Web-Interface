@@ -1,10 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  force_ssl if: :ssl_configured?
+  force_ssl if: :ssl_forced?
 
-  def ssl_configured?
-    !Rails.env.development? && !Rails.env.test?
+  def ssl_forced?
+    # Non-production environments and read-only stuff like the space API and MACs should not require SSL. (APIs hate following 301s).
+    if Rails.env.development? || Rails.env.test? || ["space_api","macs"].include?(params[:controller])
+      return false
+    else
+      return true
+    end
   end
 
   rescue_from CanCan::AccessDenied do |exception|  
