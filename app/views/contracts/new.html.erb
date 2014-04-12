@@ -1,4 +1,80 @@
 <h1>New Contract
 <%= link_to 'Back', contracts_path, class: "btn btn-default" %>
 </h1>
+
+<div class="col-xs-12">
 <%= render 'form' %>
+</div>
+
+<div class="col-xs-12">
+<div class="alert alert-info">Note: if you name your scans in one of the below formats, this form will try to fill itself out automatically when you select the file. (The spaces, hyphen, and jpg or pdf extensions are mandatory for this to work.) <em>Double-check the names, users, and dates, though!!</em><br/>
+<strong>first last - date.[jpg|pdf]</strong><br/>
+<strong>first last by cosigner name - date.[jpg|pdf]</strong><br/>
+</div>
+</div>
+
+<script type="text/javascript">
+  function capitalizeIfIsntCapitalized(str){
+    if(str[0].toLowerCase() == str[0] ){ 
+      return str[0].toUpperCase() + str.slice(1);
+    }
+    else{ 
+      return str;
+    }
+  }
+
+  $(function() {
+     $("#contract_document").change(function (){
+       doc = document.getElementById("contract_document")
+       if(doc.files && doc.files.length > 0) {
+         name_split = doc.files[0].name.replace(".jpg","").replace(".pdf","").split(" ");
+
+         $("#contract_user_alert").remove(); // clear any existing alerts
+         $("#contract_user_spinner").remove(); // clear spinner
+
+         if(name_split.length == 4){ // we have one name
+           $("#contract_first_name").val(capitalizeIfIsntCapitalized(name_split[0]));
+           $("#contract_last_name").val(capitalizeIfIsntCapitalized(name_split[1]));
+           // 2 is the hyphen
+           signed_at = new Date(name_split[3]);
+           $("#contract_signed_at_1i").val(signed_at.getUTCFullYear()).change();
+           $("#contract_signed_at_2i").val(signed_at.getUTCMonth()+1).change();
+           $("#contract_signed_at_3i").val(signed_at.getUTCDate()).change();
+         }
+         else if(name_split.length == 7 && name_split[2] == "by"){ // we have two names
+           $("#contract_first_name").val(capitalizeIfIsntCapitalized(name_split[0]));
+           $("#contract_last_name").val(capitalizeIfIsntCapitalized(name_split[1]));
+           // 2 is "by"
+           $("#contract_cosigner").val(capitalizeIfIsntCapitalized(name_split[3])+" "+capitalizeIfIsntCapitalized(name_split[4]));
+           // 5 is the hyphen
+           signed_at = new Date(name_split[6]);
+           $("#contract_signed_at_1i").val(signed_at.getUTCFullYear());
+           $("#contract_signed_at_2i").val(signed_at.getUTCMonth()+1);
+           $("#contract_signed_at_3i").val(signed_at.getUTCDate());
+         }
+
+         // Try and select the relevant user if exists
+         if( $("#contract_first_name").val().length > 0 && $("#contract_last_name").val().length > 0 ) {
+           user_id = $('#contract_user_id option').filter(function(){
+             return $(this).text() == $("#contract_first_name").val() + " " + $("#contract_last_name").val();
+           }).prop("selected", "true").val();
+
+           // Start a spinner before AJAX request
+           $("#contract_user_id").after("<i id='contract_user_spinner' class='icon-spin icon-refresh'></i>");
+           // If we found a user, check how many contracts that user already has
+           $.get("/users/"+user_id+"/contracts.json",function(data){
+             $("#contract_user_spinner").remove(); // clear spinner
+             if(data.length > 0){
+               other_contract_links = $.map(data,function(item){
+                 output = "<a href='/contracts/"+item["id"]+"'>"+item["id"]+"</a> &nbsp;&nbsp; ";
+                 return output;
+               });
+               $("#contract_user_id").after("<span id='contract_user_alert' class='label label-danger'>Warning: this user already has "+data.length+" other contract(s). Check the existing one(s) to avoid duplication: "+other_contract_links+"</span>");
+             }
+           });
+         }
+ 
+       }
+     });
+  });
+</script>

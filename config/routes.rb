@@ -20,6 +20,9 @@ Dooraccess::Application.routes.draw do
   resources :certifications
 
   resources :contracts
+    #collection do
+    #end
+  match 'contracts/find_for_user/:user_id' => 'contracts#find_for_user', as: 'find_for_user'
 
   devise_for :users, :skip => :registrations
   devise_scope :user do
@@ -42,6 +45,7 @@ Dooraccess::Application.routes.draw do
   resources :users do 
     get 'email' => 'users#compose_email', :as => "compose_email"
     post 'email' => 'users#send_email'
+    resources 'contracts', only: [:index]
   end
   match 'users/create' => 'users#create', :via => :post  # Use POST users/create instead of POST users to avoid devise conflict
 

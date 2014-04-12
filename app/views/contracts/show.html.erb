@@ -2,6 +2,7 @@
   <h1 class="col-md-8">
     Contract
     <%= link_to 'Back', contracts_path, :class => "btn btn-default" %>
+    <%= link_to 'New', new_contract_path, :class => "btn btn-success" %>
     <%= link_to 'Edit', edit_contract_path(@contract), :class => "btn btn-primary" %>
     <%= link_to 'Delete', contract_path(@contract), {:confirm => 'Are you sure you want to delete this forever?', :method => :delete, :class => "btn btn-danger"} if can? :destroy, @contract %>
   </h1>
@@ -29,7 +30,8 @@
 <% else %>
 <p><%= link_to "Download Contract", @contract.document.url %>
   <div class="col-xs-12">
-    <iframe src="<%= @contract.document.url %>" width="100%" height="600"></iframe>
+    <% contract_url = (@contract.document.exists?(:large) ? @contract.document.url(:large) : @contract.document.url) %>
+    <iframe src="<%= contract_url %>" width="100%" height="600"></iframe>
   </div>
 </p>
 <% end %>

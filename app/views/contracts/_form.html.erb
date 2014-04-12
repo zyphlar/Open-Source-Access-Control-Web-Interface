@@ -40,7 +40,7 @@
     <p>
     <%= link_to "Upload New Document", "#", class: "btn btn-default", onclick: "$('#document_upload').removeClass('hidden'); $(this).addClass('hidden')" unless @contract.document.blank? %>
     <div id="document_upload" class="<%= "hidden" unless @contract.document.blank? %>">
-      <%= f.file_field :document %>
+      <%= f.file_field :document, class: "form-control", style: "width: 100%; height: 100px; background-color: #f9f9f9;" %>
     </div>
     </p>
   </div>
