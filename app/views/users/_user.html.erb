@@ -5,8 +5,10 @@
   </span>
 
   <div class="bio">
-    <small><%= strip_tags(user.current_skills).truncate(50) %></small>
+    <small title="<%= strip_tags(user.current_skills).truncate(150) %>">
+      <%= strip_tags(user.current_skills).truncate(50) %>
+    </small>
   </div>
-  <h4><%= link_to user.name, user %>
+  <h4><%= link_to user.name, user, title: user.name %>
   </h4>
 </div>
