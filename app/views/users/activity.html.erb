@@ -66,7 +66,7 @@
     <td><%= user.member_level_string %></td>
     <td><% if user.payments.present? %> 
       <% last_payment = user.payments.maximum(:date) %>
-      <% if Date.today-last_payment > 60 %>
+      <% if Date.today-last_payment > 90 %>
         <span class="label label-danger">
       <% else %>
         <span class="label label-success">
