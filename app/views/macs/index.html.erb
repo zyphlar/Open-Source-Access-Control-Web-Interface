@@ -33,10 +33,11 @@
  @active_macs.each do |mac| 
 Rails.logger.info mac.inspect %>
 <li>
+    <%= link_to mac do %>
     <span title="<%= mac.mac if user_signed_in? %><%= "  -  "+mac.ip.to_s if can? :read_details, mac %><%= "  -  "+((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" if can? :manage, mac %>">
       <%= mac.user.name unless mac.user.blank? %>
       <%= mac.mac if mac.user.blank? %>
-    <%= "("+mac.note+")" unless mac.note.blank? %></span>
+    <%= "("+mac.note+")" unless mac.note.blank? %></span><% end %> &nbsp;
   <%= link_to ' Edit', edit_mac_path(mac) if can? :update, mac %> <br/>
 </li>
 <% end %>
