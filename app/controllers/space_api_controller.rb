@@ -38,7 +38,18 @@ class SpaceApiController < ApplicationController
     else
       unless can? :access_doors_remotely, :door_access
         @output =  "Sorry, your account isn't able to control doors remotely."
+      else
+        @output = "Ready to control doors. Send POST params to this URL as per the HTML form."
       end
+    end
+
+    # Render the form again (or result)
+    respond_to do |format|
+      format.html
+      format.json {
+        response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+        render :json => @output
+      }
     end
   end
 
@@ -78,19 +89,17 @@ class SpaceApiController < ApplicationController
       end
     end
 
-    # Render the form again
-    render :access
-  end
-
-  def check_auth(email,password)
-    resource = User.find_by_email(email)
-    if resource && resource.valid_password?(password)
-      resource.remember_me = true
-      sign_in :user, resource
-      return true
-    else
-      return false
+    # Render the form again (or result)
+    respond_to do |format|
+      format.html {
+        render :access
+      }
+      format.json {
+        response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+        render :json => @output
+      }
     end
+
   end
 
 end

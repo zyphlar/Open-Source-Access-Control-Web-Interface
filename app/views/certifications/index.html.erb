@@ -5,6 +5,7 @@
 <ul>
 <% @certifications.each do |certification| %>
   <li><%= link_to certification.name, certification %>
+  (<%= certification.slug %>)
   <% if can? :update, certification %> | <%= link_to 'Edit', edit_certification_path(certification) %><% end %>
   <% if can? :destroy, certification %> | <%= link_to 'Destroy', certification, :confirm => 'Are you sure?', :method => :delete %><% end %>
   </li>

@@ -1,0 +1,79 @@
+<%= form_for @resource, :html => { :multipart => true, class: "col-sm-6" } do |f| %>
+  <% if @resource.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resource.errors.count, "error") %> prohibited this resource from being saved:</h2>
+
+      <ul>
+      <% @resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :resource_category_id, "Category" %><br />
+    <%= select(:resource, :resource_category_id, options_from_collection_for_select(ResourceCategory.all.sort_by(&:name), :id, :name, @resource.resource_category_id ), {}, {class: "form-control"} ) %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name, class: "form-control" %>
+  </p>
+  <p>
+    <%= f.label :serial, "Serial" %>
+    <br />
+    <%= f.text_field :serial, class: "form-control" %>
+  </p>
+  <p>
+    <%= f.label :specs, "Specs" %>
+    <br/>
+    <%= f.text_field :specs, class: "form-control" %>
+  </p>
+  <p>
+    <%= f.label :status, "Status/Location" %>
+    <br/>
+    <%= f.text_field :status, class: "form-control" %>
+  </p>
+ 
+  <p>
+    <%= f.label :disposed_at, "Disposed?" %><br />
+    <%= f.date_select :disposed_at, include_blank: true %>
+  </p>
+
+    <p>
+      <%= f.label :user_id, "Owner" %>
+      <br />
+      <%= select(:resource, :user_id, options_from_collection_for_select(@users, :id, :name, @resource.user_id), {include_blank: true}, {class: "form-control"}) %>
+    </p>
+
+  <p>
+    <%= f.label :donatable %><br />
+    <%= f.check_box :donatable %>
+  </p>
+
+  <p>
+    <%= f.label :estimated_value, "Estimated Value" %><br />
+    <%= f.text_field :estimated_value, class: "form-control" %>
+  </p>
+
+  <% [:picture, :picture2, :picture3, :picture4].each do |p| %>
+    <p class="row">
+      <span class="col-sm-3">
+        <%= f.label p %><br />
+        <%= f.file_field p %>
+      </span>
+      <span class="col-sm-2">
+        <%= link_to image_tag(@resource.send(p).url(:tiny)), @resource.send(p).url unless @resource.send(p).blank? %>
+      </span>
+    </p>				      
+  <% end %>
+
+  <p>
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes, class: "form-control" %>
+  </p>
+  <p>
+    <%= f.submit nil, class: "btn btn-primary" %>
+  </p>
+<% end %>
+

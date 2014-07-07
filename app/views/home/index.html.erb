@@ -3,55 +3,48 @@
 <%= simple_format Setting.welcome_body %>
 <% end %>
 
-
-<% if user_signed_in? && current_user.orientation.blank? then %>
-<p class="alert">There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer.</p>
-<% end %>
-<% if user_signed_in? && current_user.member_status.between?(2,100) then %>
-<%= current_user.member.inspect %>
-<%= current_user.member_level.inspect %>
-<p class="alert">Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, or this app just got started, but if in doubt please see your profile for payment instructions, or consider updating your membership level to something accurate.<br/>Thanks for supporting HeatSync!</p>
-<% end %>
-<table>
-<tr>
-<td>
 <% if ((can? :read, User) && (@recent_user_names.count > 1)) then %>
-<h2>New People: <em>(say hi!)</em></h2>
-<ul>
-<% @recent_user_names.each do |user| %>
-  <% if can? :read, user %>
-    <li><%= link_to user.name, user %> <%= raw(user.member_status_symbol) %> <em>(Signed up <%= user.created_at.strftime("%b %d") %>)</em></li>
+  <div class="col-sm-4">
+    <h2>New People: <em>(say hi!)</em></h2>
+    <ul>
+    <% @recent_user_names.each do |user| %>
+      <% if can? :read, user %>
+        <li><%= link_to user.name, user %> <%= raw(user.member_status_symbol) %> <em>(Signed up <%= user.created_at.strftime("%b %d") %>)</em></li>
+      <% end %>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="col-sm-4">  
+  <h2>Cool Stats:</h2>
+  <dl>
+    <dt># of People in this DB:</dt>
+    <dd><%= @num_users %> (<%= @recent_users %> new in the last 7 days)</dd>
+    <dt># of People Certified:</dt>
+    <dd><%= @num_certs %> (<%= @recent_certs %> new in the last 7 days)</dd>
+    <dt># of Current Paying Members:</dt>
+    <dd><%= @num_paid_users %> (<%= @num_plus_users %> plus, <%= @num_basic_users %> basic, <%= @num_associate_users %> associate. <%= @num_delinquent_users %> not-current)</dd>
+    <dt># of Door Accesses Granted:</dt>
+    <dd><%= @num_door_opens %> (<%= @today_door_opens %> today, <%= @recent_door_opens %> in the last 7 days)</dd>
+    <dt># of Door Accesses Denied:</dt>
+    <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last month)</dd>
+    <dt># of Members DB Logins:</dt>
+    <dd><%= @num_logins %> (<%= @recent_logins %> users last 7 days)</dd>
+    <dt># of Computers in this DB:</dt>
+    <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
+  </dl>
+</div>
+
+<div class="col-sm-4">
+  <h2>Member Resources</h2>
+  <% if can? :access_doors_remotely, :door_access %>
+  <ul><li><%= link_to "Remote Door Access", space_api_access_path %></li></ul>
   <% end %>
-<% end %>
-</ul>
-<% end %>
-<h2>Cool Stats:</h2>
-<dl>
-  <dt># of People in this DB:</dt>
-  <dd><%= @num_users %> (<%= @recent_users %> new in the last 7 days)</dd>
-  <dt># of People Certified:</dt>
-  <dd><%= @num_certs %> (<%= @recent_certs %> new in the last 7 days)</dd>
-  <dt># of Current Paying Members:</dt>
-  <dd><%= @num_paid_users %> (<%= @num_plus_users %> plus, <%= @num_basic_users %> basic, <%= @num_associate_users %> associate. <%= @num_delinquent_users %> not-current)</dd>
-  <dt># of Door Accesses Granted:</dt>
-  <dd><%= @num_door_opens %> (<%= @today_door_opens %> today, <%= @recent_door_opens %> in the last 7 days)</dd>
-  <dt># of Door Accesses Denied:</dt>
-  <dd><%= @num_door_denieds %> (<%= @recent_door_denieds %> in the last month)</dd>
-  <dt># of Members DB Logins:</dt>
-  <dd><%= @num_logins %> (<%= @recent_logins %> users last 7 days)</dd>
-  <dt># of Computers in this DB:</dt>
-  <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
-</dl>
+  <%= simple_format Setting.member_resources_inset %>
+</div>
 
-</td>
-<td>
-
-<h2>Member Resources</h2>
-<% if can? :access_doors_remotely, :door_access %>
-<ul><li><%= link_to "Remote Door Access", space_api_access_path %></li></ul>
-<% end %>
-<%= simple_format Setting.member_resources_inset %>
-
-</td>
-</tr>
-</table>
+<span class="col-sm-4">
+  <h3>Featured tool:</h3>
+  <%= render @featured_resource unless @featured_resource.blank? %>
+</span>

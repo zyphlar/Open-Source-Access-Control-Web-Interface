@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '1.9.3'
 
 gem 'rails', '3.2.8'
+gem 'dotenv-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -46,7 +47,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use debugger
 #gem 'debugger'
 
-#gem "paperclip", "~> 3.0"
+gem "paperclip", "~> 3.0"
+gem "aws-sdk"
 gem 'gravtastic'
 
 gem 'passenger'

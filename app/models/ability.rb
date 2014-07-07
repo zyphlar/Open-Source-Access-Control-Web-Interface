@@ -4,6 +4,8 @@ class Ability
   def initialize(user)
     can :read, Mac # Anonymous can read mac
     can :scan, Mac # Need anonymous so CRON can scan
+    can :read, Resource
+    can :read, ResourceCategory
 
     if !user.nil?
 
@@ -13,12 +15,16 @@ class Ability
       can :read_details, Mac
       can [:update], Mac, :user_id => nil
       can [:create,:update], Mac, :user_id => user.id
+      can [:create,:update,:destroy], Resource, :user_id => user.id
       can :read, Payment, :user_id => user.id
-      can [:read,:new_member_report], User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
       can :read, UserCertification, :user_id => user.id
+      can :read, User, :id => user.id #TODO: why can users update themselves? Maybe because Devise doesn't check users/edit?
+      can :compose_email, User
+      can :send_email, User
 
       if user.card_access_enabled
         can :access_doors_remotely, :door_access
+        can :authorize, Card # used for interlock card/certification auth
       end
 
       # Instructors can manage certs and see users
@@ -30,8 +36,10 @@ class Ability
       end
       # Users can see others' stuff if they've been oriented
       unless user.orientation.blank?
-        can :read, User, :hidden => [nil,false]
+        can [:read,:new_member_report,:activity], User, :hidden => [nil,false]
         can :read, UserCertification
+        can [:create,:update], Resource, :user_id => [nil,user.id]
+        can [:create,:update,:destroy], ResourceCategory
       end 
 
       # Accountants can manage payments
@@ -46,7 +54,7 @@ class Ability
         can :manage, :all
       end
 
-      # Prevent all destruction for now
+      # Prevent most destruction for now
       #cannot :destroy, User
       #cannot :destroy, Card
       cannot :destroy, Certification

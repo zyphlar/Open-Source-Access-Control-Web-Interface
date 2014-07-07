@@ -224,7 +224,7 @@ end
 
 def arp_lookup
   @ip = request.env['REMOTE_ADDR']
-  @arp = %x(/usr/sbin/arp -a | grep #{@ip})
+  @arp = /([0-9A-F]{2}[:-]){5}([0-9A-F]{2})/i.match(%x(arp -a | grep #{@ip}))
 end
 
 def scan
@@ -292,18 +292,22 @@ Rails.logger.info "starting scan..."
     Rails.logger.info "Running [#{command}]"
   end
   IO.popen(command) { |stdin|
-    Rails.logger.info "Reading stdin: "+stdin.inspect
-    stdin.each { |line| 
+    result = stdin.read()
+    result.lines.each { |line| 
+      Rails.logger.info "Reading stdin: "+line.inspect
       next if line !~ /^([\d\.]+)\s+([[:xdigit:]:]+)\s/;
       macs[($2).downcase] = ($1).downcase;
     }
+    Rails.logger.info "STDIN:"+result.lines.count.inspect
+    @macs = macs.dup # make a copy for output in the view
+    Rails.logger.info "MACS:"+@macs.inspect
   }
 
   # Scan the existing macs and update each record as necessary
   Mac.find(:all).each { |entry|
     mac = entry.mac.downcase
     ip = entry.ip
-    if macs.has_key?(mac)
+    if macs.has_key?(mac) # if our scan shows this mac
       if ! entry.active || ! entry.since
         Rails.logger.info "Activating #{mac} at #{ip}" if options[:verbose]
         entry.since = Time.now

@@ -1,4 +1,151 @@
-<h1>Door Logs</h1>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+
+graph_data = <%= raw @door_log_graph.to_json %>;
+
+plot_band_start_hour = 16;
+plot_band_end_hour = 22;
+
+$(function() {
+
+  $( "#graph-dialog" ).dialog({
+    autoOpen: false,
+    height: 480,
+    width: 640,
+    modal: true,
+  });
+
+  $( "#graph-button" ).click(function() {
+    $( "#graph-dialog" ).dialog( "open" );
+  });
+
+
+  $('#graph').highcharts({
+      chart: {
+        type: 'line',
+        zoomType : 'x'   
+      },
+      colors: [
+        '#2f7ed8',
+        '#910000'
+      ],
+      title: { 
+        style : { fontSize: '12px' },
+        text: "Click a Door in the Legend to Hide" 
+      },
+      subtitle: { 
+        style : { fontSize: '10px' },
+        text: "Click and Drag to Zoom." 
+      },
+      xAxis: {
+        type : 'datetime',
+        // grab plot bands from start and end time
+        plotBands: generatePlotBands(graph_data[0][0][0], graph_data[0][graph_data[0].length-1][0]),
+        labels : { align : "left" }
+      },
+      yAxis : {
+        title : {
+          text : "Door Open History"
+        }
+      },
+      series: [
+      {
+        name: "Door 1",
+        data: graph_data[0]
+      },
+      {
+        name: "Door 2",
+        data: graph_data[1]
+      },
+      ],
+      tooltip: {
+          shared: true,
+          xDateFormat: '%A %B %e, %l:%M %P',
+          formatter: function() {
+            output = '<b>'+ Highcharts.dateFormat(this.points[0].series.tooltipOptions.xDateFormat,this.x) +'</b><br/>';
+            total = 0;
+            this.points.forEach(function(e,i,a){
+              if(e.y == 1){ val = "Open"; } else { val = "Closed"; }
+              output += '<b><span style="color:'+e.series.color+'">'+e.series.name +'</span>: ' + val +'</b><br/>';
+            });
+            return output;
+          }
+      },
+      plotOptions: {
+        line: {
+          marker: {
+            enabled: false
+          },
+        }
+      }
+   });
+    
+   Highcharts.setOptions({
+     global : {
+       useUTC : false
+     }
+   });
+});
+
+function generatePlotBands(start,end){
+  plotBands = new Array();
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    // weekends
+    if(d.getDay()%6==0){
+      // highlight the whole day
+      plotBands.push({
+        color: '#eee',
+        from: d.setHours(0),
+        to: d.setHours(23)
+      });
+      // weekend hours
+      plotBands.push({
+        color: '#94C9EC',
+        from: d.setHours(12),
+        to: d.setHours(18)
+      });
+    }
+    else if(d.getDay()==3){
+      // special wednesday hours
+      plotBands.push({
+        color: '#94C9EC',
+        from: d.setHours(12),
+        to: d.setHours(plot_band_end_hour)
+      });
+    }
+    else {
+      // open hours
+      plotBands.push({
+        color: '#82DAC9',
+        from: d.setHours(plot_band_start_hour),
+        to: d.setHours(plot_band_end_hour)
+      });
+    }
+  }
+  return plotBands;
+}
+</script>
+
+<div id="graph-dialog" title="Door Status">
+
+  <div id="graph" style="height: 400px; width: 600px; float: right;"></div>
+  
+  <%= form_tag(nil, :method => :get) do %>
+    <label>Start Date
+      <input id="start" name="start" type="date" value="<%= @start_date.to_date.to_s %>" />
+    </label>
+    <label>End Date
+      <input id="end" name="end" type="date" value="<%= @end_date.to_date.to_s %>" />
+    </label>
+    <%= submit_tag("Change Date", :name => nil, :class => 'btn') %>
+  <% end %>
+
+</div>
+
+
+<h1>Door Logs <button id="graph-button" class="btn">View Graph</button></h1>
 
 <%= link_to 'Download Door Logs', download_path %>
 <a href="#" onclick="$('#log-guide').toggle();">Show Log Guide</a>
@@ -39,6 +186,7 @@ Log Entries:
  * L=locked (1=door1, 2=door2, 3=bedtime)
  * M=minute (#=minute)
  * m=alarm state (# level)
+ * p=power restored / arduino boot (1)
  * R=read tag (# card num)
  * r=second half of tag
  * Q=superuser authed (#=superuser)

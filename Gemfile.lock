@@ -29,9 +29,17 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    aws-sdk (1.33.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     cancan (1.6.10)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.3)
+      climate_control (>= 0.0.3, < 1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -45,6 +53,9 @@ GEM
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
+    dotenv (0.10.0)
+    dotenv-rails (0.10.0)
+      dotenv (= 0.10.0)
     erubis (2.7.0)
     execjs (2.0.2)
     gravtastic (3.2.6)
@@ -61,8 +72,16 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25)
+    mini_portile (0.5.2)
     multi_json (1.8.2)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     orm_adapter (0.4.0)
+    paperclip (3.5.4)
+      activemodel (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.5.3)
+      mime-types
     passenger (4.0.19)
       daemon_controller (>= 1.1.0)
       rack
@@ -129,6 +148,7 @@ GEM
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    uuidtools (2.1.4)
     warden (1.2.3)
       rack (>= 1.0)
 
@@ -136,13 +156,16 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk
   bcrypt-ruby (~> 3.0.0)
   cancan
   coffee-rails (~> 3.2.1)
   devise
+  dotenv-rails
   gravtastic
   jquery-rails
   json
+  paperclip (~> 3.0)
   passenger
   pg
   rails (= 3.2.8)

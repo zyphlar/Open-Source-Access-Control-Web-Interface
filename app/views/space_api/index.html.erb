@@ -1,6 +1,9 @@
+<% content_for :header do %>
 <h2>Space Status API
 <%= link_to 'JSON', space_api_path( :format => :json ), :class => 'btn' %> 
+<%= link_to 'Door Access', space_api_access_path, :class => 'btn' %> 
 </h2>
+<% end %>
 
 <dl>
 <% @json.each do |key,value| %>

@@ -16,6 +16,10 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
+    <%= f.label :slug, "Slug (lowercase, single-word identifier)" %><br />
+    <%= f.text_field :slug %>
+  </div>
+  <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>

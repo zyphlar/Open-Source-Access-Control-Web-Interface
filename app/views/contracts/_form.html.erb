@@ -1,0 +1,51 @@
+<%= form_for(@contract, html: {class: "col-sm-6"}) do |f| %>
+  <% if @contract.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contract.errors.count, "error") %> prohibited this contract from being saved:</h2>
+
+      <ul>
+      <% @contract.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :cosigner %><br />
+    <%= f.text_field :cosigner, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :user_id, "User" %><br />
+    <%= collection_select(:contract, :user_id, @users, :id, :name, :include_blank => true) %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :signed_at %><br />
+    <%= f.date_select :signed_at  %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :document %><br />
+    <%= link_to "View Existing Document", @contract.document.url, class: "btn btn-default" unless @contract.document.blank? %>
+    <p>
+    <%= link_to "Upload New Document", "#", class: "btn btn-default", onclick: "$('#document_upload').removeClass('hidden'); $(this).addClass('hidden')" unless @contract.document.blank? %>
+    <div id="document_upload" class="<%= "hidden" unless @contract.document.blank? %>">
+      <%= f.file_field :document, class: "form-control", style: "width: 100%; height: 100px; background-color: #f9f9f9;" %>
+    </div>
+    </p>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HSL Access</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a id="home_nav_link" href="/" title="Home" class="navbar-brand">
+        <img src="/assets/logo.png" id="logo" />
+      </a>
+  
+      <ul class="nav navbar-nav">
+        <li class="active">
+          <%= yield :header %>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="content">
+    <% if(notice) then %><p class="notice"><%= raw(notice) %></p><% end %>
+    <% if(alert) then %><p class="alert"><%= raw(alert) %></p><% end %>
+<%= yield %>
+  </div>
+<%= raw Setting.analytics_code if Setting.present? %>
+</body>
+</html>

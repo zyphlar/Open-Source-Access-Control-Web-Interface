@@ -1,0 +1,42 @@
+<div class="row">
+  <h1 class="col-md-8">Contracts
+    <%= link_to 'Add Contract', new_contract_path, :class => "btn btn-success" if can? :create, Contract %>
+  </h1>
+</div>
+
+<table class="table">
+  <tr>
+    <th>Scan?</th>
+    <th>Name</th>
+    <th>User</th>
+    <th>Date</th>
+    <th></th>
+  </tr>
+
+  <% @contracts.sort_by{|r| (r.last_name) || "" }.each do |contract| %>
+    <tr>
+      <td>
+        <% unless contract.document.blank? %>
+          <span class="glyphicon glyphicon-ok"></span>
+        <% end %>
+      </td>
+      <td>
+        <%= contract.last_name %>, 
+        <%= contract.first_name %>
+        <%= "and #{contract.cosigner}" unless contract.cosigner.blank? %>
+      </td>
+      <td>
+        <%= link_to contract.user.name, contract.user if contract.user %>
+      </td>
+      <td>
+        <%= contract.signed_at.to_date.to_s(:long) %>
+      </td>
+      <td>
+        <%= link_to "View", contract, class: "btn btn-primary" %>
+        <%= link_to "Edit", edit_contract_path(contract), class: "btn btn-default" %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br />
+

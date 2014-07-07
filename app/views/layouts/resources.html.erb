@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>hsl_members(<%= controller.controller_name %>.<%= controller.action_name %><%=  "["+params[:id]+"]" unless params[:id].blank? %>)</title>
+
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+
+  <link href="/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+  <link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
+  <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script> 
+
+  <link rel="icon" href="/favicon.ico">
+
+<style>
+  .resource .thumbnail { height: 150px; position: relative; }
+  .resource .thumbnail .ownership,
+  .resource .thumbnail .disposed
+  { position: absolute; top: 1px;
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+    font-weight: bold; left: 10px; }
+  .resource .thumbnail .disposed { color: red; }
+  .resource .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
+
+  .col_highlight { background-color: #f9f9f9; }
+</style>
+
+
+  <style>
+    #logo {
+      height: 40px;
+      width: 40px;
+      float: left;
+      margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      #logo {
+        margin-left: 15px;
+      }
+    }
+    #content {
+      margin: 1em;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainmenu-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a id="home_nav_link" href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="mainmenu-collapse">
+        <ul class="nav navbar-nav">
+          <% if can? :read, User %>
+          <li class="dropdown <%= "active" if current_page?(controller: :users) %>">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">People <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <%= li_link_to 'People', users_path if can? :read, User %>
+              <%= li_link_to 'People - Full Table View', {:controller => "users", :full => "full"} if can? :read, User %>
+              <%= li_link_to 'Inactive Users', users_inactive_path if can? :inactive_report, User %>
+              <%= li_link_to 'Recent Activity', users_activity_path if can? :activity, User %>
+              <%= li_link_to 'New Members Report', users_new_member_report_path if can? :new_member_report, User %>
+            </ul>
+          </li>
+          <% end %>
+          <%= li_link_to 'Tools & Resources', resources_path if can? :read, Resource %>
+          <%= li_link_to 'Doors', cards_path if can? :manage, Card %>
+          <% if can? :create, UserCertification %>
+            <li class="dropdown <%= 'active' if current_page?(controller: :certifications) %>" >
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Certs <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to 'Classes', certifications_path if can? :read, Certification %>
+                </li>
+                <li>
+                  <%= link_to 'User Certs', user_certifications_path if can? :create, UserCertification %>
+                </li>
+              </ul>
+            </li>
+          <% else %>
+            <%= li_link_to 'Certifications', certifications_path if can? :read, Certification %>
+          <% end %>
+          <%= li_link_to 'Waivers', contracts_path if can? :read, Contract %>
+          <%= li_link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
+          <%= li_link_to 'Payments', payments_path if can? :create, Payment %>
+          <%= li_link_to 'Settings', settings_path if can? :read, Setting %>
+          <%= li_link_to 'Profile', edit_user_registration_path if user_signed_in? %>
+          <%= li_link_to 'Logout', destroy_user_session_path, :method => :delete if user_signed_in? %>
+          <%= li_link_to 'Login', new_user_session_path unless user_signed_in? %>
+          <%= li_link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid" id="content">
+    <div class="row">
+      <% if notice %>
+        <p class="alert alert-info"><%= raw(notice) %></p>
+      <% end %>
+      <% if alert %>
+        <p class="alert alert-danger"><%= raw(alert) %></p>
+      <% end %>
+      <%= yield %>
+    </div>
+  </div>
+<%= raw Setting.analytics_code if Setting.present? %>
+</body>
+</html>

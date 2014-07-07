@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :authenticate_user!
+  load_and_authorize_resource except: :authorize
+  before_filter :authenticate_user!, except: :authorize
   
   # GET /cards
   # GET /cards.json
@@ -109,6 +109,41 @@ class CardsController < ApplicationController
         format.json { render :json => @card.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  def authorize
+
+    # Stop unless signed in already, OR if the supplied user/pass params are good.
+    unless current_user || check_auth(params['user'],params['pass'])
+      @auth = "bad_user_or_pass"
+    else
+      # Stop unless the user can access the door system
+      unless can? :authorize, Card
+        @auth = "bad_user_permissions"
+        Rails.logger.warn "----------\r\nWARNING: CARD AUTH ATTEMPT DENIED. USER #{current_user.inspect}\r\n----------"
+      else
+
+        begin
+          @card = Card.find(:first, :conditions => ["lower(card_number) = ?", params[:id].downcase])
+          @auth = @card.inspect 
+          if @card && @card.user 
+            @auth = @card.user.has_certification?(params[:device])
+          else
+            @auth = false
+          end
+        rescue
+          @auth = false
+        end
+      end
+    end
+
+    if @card && @card.user
+      username = @card.user.name
+    else
+      username = nil
+    end
+
+    render json: [@auth, username]
   end
 
   # DELETE /cards/1

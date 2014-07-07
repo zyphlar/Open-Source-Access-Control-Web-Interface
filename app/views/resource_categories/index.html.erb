@@ -1,0 +1,33 @@
+<link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" />
+<link href="/bootstrap/css/bootstrap.min.css" type="text/css" />
+<script src="/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
+
+<style>
+  .thumbnail { height: 150px; position: relative; }
+  .thumbnail .ownership,
+  .thumbnail .disposed
+  { position: absolute; top: 1px; 
+    text-shadow: 
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+    font-weight: bold; left: 10px; }
+  .thumbnail .disposed { color: red; }
+  .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
+</style>
+
+
+<h1 class="col-sm-9">Resource Categories
+  <%= link_to 'Back', resources_path, :class => "btn btn-default" if can? :read, Resource %>
+  <%= link_to 'Add Category', new_resource_category_path, :class => "btn btn-success" if can? :create, ResourceCategory %>
+</h1>
+
+<div class="col-sm-12">
+  <ul class="list-group">
+    <%= render @resource_categories.sort_by(&:name) %>
+  </ul>
+</div>
+
+<br />
+

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include Gravtastic
-  gravtastic :size => 120, :default => ""
+  gravtastic :size => 150, :default => ""
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -9,15 +9,23 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :admin, :instructor, :member, :emergency_name, :emergency_phone, :current_skills, :desired_skills, :waiver, :emergency_email, :phone, :payment_method, :orientation, :member_level, :certifications, :hidden, :marketing_source, :payee, :accountant, :exit_reason, :twitter_url, :facebook_url, :github_url, :website_url, :email_visible, :phone_visible #TODO: make admin/instructor/member/etc not accessible
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :admin, :instructor, :member, :emergency_name, :emergency_phone, :current_skills, :desired_skills, :waiver, :emergency_email, :phone, :payment_method, :orientation, :member_level, :certifications, :hidden, :marketing_source, :payee, :accountant, :exit_reason, :twitter_url, :facebook_url, :github_url, :website_url, :email_visible, :phone_visible, :postal_code #TODO: make admin/instructor/member/etc not accessible
 
+  belongs_to :oriented_by, :foreign_key => "oriented_by_id", :class_name => "User"
   has_many :cards
   has_many :user_certifications
   has_many :certifications, :through => :user_certifications
+  has_many :contracts
   has_many :payments
   has_many :macs
+  has_many :resources
+
+  scope :volunteer, -> { where('member_level >= 10 AND member_level < 25') }
+  scope :paying, -> { joins(:payments).where("payments.date > ?", (DateTime.now - 90.days)).uniq }
 
   validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https)), :allow_blank => true
+
+  # disable # validates_presence_of :postal_code
 
   after_create :send_new_user_email
 
@@ -130,7 +138,19 @@ class User < ActiveRecord::Base
     Rails.logger.info UserMailer.email(self,from_user,subject,body).deliver
   end
 
-  private
+  def has_certification?(cert_slug)
+   if self.certifications.find_by_slug(cert_slug)
+     true
+   else
+     false
+   end
+  end
+
+  def contract_date
+    self.contracts.first.signed_at unless self.contracts.blank?
+  end
+
+private
 
   def send_new_user_email
     Rails.logger.info UserMailer.new_user_email(self).deliver

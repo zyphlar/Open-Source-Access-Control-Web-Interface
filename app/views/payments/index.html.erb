@@ -1,13 +1,13 @@
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript">
 $(function() {
 
   $( "#graph" ).dialog({
     autoOpen: false,
-    height: 325,
-    width: 525,
+    height: 480,
+    width: 640,
     modal: true,
   });
   $( "#graph-button" ).click(function() {
@@ -16,11 +16,21 @@ $(function() {
 
   $('#graph').highcharts({
       chart: {
-          type: 'area'
+          type: 'area',
+          zoomType : 'x',
+          resetZoomButton : {
+            position: {
+              align: 'left'
+            }
+          },
       },
       title: { 
-        style : { fontSize: '10px' },
+        style : { fontSize: '12px' },
         text: "Numbers for Most Recent Month Greater Than They Appear" 
+      },
+      subtitle: { 
+        style : { fontSize: '10px' },
+        text: "Click and Drag to Zoom." 
       },
       xAxis: {
           type: 'datetime'
@@ -96,7 +106,7 @@ $(function() {
 });
 </script>
 
-<div id="graph" title="Payments by Month" style="height: 250px; width: 500px; float: right;"></div>
+<div id="graph" title="Payments by Month" style="height: 400px; width: 600px; float: right;"></div>
 
 
 <h1>Listing payments <button id="graph-button" class="btn">View Graph</button></h1>

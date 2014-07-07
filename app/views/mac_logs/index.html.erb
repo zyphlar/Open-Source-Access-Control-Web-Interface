@@ -1,9 +1,37 @@
+<style>
+  td { border-bottom: 1px solid #ccc; }
+</style>
 <table>
 <% @mac_logs.each do |mac_log| %>
   <tr>
-  <td><%= mac_log.mac %></td>
+  <td>
+    <% if @macs[mac_log.mac].user_id.blank? %>
+    <% else %>
+      <%= link_to @macs[mac_log.mac].user.name, @macs[mac_log.mac].user %><br/>
+    <% end %>
+  </td>
+  <td>
+      <% if @macs[mac_log.mac].blank? %>
+        <%= mac_log.mac %>
+      <% else %>
+        <% if @macs[mac_log.mac].note.blank? %>
+          <%= link_to mac_log.mac, @macs[mac_log.mac] %><br/>
+        <% else %>
+          <%= link_to @macs[mac_log.mac].note, @macs[mac_log.mac] %><br/>
+          <small><%= mac_log.mac %></small>
+        <% end %>
+      <% end %>
+</td>
   <td><%= mac_log.ip %></td>
-  <td><%= mac_log.action %></td>
+  <td>
+    <% if mac_log.action == "activate" %>
+      <span style="background-color: green">
+    <% else %>
+      <span style="background-color: red">
+    <% end %>
+    <%= mac_log.action %>
+    </span>
+  </td>
   <td><%= mac_log.created_at %></td>
   </tr>
 <% end %>

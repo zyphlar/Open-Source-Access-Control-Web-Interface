@@ -6,9 +6,12 @@
   <%= link_to image_tag('/facebook.png', :class => 'social-icon', :title => "Facebook"), @user.facebook_url, :class => 'social-link' if @user.facebook_url.present? %>
   <%= link_to image_tag('/github.png', :class => 'social-icon', :title => "Github"), @user.github_url, :class => 'social-link' if @user.github_url.present? %>
   <%= link_to image_tag('/website.png', :class => 'social-icon', :title => "Website"), @user.website_url, :class => 'social-link' if @user.website_url.present? %>
-<%= link_to "Email User", user_compose_email_path(@user), :class => 'btn' %>
-</h2>
 
+  <%= link_to 'Back', :back, :class => 'btn btn-default' %>
+  <%= link_to 'Email User', user_compose_email_path(@user), :class => 'btn btn-default' %>
+  <%= link_to 'Edit', edit_user_path(@user), class: "btn btn-primary" if can? :update, @user %>
+  <%= link_to 'Destroy', @user, class: "btn btn-danger", :confirm => 'Are you sure? WARNING: THIS DOES NOT REMOVE THE USER FROM THE DOOR SYSTEM! DISABLE THEM FIRST.', :method => :delete if can? :destroy, @user %>
+</h2>
 
 <% if current_user.admin? || @user.email_visible %>
   <p>
@@ -36,6 +39,9 @@
 <p>
   <b>Orientation?</b>
   <%= @user.orientation.strftime("%B %d %Y") unless @user.orientation.blank? %>
+  <% unless @user.oriented_by.blank? %>
+    <em>(recorded by <%= link_to @user.oriented_by.name, @user.oriented_by %>)</em>
+  <% end %>
 </p>
   <p>
     <b>Emergency Name:</b>
@@ -74,7 +80,7 @@
   </p>
 <% end %>
 
-<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, UserCertification %>
+<b>Certifications:  </b><%= link_to "+ Add", (new_user_certification_path+"?user="+@user.id.to_s), :class => 'btn btn-default' if can? :create, UserCertification %>
 <ul>
   <% @user.certifications.each do |certification| %>
     <li><%= link_to certification.name, certification %></li>
@@ -82,7 +88,7 @@
   <% if @user.certifications.blank? %><li>n/a</li><% end %>
 </ul>
 <p>
-  <b>Card:  </b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn' if can? :create, Card %>
+  <b>Card:  </b><%= link_to "+ Add", (new_card_path+"?user="+@user.id.to_s), :class => 'btn btn-default' if can? :create, Card %>
   <% if current_user.admin? then %>
     <ul>
     <% @user.cards.each do |c| %>
@@ -94,7 +100,7 @@
   <% end %>
 </p>
 
-<b>Computers: </b><%= link_to "+ Add", new_mac_path, :class => 'btn' if can? :create, Mac %>
+<b>Computers: </b><%= link_to "+ Add", new_mac_path, :class => 'btn btn-default' if can? :create, Mac %>
 <ul>
   <% @user.macs.each do |mac| %>
     <li><%= link_to mac.mac, mac %></li>
@@ -120,10 +126,69 @@
     <% end %>
   <% end %>
 </p>
- 
+
+<p> 
+  <style>
+.row {
+margin-left: -15px;
+margin-right: -15px;
+}
+.col-sm-2 {
+width: 16.666666666666664%;
+float: left;
+position: relative;
+min-height: 1px;
+padding-left: 15px;
+padding-right: 15px;
+}
+    .thumbnail {
+display: block;
+padding: 4px;
+margin-bottom: 20px;
+line-height: 1.428571429;
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 4px;
+-webkit-transition: all .2s ease-in-out;
+transition: all .2s ease-in-out;
+}
+.thumbnail a>img {
+display: block;
+max-width: 100%;
+height: auto;
+margin-left: auto;
+margin-right: auto;
+}
+.thumbnail a:hover { color: black; }
+
+  .thumbnail { height: 150px; position: relative; }
+  .thumbnail .ownership,
+  .thumbnail .disposed
+  { display: none; }
+  .thumbnail h4 { position: absolute; bottom: 1px; margin-bottom: 1px; }
+
+  .clearfix { clear: both }
+  </style>
+  <b>Resources: </b><%= link_to "+ Add", new_resource_path, :class => 'btn btn-default' if can? :create, Resource %>
+  <div class="row"><%= render @user.resources if @user.resources %></div>
+  <div class="clearfix"></div>
+</p>
+
 <p>
   <b>Waiver?</b>
-  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %>
+  <%= @user.waiver.strftime("%B %d %Y") unless @user.waiver.blank? %><br/>
+  <b>Contracts:</b> <%= link_to "+ Add", new_contract_path, :class => 'btn btn-default' if can? :create, Contract %>
+  <ul>
+    <% @user.contracts.each do |contract| %>
+      <li>
+        <% if can? :read, contract %>
+          <%= link_to contract.signed_at.strftime("%B %d %Y"), contract %>
+        <% else %>
+          <%= contract.signed_at.strftime("%B %d %Y") %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
 </p>
 
 <p>
@@ -142,6 +207,3 @@
   <%= @user.current_sign_in_at %>
 </p>
 <% end %>
-
-<% if can? :update, @user then %><%= link_to 'Edit', edit_user_path(@user) %> |<% end %>
-<%= link_to 'Back', users_path %>

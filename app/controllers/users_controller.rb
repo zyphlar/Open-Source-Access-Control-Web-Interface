@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
   before_filter :authenticate_user!
+  layout 'resources'
 
   def sort_by_cert(certs,id)
     result = 0
@@ -15,31 +16,44 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    case params[:sort]
-    when "name"
-      @users = @users.sort_by(&:name)
-    when "cert"
-      @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
-    when "orientation"
-      @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
-    when "waiver"
-      @users = @users.sort_by{ |u| [-u.waiver.to_i,u.name] }
-    when "member"
-      @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
-    when "card"
-      @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
-    when "instructor"
-      @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
-    when "admin"
-      @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
-    else
-      @users = @users.sort_by(&:name)
-    end
+    unless params[:full] # by default, show summary
+
+      @users = @users.paying + @users.volunteer
+#.joins(:payments).where("payments.date > ? OR ", (DateTime.now - 60.days)).uniq
+
+      respond_to do |format|
+        format.html { render 'summary', layout: 'resources' }
+        format.json { render :json => @users }
+      end
+
+    else # show full
+
+      case params[:sort]
+      when "name"
+        @users = @users.sort_by(&:name)
+      when "cert"
+        @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
+      when "orientation"
+        @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
+      when "waiver"
+        @users = @users.sort_by{ |u| [-u.contract_date.to_i,u.name] }
+      when "member"
+        @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
+      when "card"
+        @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
+      when "instructor"
+        @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
+      when "admin"
+        @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
+      else
+        @users = @users.sort_by(&:name)
+      end
 
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render :json => @users }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render :json => @users }
+      end
     end
   end
 
@@ -73,12 +87,10 @@ class UsersController < ApplicationController
 
   def compose_email
     @user = User.find(params[:user_id])
-    authorize! :read, @user
   end
 
   def send_email
     @user = User.find(params[:user_id])
-    authorize! :read, @user
     @subject = params[:subject]
     @body = params[:body]
     if @user.send_email(current_user,@subject,@body)
@@ -113,6 +125,9 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    # update oriented_by only if orientation has been set
+    @user.oriented_by_id = current_user.id unless @user.orientation.blank?
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, :notice => 'User was successfully created.' }
@@ -127,6 +142,10 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
+    # update oriented_by only if it's blank but the (new) orientation isn't blank
+    # gotta test the params because they don't get applied til below.
+    @user.oriented_by_id = current_user.id if @user.oriented_by.blank? && (!params[:user]["orientation(1i)"].blank?)
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :notice => 'User was successfully updated.' }

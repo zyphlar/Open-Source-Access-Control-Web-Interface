@@ -2,7 +2,14 @@
 <html>
 <head>
   <title>hsl_members(<%= controller.controller_name %>.<%= controller.action_name %><%=  "["+params[:id]+"]" unless params[:id].blank? %>)</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <link rel="icon" href="/favicon.ico">
+  <% if params[:controller] == "resources" %>
+    <link href="/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="/bootstrap/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
+    <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript" ></script>
+  <% else %>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+  <% end %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
@@ -10,6 +17,7 @@
   <div id="header">
     <a id="home_nav_link" href="/" title="Home"><img src="/assets/logo.png" id="logo" /></a>
     <%= link_to 'People', users_path if can? :read, User %>
+    <%= link_to 'Tools & Resources', resources_path if can? :read, Resource %>
     <%= link_to 'Access Cards', cards_path if can? :manage, Card %>
     <% if can? :create, UserCertification %>
       <%= link_to 'Cert Classes', certifications_path if can? :read, Certification %>
@@ -17,7 +25,8 @@
     <% else %>
       <%= link_to 'Certifications', certifications_path if can? :read, Certification %>
     <% end %>
-    <%= link_to 'Payments', payments_path if can? :read, Payment %>
+    <%= link_to 'Waivers', contracts_path if can? :read, Contract %>
+    <%= link_to 'Payments', payments_path if can? :create, Payment %>
     <%= link_to 'Computers', macs_path if user_signed_in? || (can? :read, Mac) %>
     <%= link_to 'Settings', settings_path if can? :read, Setting %>
     <% if user_signed_in? then %><%= link_to 'Profile', edit_user_registration_path %><% end %>
@@ -26,9 +35,14 @@
     <%= link_to 'Membership Application', new_user_registration_path unless user_signed_in? %>
   </div>
   <div id="content">
-    <p class="notice"><%= raw(notice) %></p>
-    <p class="alert"><%= raw(alert) %></p>
-<%= yield %>
+    <% if notice %>
+      <p class="notice"><%= raw(notice) %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert"><%= raw(alert) %></p>
+    <% end %>
+
+    <%= yield %>
   </div>
 <%= raw Setting.analytics_code if Setting.present? %>
 </body>

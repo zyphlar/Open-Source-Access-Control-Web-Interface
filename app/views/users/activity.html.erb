@@ -6,7 +6,7 @@
 
 
 <h2><a name="new_users"></a>New Users</h2>
-<table>
+<table class="table table-hover">
   <tr>
     <th>Name</th>
     <th>Member Level</th>
@@ -25,22 +25,22 @@
     <td><% if user.created_at.present? %> 
       <%= distance_of_time_in_words(DateTime.now, user.created_at.to_date)+" ago" %>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
     <td><% if user.waiver.present? %> 
       <%= distance_of_time_in_words(DateTime.now, user.waiver.to_date)+" ago" %>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
     <td><% if user.orientation.present? %> 
       <%= distance_of_time_in_words(DateTime.now, user.orientation.to_date)+" ago" %>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
     <td><% if user.payments.present? %> 
       <%= distance_of_time_in_words(Date.today, user.payments.maximum(:date))+" ago" %>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
   </tr>
   <% end %>
@@ -48,7 +48,7 @@
 </table>
 
 <h2><a name="members_without_cards"></a>Basic+ Members Without Cards</h2>
-<table>
+<table class="table table-hover">
   <tr>
     <th>Name</th>
     <th>Account Created</th>
@@ -66,20 +66,20 @@
     <td><%= user.member_level_string %></td>
     <td><% if user.payments.present? %> 
       <% last_payment = user.payments.maximum(:date) %>
-      <% if Date.today-last_payment > 60 %>
-        <span class="alert">
+      <% if Date.today-last_payment > 90 %>
+        <span class="label label-danger">
       <% else %>
-        <span class="notice">
+        <span class="label label-success">
       <% end %>
       <%= distance_of_time_in_words(Date.today, user.payments.maximum(:date))+" ago" %>
       </span>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
     <td><% if user.cards.present? %>
-      <span class="notice">&check;</span>
+      <span class="label label-success">&check;</span>
     <% else %>
-      <span class="alert">&times;</span>
+      <span class="label label-danger">&times;</span>
     <% end %></td>
   </tr>
   <% end %>
@@ -88,7 +88,7 @@
 
 
 <h2><a name="logins"></a>Logins</h2>
-<table>
+<table class="table table-hover">
   <tr>
     <th>Name</th>
     <th>Current Sign In</th>
@@ -118,7 +118,7 @@
 
 <h2><a name="zombies"></a>Never-Logged-In Members</h2>
 <em>Excluding non-members</em>
-<table>
+<table class="table table-hover">
   <tr>
     <th>Name</th>
     <th>Member Level</th>

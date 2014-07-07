@@ -2,14 +2,22 @@
 <% if @mac_time_start_date.present? %>
 <b>Most Active Machine Last <%= distance_of_time_in_words DateTime.now, @mac_time_start_date %>:</b>
   <span title="<%= @most_active_mac.mac %><%= "  -  "+@most_active_mac.ip.to_s if can? :read_details, @most_active_mac %>">
-    <%= @most_active_mac.user.name unless @most_active_mac.user.blank? %>
+    <% if @most_active_mac.user.blank? %>
+      <%= @most_active_mac.mac %>
+    <% else %>
+      <%= @most_active_mac.user.name %>
+    <% end %>
     <%= "("+@most_active_mac.note+")" unless @most_active_mac.note.blank? %>
     - <%= (@most_active.last[:time] / 1.hour).round %> hrs
   </span>
 <br/>
 <b>Runner Up:</b>
   <span title="<%= @runner_up_mac.mac %><%= "  -  "+@runner_up_mac.ip.to_s if can? :read_details, @runner_up_mac %>">
-    <%= @runner_up_mac.user.name unless @runner_up_mac.user.blank? %>
+    <% if @runner_up_mac.user.blank? %>
+      <%= @runner_up_mac.mac %>
+    <% else %>
+      <%= @runner_up_mac.user.name %>
+    <% end %>
     <%= "("+@runner_up_mac.note+")" unless @runner_up_mac.note.blank? %>
     - <%= (@runner_up.last[:time] / 1.hour).round %> hrs
   </span>
@@ -25,10 +33,11 @@
  @active_macs.each do |mac| 
 Rails.logger.info mac.inspect %>
 <li>
+    <%= link_to mac do %>
     <span title="<%= mac.mac if user_signed_in? %><%= "  -  "+mac.ip.to_s if can? :read_details, mac %><%= "  -  "+((Time.now - mac.since) / 1.hour).round(1).to_s+" hours" if can? :manage, mac %>">
       <%= mac.user.name unless mac.user.blank? %>
       <%= mac.mac if mac.user.blank? %>
-    <%= "("+mac.note+")" unless mac.note.blank? %></span>
+    <%= "("+mac.note+")" unless mac.note.blank? %></span><% end %> &nbsp;
   <%= link_to ' Edit', edit_mac_path(mac) if can? :update, mac %> <br/>
 </li>
 <% end %>
