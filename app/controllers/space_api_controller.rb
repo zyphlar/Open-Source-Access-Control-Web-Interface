@@ -1,8 +1,8 @@
 class SpaceApiController < ApplicationController
   # Individually remove authorizing stuff since there is no SpaceApi model
-  authorize_resource :except => [:index, :access, :access_post]
+  authorize_resource :except => [:index, :access, :access_post, :alert_if_not_status]
   # User auth here happens via params, instead of form.
-  before_filter :authenticate_user!, :except => [:index, :access, :access_post]
+  before_filter :authenticate_user!, :except => [:index, :access, :access_post, :alert_if_not_status]
 
   def index
     @json = JSON.parse(Setting.space_api_json_template)
@@ -100,6 +100,27 @@ class SpaceApiController < ApplicationController
       }
     end
 
+  end
+
+  # Expect status to be "open" or "closed"
+  def alert_if_not_status
+    @expected_status = params['status']
+    @status = DoorLog.show_status
+
+    if !["open","closed"].include?(@expected_status)
+      @output = "USAGE: Specify an expected status (/alert_if_not/open or /alert_if_not/closed). Alert emails will be sent if status doesn't match."
+    elsif @expected_status.to_s == "open" && @status[:unlocked] == true
+      @output = "Unlocked Status is OK."
+    elsif @expected_status.to_s == "closed" && @status[:unlocked] == false
+      @output = "Unlocked Status is OK."
+    else
+      @output = "Unlocked Status is NOT OK. Alerting."
+      @output += " - Mail result: "
+      @output += DoorMailer.alert(@status).deliver.inspect
+    end
+
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    render :json => {response: @output, status: @status}
   end
 
 end

@@ -12,8 +12,8 @@ $(function() {
 
   $( "#graph-dialog" ).dialog({
     autoOpen: false,
-    height: 480,
-    width: 640,
+    height: 700,
+    width: 825,
     modal: true,
   });
 
@@ -130,7 +130,7 @@ function generatePlotBands(start,end){
 
 <div id="graph-dialog" title="Door Status">
 
-  <div id="graph" style="height: 400px; width: 600px; float: right;"></div>
+  <div id="graph" style="height: 600px; width: 800px; float: right;"></div>
   
   <%= form_tag(nil, :method => :get) do %>
     <label>Start Date
