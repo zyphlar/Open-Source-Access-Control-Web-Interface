@@ -5,7 +5,7 @@ class DoorMailer < ActionMailer::Base
     @url  = "http://members.heatsynclabs.org"
     @status = status
 
-    mail(:to => 'heatsynclabs@googlegroups.com', 
+    mail(:to => 'board@heatsynclabs.org', #'heatsynclabs@googlegroups.com', 
     	:subject => "HSL Doors")
   end
 
