@@ -5,7 +5,7 @@ class DoorLogsController < ApplicationController
   # GET /door_logs
   # GET /door_logs.json
   def index
-    @door_logs = DoorLog.find(:all, :order => "created_at DESC", :limit => 100)
+    @door_logs = DoorLog.find(:all, :order => "created_at DESC", :limit => 1000)
 
 
     begin

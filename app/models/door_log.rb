@@ -91,8 +91,8 @@ class DoorLog < ActiveRecord::Base
     door_1_locked = parse_locked_status(door_logs, "door_1_locked")
     door_2_locked = parse_locked_status(door_logs, "door_2_locked")
 
-    # Doors are unlocked if 1 AND 2 are NOT locked
-    status = {:unlocked => (!door_1_locked && !door_2_locked), :door_1_locked => door_1_locked, :door_2_locked => door_2_locked }
+    # Doors are unlocked if 1 OR 2 are NOT locked
+    status = {:unlocked => (!door_1_locked || !door_2_locked), :door_1_locked => door_1_locked, :door_2_locked => door_2_locked }
   end
 
   def self.parse_locked_status(door_logs, door_key)
