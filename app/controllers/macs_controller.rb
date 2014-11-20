@@ -1,5 +1,5 @@
 class MacsController < ApplicationController
-load_and_authorize_resource :mac, :except => [:create, :history]
+load_and_authorize_resource :mac, :except => [:index, :create, :history]
 #load_and_authorize_resource :user, :through => :mac, :except => [:index, :show, :scan, :import]
 
 before_filter :arp_lookup, :only => :new
