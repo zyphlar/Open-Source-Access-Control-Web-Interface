@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140411024809) do
+ActiveRecord::Schema.define(:version => 20141120194112) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -51,6 +51,9 @@ ActiveRecord::Schema.define(:version => 20140411024809) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "door_logs", ["created_at"], :name => "index_door_logs_on_created_at"
+  add_index "door_logs", ["key"], :name => "index_door_logs_on_key"
 
   create_table "ipns", :force => true do |t|
     t.integer  "payment_id"

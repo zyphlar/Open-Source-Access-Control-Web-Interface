@@ -87,7 +87,7 @@ class DoorLog < ActiveRecord::Base
   end
 
   def self.show_status
-    door_logs = DoorLog.where(key: ["door_1_locked","door_2_locked"]).order('created_at DESC').take(2)
+    door_logs = DoorLog.order('created_at DESC').where(key: ["door_1_locked","door_2_locked"]).limit(2)
     door_1_locked = parse_locked_status(door_logs, "door_1_locked")
     door_2_locked = parse_locked_status(door_logs, "door_2_locked")
 
