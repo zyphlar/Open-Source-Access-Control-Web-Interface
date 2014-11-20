@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141120194112) do
+ActiveRecord::Schema.define(:version => 20141120200638) do
 
   create_table "cards", :force => true do |t|
     t.string   "card_number"
@@ -108,6 +108,8 @@ ActiveRecord::Schema.define(:version => 20141120194112) do
     t.decimal  "amount"
   end
 
+  add_index "payments", ["amount"], :name => "index_payments_on_amount"
+  add_index "payments", ["date"], :name => "index_payments_on_date"
   add_index "payments", ["user_id"], :name => "index_payments_on_user_id"
 
   create_table "paypal_csvs", :force => true do |t|
