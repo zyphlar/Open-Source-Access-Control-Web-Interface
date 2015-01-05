@@ -6,13 +6,13 @@ class HomeController < ApplicationController
     if user_signed_in? && current_user.orientation.blank? then
       flash[:alert] = "There's a lot more to see here, but our records show you haven't completed the new member orientation yet. If that's incorrect, please contact a volunteer."
     end
-    if user_signed_in? && current_user.member_status.between?(2,100) then
-      flash[:alert] = "<!--
-        Member: <%= current_user.member.inspect
-        Level: <%= current_user.member_level.inspect
-        -->
-        Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, but if in doubt please see your profile for payment instructions, consider updating your membership level to something accurate, or contact us.<br/>Thanks for supporting us!"
-    end
+#    if user_signed_in? && current_user.member_status.between?(2,100) then
+#      flash[:alert] = "<!--
+#        Member: <%= current_user.member.inspect
+#        Level: <%= current_user.member_level.inspect
+#        -->
+#        Looks like we haven't acknowledged a recent payment for you yet. This could be because we're slow, but if in doubt please see your profile for payment instructions, consider updating your membership level to something accurate, or contact us.<br/>Thanks for supporting us!"
+#    end
 
     # Fun Stats
     @featured_resource = Resource.where("picture_file_name IS NOT NULL").sample
