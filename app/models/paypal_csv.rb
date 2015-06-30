@@ -17,8 +17,13 @@ class PaypalCsv < ActiveRecord::Base
     csv = CSV.table(filename)
     csv.each do |row| 
       paypal_csv = PaypalCsv.new()
-
+logger.fatal row.inspect
       paypal_csv.attributes.each do |c|
+        # Try finding the column without a prepended _ first (compatibility with new CSV format)
+        unless row[c.first[1..-1].to_sym].nil?
+          paypal_csv[c.first.to_sym] = row[c.first[1..-1].to_sym]
+        end
+        # If there's an exact match, it takes precedence
         unless row[c.first.to_sym].nil?
           paypal_csv[c.first.to_sym] = row[c.first.to_sym]
         end
@@ -37,6 +42,8 @@ class PaypalCsv < ActiveRecord::Base
 
   private
   def create_payment
+logger.fatal self.inspect
+
     # find user by email, then by payee
     user = User.where("lower(email) = ?", self._from_email_address.downcase).first
     user = User.where("lower(payee) = ?", self._from_email_address.downcase).first if user.nil? && self._from_email_address.present?
