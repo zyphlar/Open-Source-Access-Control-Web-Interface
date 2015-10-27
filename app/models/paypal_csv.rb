@@ -51,7 +51,7 @@ logger.fatal self.inspect
     # Only create payments if the CSV matches a member
     if user.present?
       # And is a payment (not a cancellation, etc)
-      payment_types = ["Recurring Payment Received","Payment Received"]
+      payment_types = ["Subscription Payment Processed","Recurring Payment Received","Payment Received"]
       if payment_types.include?(self._type)
         # And a member level
         if User.member_levels[self._gross.to_i].present?
