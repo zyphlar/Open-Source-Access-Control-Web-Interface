@@ -21,7 +21,7 @@
     <% if @arp.present? %><br/><em>Autodetected from your IP of <%= @ip %></em><% end %>
   </div>
   <div class="field">
-    <%= f.label :note %><br />
+    <%= f.label :note %> (Set as your Twitter handle for automatic linking, i.e. @janedoe)<br />
     <%= f.text_field :note %>
   </div>
   <div class="field">
