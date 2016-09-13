@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :resources
 
   scope :volunteer, -> { where('member_level >= 10 AND member_level < 25') }
+  scope :active, -> { where('member_level >= 10') }
   scope :paying, -> { joins(:payments).where("payments.date > ?", (DateTime.now - 90.days)).uniq }
 
   validates_format_of [:twitter_url, :facebook_url, :github_url, :website_url], :with => URI::regexp(%w(http https)), :allow_blank => true

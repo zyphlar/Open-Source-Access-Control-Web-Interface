@@ -18,7 +18,8 @@ class UsersController < ApplicationController
   def index
     unless params[:full] # by default, show summary
 
-      @users = @users.paying + @users.volunteer
+      @users = @users.active.sort_by{|u| [-u.member_level, u.name.downcase] }
+#@users.paying + @users.volunteer
 #.joins(:payments).where("payments.date > ? OR ", (DateTime.now - 60.days)).uniq
 
       respond_to do |format|
@@ -30,23 +31,23 @@ class UsersController < ApplicationController
 
       case params[:sort]
       when "name"
-        @users = @users.sort_by(&:name)
+        @users = @users.sort_by{ |u| u.name.downcase }
       when "cert"
-        @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name] }
+        @users = @users.sort_by{ |u| [-sort_by_cert(u.certifications,params[:cert].to_i),u.name.downcase] }
       when "orientation"
-        @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name] }
+        @users = @users.sort_by{ |u| [-u.orientation.to_i,u.name.downcase] }
       when "waiver"
-        @users = @users.sort_by{ |u| [-u.contract_date.to_i,u.name] }
+        @users = @users.sort_by{ |u| [-u.contract_date.to_i,u.name.downcase] }
       when "member"
-        @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name] }
+        @users = @users.sort_by{ |u| [-u.member_status.to_i,u.name.downcase] }
       when "card"
-        @users = @users.sort_by{ |u| [-u.cards.count,u.name] }
+        @users = @users.sort_by{ |u| [-u.cards.count,u.name.downcase] }
       when "instructor"
         @users = @users.sort{ |a,b| [b.instructor.to_s,a.name] <=> [a.instructor.to_s,b.name] }
       when "admin"
         @users = @users.sort{ |a,b| [b.admin.to_s,a.name] <=> [a.admin.to_s,b.name] }
       else
-        @users = @users.sort_by(&:name)
+        @users = @users.sort_by{ |u| u.name.downcase }
       end
 
 

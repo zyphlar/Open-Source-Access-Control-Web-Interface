@@ -36,7 +36,7 @@
 
 
 <div class="users">
-  <%= render @users.sort_by{|u| [-u.member_status, u.name] } %>
+  <%= render @users %>
 </div>
 
 <% if current_user.orientation.blank? then %>
