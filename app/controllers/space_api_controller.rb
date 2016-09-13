@@ -1,8 +1,8 @@
 class SpaceApiController < ApplicationController
   # Individually remove authorizing stuff since there is no SpaceApi model
-  authorize_resource :except => [:index, :access, :access_post, :alert_if_not_status]
+  authorize_resource :except => [:index, :simple, :access, :access_post, :alert_if_not_status]
   # User auth here happens via params, instead of form.
-  before_filter :authenticate_user!, :except => [:index, :access, :access_post, :alert_if_not_status]
+  before_filter :authenticate_user!, :except => [:index, :simple, :access, :access_post, :alert_if_not_status]
 
   def index
     @json = JSON.parse(Setting.space_api_json_template)
@@ -27,6 +27,11 @@ class SpaceApiController < ApplicationController
         render :json => @json
       }
     end
+  end
+
+  def simple
+    door_status = DoorLog.show_status # Expect {:unlocked => boolean, :door_1_locked => boolean, :door_2_locked => boolean}
+    render :json => door_status
   end
 
   def access
