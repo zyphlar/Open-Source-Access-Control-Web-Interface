@@ -89,7 +89,13 @@ class SpaceApiController < ApplicationController
           DoorLog.create!({:key => "rem_"+DoorLog.parse_command(params['cmd'])[:url_param], :data => current_user.id})
 
           # Execute the access
-          @output += DoorLog.execute_command(params['cmd'])
+          ## unless it's unlocking the back door, per HYH 20180222 - Nate P
+          unless params['cmd'] == "unlock-rear"
+            @output += DoorLog.execute_command(params['cmd'])
+          else
+            @output += "Attempted to unlock the back door. This is no longer allowed."
+            Rails.logger.warn "----------\r\nWARNING: ATTEMPTED TO UNLOCK REAR DOOR. USER #{current_user.inspect}\r\n----------"
+          end
         end 
       end
     end

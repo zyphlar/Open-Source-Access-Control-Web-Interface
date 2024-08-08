@@ -6,7 +6,7 @@ class DoorLogsController < ApplicationController
   # GET /door_logs.json
   def index
 #    @door_logs = DoorLog.find(:all, :order => "created_at DESC", :limit => 1000)
-    @door_logs = DoorLog.where("key NOT LIKE 'alarm%' AND key != 'armed' AND key != 'activated'").order("created_at DESC").limit(1000)
+    @door_logs = DoorLog.where("key NOT LIKE 'alarm%' AND key != 'armed' AND key != 'activated'").order("created_at DESC").limit(3000)
 
 
     begin

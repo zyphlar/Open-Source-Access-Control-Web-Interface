@@ -1,0 +1,53 @@
+version: "3"
+services:
+  members_web:
+    restart: 'unless-stopped'
+    container_name: members_web
+    build:
+      # target: dev
+      context: .
+    depends_on:
+      members_postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    # environment:
+      # TODO: implement for Paperclip uploads (user-provided photos, PDFs, etc)
+      # S3_BUCKET: ""
+      # S3_KEY: ""
+      # S3_SECRET: ""
+    # volumes:
+      # Uncomment and use volume overlays to easily edit the app as a developer
+      # - .:/app
+
+  members_postgres:
+    container_name: members_postgres
+    image: postgres:9.6.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: members_db_development,members_db_test
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Script to create users/DBs according to POSTGRES_MULTIPLE_DATABASES
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  inbucket:
+    image: inbucket/inbucket:3.0.4
+    restart: always
+    ports:
+      - 10001:10001 # inbucket web ui
+    environment:
+      INBUCKET_WEB_ADDR: "0.0.0.0:10001"
+      INBUCKET_POP3_ADDR: "0.0.0.0:10110"
+      INBUCKET_SMTP_ADDR: "0.0.0.0:10025"
+
+volumes:
+  db_data:
+    driver: local

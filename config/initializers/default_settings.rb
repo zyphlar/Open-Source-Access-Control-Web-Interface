@@ -1,3 +1,4 @@
+=begin
 @@default_settings = {
   :welcome_title => "Welcome to the Hackerspace Members Site",
   :welcome_body => "<p>We are a member-driven community workshop where you can learn, make cool stuff, meet other cool people, and make your city a better place to live!</p><p>You don't have to be a member to come visit, but if you're interested in volunteering or being a member, feel free to sign up here! For more information, <a href=\"/more_info\">Click Here</a>.</p>",
@@ -45,3 +46,4 @@ if ActiveRecord::Base.connection.tables.include?('settings') and !defined?(::Rak
     Setting.save_default(key, value)
   end
 end
+=end

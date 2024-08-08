@@ -90,13 +90,6 @@
   </p>
   <% end %>
   <span id="status">
-    <div>
-      <span id="overall_status">
-        Both<br/>
-      <%= button_tag "Unlock", {name: "cmd", value: "unlock", class: "btn unlock"} %>
-      <%= button_tag "Lock", {name: "cmd", value: "lock", class: "btn lock"} %>
-      </span>
-    </div>
     <span id="door_1_status">
       Front Door<br/>
       <%= button_tag "Open", {name: "cmd", value: "open-front", class: "btn unlock"} %>
@@ -106,7 +99,6 @@
     <span id="door_2_status">
       Rear Door<br/>
       <%= button_tag "Open", {name: "cmd", value: "open-rear", class: "btn unlock"} %>
-      <%= button_tag "Unlock", {name: "cmd", value: "unlock-rear", class: "btn unlock"} %>
       <%= button_tag "Lock", {name: "cmd", value: "lock-rear", class: "btn lock"} %>
     </span>
     <p>Green = open, Red = locked.</p>

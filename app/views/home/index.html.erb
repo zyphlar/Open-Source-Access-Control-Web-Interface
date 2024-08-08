@@ -16,8 +16,10 @@
   </div>
 <% end %>
 
-<div class="col-sm-4">  
+<div class="col-sm-4">
+<% if false %>
   <h2>Cool Stats:</h2>
+  <span>Disabled for now.</span>
   <dl>
     <dt># of People in this DB:</dt>
     <dd><%= @num_users %> (<%= @recent_users %> new in the last 7 days)</dd>
@@ -34,6 +36,7 @@
     <dt># of Computers in this DB:</dt>
     <dd><%= @num_macs %> (<%= @recent_macs %> seen today)</dd>
   </dl>
+<% end %>
 </div>
 
 <div class="col-sm-4">
